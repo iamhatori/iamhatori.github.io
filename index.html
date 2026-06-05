@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
 <title>hatori — creative developer</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,6 +26,9 @@
     color: var(--white);
     overflow: hidden;
     font-family: 'Courier New', monospace;
+    /* Prevent rubber-band scroll on iOS */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   #c {
@@ -31,7 +38,7 @@
     touch-action: none;
   }
 
-  /* ── Cursor ── */
+  /* ── Cursor — hidden on touch devices ── */
   #cursor {
     pointer-events: none;
     position: fixed;
@@ -58,21 +65,33 @@
     z-index: 100;
   }
 
+  /* Name: fades + rises in, then rises off-screen */
   #name {
     font-family: 'Georgia', serif;
-    font-size: clamp(52px, 10vw, 110px);
+    font-size: clamp(48px, 13vw, 110px);
     font-style: italic;
     letter-spacing: -0.02em;
     color: var(--white);
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
+    will-change: transform, opacity;
   }
-  #name.show { opacity: 1; transform: translateY(0); }
+  #name.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Rise up and out after intro completes */
+  #name.rise {
+    opacity: 0;
+    transform: translateY(-120px);
+    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1),
+                transform 0.9s cubic-bezier(0.4,0,0.2,1);
+  }
 
   #role {
     font-family: 'Courier New', monospace;
-    font-size: clamp(10px, 2vw, 13px);
+    font-size: clamp(9px, 2.5vw, 13px);
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--accent);
@@ -81,10 +100,14 @@
     transition: opacity 0.6s ease;
   }
   #role.show { opacity: 1; }
+  #role.rise {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
 
   #bar-wrap {
     margin-top: 40px;
-    width: 120px;
+    width: clamp(80px, 25vw, 120px);
     height: 1px;
     background: rgba(255,255,255,0.15);
     opacity: 0;
@@ -92,6 +115,7 @@
     overflow: hidden;
   }
   #bar-wrap.show { opacity: 1; }
+  #bar-wrap.rise { opacity: 0; transition: opacity 0.4s ease; }
   #bar-fill {
     height: 100%;
     width: 0%;
@@ -112,14 +136,17 @@
   /* ── Popup ── */
   #popup-overlay {
     position: fixed; inset: 0;
-    background: rgba(10,10,10,0.75);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(6,5,4,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 200;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: flex-end; justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.3s ease;
+  }
+  @media (min-width: 600px) {
+    #popup-overlay { align-items: center; }
   }
   #popup-overlay.open {
     opacity: 1;
@@ -127,91 +154,208 @@
   }
 
   #popup {
-    background: #f5f2ee;
-    color: #0a0a0a;
-    width: min(420px, 92vw);
-    padding: 36px 36px 28px;
+    background: #1a1510;
+    color: #e8ddd0;
+    width: 100%;
+    max-width: 500px;
+    padding: 0;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid rgba(184,160,122,0.12);
+    border-bottom: none;
     position: relative;
-    transform: translateY(20px) scale(0.97);
-    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    border: 1px solid rgba(0,0,0,0.08);
+    transform: translateY(40px);
+    transition: transform 0.36s cubic-bezier(0.32,1,0.6,1);
+    max-height: 88vh;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  @media (min-width: 600px) {
+    #popup {
+      width: min(480px, 92vw);
+      border-radius: 4px;
+      border: 1px solid rgba(184,160,122,0.15);
+      max-height: none;
+      transform: translateY(20px) scale(0.97);
+    }
   }
   #popup-overlay.open #popup {
     transform: translateY(0) scale(1);
   }
 
+  /* Drag handle strip */
+  #popup-handle {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 12px 0 0;
+  }
+  #popup-handle span {
+    display: block;
+    width: 32px; height: 3px;
+    background: rgba(184,160,122,0.25);
+    border-radius: 2px;
+  }
+  @media (min-width: 600px) { #popup-handle { display: none; } }
+
+  /* Scrollable body */
+  #popup-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 24px;
+    padding-bottom: max(28px, env(safe-area-inset-bottom, 20px));
+    flex: 1;
+  }
+  @media (min-width: 600px) {
+    #popup-body { padding: 32px 36px 36px; }
+  }
+
+  /* Header row inside body */
+  #popup-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  #popup-close {
+    flex-shrink: 0;
+    background: rgba(184,160,122,0.08);
+    border: 1px solid rgba(184,160,122,0.18);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: rgba(184,160,122,0.7);
+    font-size: 18px; line-height: 1;
+    transition: background 0.18s, color 0.18s;
+    -webkit-tap-highlight-color: transparent;
+    margin-top: 2px;
+  }
+  #popup-close:hover, #popup-close:active {
+    background: rgba(184,160,122,0.18);
+    color: #e8ddd0;
+  }
+
   #popup-tag {
     font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 0.25em;
+    font-size: 9px;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: #888;
-    margin-bottom: 10px;
+    color: rgba(184,160,122,0.6);
+    margin-bottom: 8px;
   }
   #popup-title {
     font-family: 'Georgia', serif;
     font-style: italic;
-    font-size: 26px;
-    line-height: 1.15;
-    margin-bottom: 14px;
-    color: #0a0a0a;
+    font-size: clamp(22px, 5vw, 28px);
+    line-height: 1.12;
+    color: #e8ddd0;
+    flex: 1;
   }
+
+  /* Divider */
+  #popup-divider {
+    width: 100%; height: 1px;
+    background: rgba(184,160,122,0.12);
+    margin: 16px 0;
+  }
+
   #popup-desc {
     font-family: 'Courier New', monospace;
-    font-size: 12px;
-    line-height: 1.8;
-    color: #444;
-    margin-bottom: 22px;
+    font-size: clamp(11px, 3vw, 12px);
+    line-height: 1.85;
+    color: rgba(232,221,208,0.65);
+    margin-bottom: 24px;
   }
-  #popup-link {
-    display: inline-block;
-    background: #0a0a0a;
-    color: #f5f2ee;
+
+  /* Preview image placeholder */
+  #popup-preview {
+    width: 100%;
+    height: 120px;
+    background: rgba(184,160,122,0.06);
+    border: 1px solid rgba(184,160,122,0.1);
+    border-radius: 3px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  #popup-preview-inner {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    opacity: 0.3;
+  }
+  #popup-preview-inner svg { width: 24px; height: 24px; }
+  #popup-preview-inner span {
     font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
+    font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: #b8a07a;
+  }
+  /* URL bar mockup inside preview */
+  #popup-browser-bar {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 24px;
+    background: rgba(184,160,122,0.08);
+    border-bottom: 1px solid rgba(184,160,122,0.1);
+    display: flex; align-items: center; padding: 0 8px; gap: 5px;
+  }
+  .browser-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(184,160,122,0.25); }
+  #popup-url-bar {
+    flex: 1;
+    height: 13px;
+    background: rgba(184,160,122,0.08);
+    border-radius: 2px;
+    margin-left: 6px;
+    display: flex; align-items: center; padding: 0 6px;
+    font-family: 'Courier New', monospace; font-size: 7px;
+    color: rgba(184,160,122,0.5); letter-spacing: 0.05em;
+    overflow: hidden; white-space: nowrap;
+  }
+
+  #popup-link {
+    display: flex; align-items: center; gap: 8px;
+    background: transparent;
+    border: 1px solid rgba(184,160,122,0.3);
+    color: #b8a07a;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 11px 20px;
     cursor: pointer;
-    border: none;
-    transition: background 0.2s;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+    min-height: 44px;
+    width: fit-content;
   }
-  #popup-link:hover { background: #333; }
+  #popup-link:hover, #popup-link:active {
+    border-color: rgba(184,160,122,0.7);
+    background: rgba(184,160,122,0.08);
+    color: #e8ddd0;
+  }
 
   #popup-techs {
-    margin-top: 18px;
+    margin-top: 16px;
     display: flex; flex-wrap: wrap; gap: 6px;
   }
   .tech-tag {
     font-family: 'Courier New', monospace;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.12em;
-    padding: 4px 10px;
-    border: 1px solid rgba(0,0,0,0.18);
-    color: #666;
+    padding: 5px 9px;
+    border: 1px solid rgba(184,160,122,0.15);
+    color: rgba(184,160,122,0.55);
     text-transform: uppercase;
+    border-radius: 2px;
   }
-
-  #popup-close {
-    position: absolute;
-    top: 14px; right: 16px;
-    background: none; border: none;
-    font-size: 20px; cursor: pointer;
-    color: #999; line-height: 1;
-    padding: 4px;
-    transition: color 0.15s;
-  }
-  #popup-close:hover { color: #0a0a0a; }
 
   /* ── Nav hint ── */
   #hint {
     position: fixed;
-    bottom: 28px;
+    bottom: max(24px, env(safe-area-inset-bottom, 16px));
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Courier New', monospace;
-    font-size: 10px;
+    font-size: clamp(8px, 2.2vw, 10px);
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--dim);
@@ -220,8 +364,19 @@
     z-index: 50;
     white-space: nowrap;
     pointer-events: none;
+    /* prevent overflow on tiny screens */
+    max-width: 90vw;
+    text-align: center;
   }
   #hint.show { opacity: 1; }
+
+  /* ── Safe area padding for notches ── */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+  }
 </style>
 </head>
 <body>
@@ -242,12 +397,33 @@
 <!-- Popup -->
 <div id="popup-overlay">
   <div id="popup">
-    <button id="popup-close">×</button>
-    <div id="popup-tag"></div>
-    <div id="popup-title"></div>
-    <div id="popup-desc"></div>
-    <a id="popup-link" href="#" target="_blank" rel="noopener">Visit Site →</a>
-    <div id="popup-techs"></div>
+    <div id="popup-handle"><span></span></div>
+    <div id="popup-body">
+      <div id="popup-tag"></div>
+      <div id="popup-header">
+        <div id="popup-title"></div>
+        <button id="popup-close">&#x2715;</button>
+      </div>
+      <div id="popup-divider"></div>
+      <div id="popup-preview">
+        <div id="popup-browser-bar">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div id="popup-url-bar"></div>
+        </div>
+        <div id="popup-preview-inner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" color="#b8a07a"><rect x="3" y="3" width="18" height="14" rx="1"/><path d="M3 7h18M8 21h8M12 17v4"/></svg>
+          <span>live preview</span>
+        </div>
+      </div>
+      <div id="popup-desc"></div>
+      <a id="popup-link" href="#" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 11L11 1M11 1H5M11 1V7"/></svg>
+        Visit Site
+      </a>
+      <div id="popup-techs"></div>
+    </div>
   </div>
 </div>
 
@@ -277,71 +453,71 @@ const PROJECTS = [
     id: 'ecommerce',
     title: 'Bloom Market',
     tag: 'E-Commerce',
-    desc: 'A bespoke online boutique for an artisanal florist. Features real-time inventory, seasonal collections, and a streamlined checkout flow that tripled conversion.',
-    techs: ['Next.js', 'Stripe', 'Sanity', 'Framer Motion'],
+    desc: 'Artisanal florist boutique. Custom product configurator, real-time inventory synced to Shopify, and a checkout flow that cut drop-off by 60%. Scored 98 on PageSpeed.',
+    techs: ['Next.js', 'Shopify', 'Stripe', 'Framer Motion'],
     url: '#'
   },
   {
     id: 'agency',
     title: 'Studio Okafor',
-    tag: 'Agency Site',
-    desc: 'Identity and digital presence for a Lagos-based architectural studio. Award-winning scroll experience built with WebGL shaders and custom type.',
-    techs: ['Three.js', 'GSAP', 'Webflow', 'GLSL'],
+    tag: 'Agency Website',
+    desc: 'Award-winning site for a Lagos architectural studio. Full-bleed WebGL transitions between projects, custom cursor trails, and a scroll-hijacked case study reader.',
+    techs: ['Three.js', 'GSAP', 'Nuxt', 'GLSL'],
     url: '#'
   },
   {
     id: 'saas',
     title: 'Corelink',
-    tag: 'SaaS Platform',
-    desc: 'B2B workflow orchestration tool. Designed the entire product UI from zero-to-one — onboarding, dashboards, permissions, and a real-time canvas editor.',
-    techs: ['React', 'Zustand', 'Tailwind', 'Supabase'],
+    tag: 'SaaS Website',
+    desc: 'Marketing site and onboarding flow for a B2B workflow tool. Interactive product demo embedded in the hero, pricing calculator, and animated feature breakdowns.',
+    techs: ['Next.js', 'Tailwind', 'Lottie', 'Sanity'],
     url: '#'
   },
   {
     id: 'portfolio',
     title: 'Yuna Lee',
     tag: 'Portfolio',
-    desc: 'Brutalist editorial portfolio for a Tokyo-based photographer. Constrained grid, custom lightbox, and a film-grain texture system built in canvas.',
+    desc: 'Editorial portfolio for a Tokyo photographer. Brutalist grid layout, custom lightbox with pinch-to-zoom, and a film-grain canvas overlay that shifts with scroll.',
     techs: ['Astro', 'Canvas API', 'CSS Grid', 'Cloudinary'],
     url: '#'
   },
   {
     id: 'brand',
     title: 'Mira Spirits',
-    tag: 'Brand & Web',
-    desc: 'Full brand identity and e-commerce site for a craft gin distillery. Art direction, custom glassware photography pipeline, and age-gate flow.',
-    techs: ['Shopify', 'Liquid', 'GSAP', 'Figma'],
+    tag: 'Brand Website',
+    desc: 'Brand identity and e-commerce for a craft gin distillery. 3D bottle viewer built in Three.js, age-gate animation, and editorial lookbook pages with parallax photography.',
+    techs: ['Three.js', 'Shopify', 'GSAP', 'Figma'],
     url: '#'
   },
   {
     id: 'dashboard',
-    title: 'Meridian Analytics',
-    tag: 'Dashboard',
-    desc: 'Climate-data visualization dashboard for a research NGO. Handles 10M+ data points with WebWorker-powered aggregation and SVG chart rendering.',
-    techs: ['D3.js', 'Web Workers', 'TypeScript', 'Vite'],
+    title: 'Meridian NGO',
+    tag: 'Web App',
+    desc: 'Climate-data dashboard for a research NGO. Interactive globe built with D3, filterable SVG charts handling 10M+ points, and a public embed API for partner sites.',
+    techs: ['SvelteKit', 'D3.js', 'Web Workers', 'Mapbox'],
     url: '#'
   },
   {
     id: 'mobile',
     title: 'Waypoint',
-    tag: 'Mobile App',
-    desc: 'React Native travel companion app. Offline maps, handwritten journal mode, and an ML-based packing suggestion engine trained on 50k trips.',
-    techs: ['React Native', 'Expo', 'TensorFlow Lite', 'SQLite'],
+    tag: 'Landing Page',
+    desc: 'Launch site for a travel companion app. Scroll-driven device mockup animation, App Store / Play Store deep links, and a live demo embedded in an iPhone frame.',
+    techs: ['Next.js', 'Framer Motion', 'Tailwind', 'Vercel'],
     url: '#'
   },
   {
     id: 'fashion',
     title: 'Atelier Noon',
     tag: 'Fashion',
-    desc: 'Digital lookbook and pre-order platform for an independent fashion house. Cinematic video sequences, editorial type, 3D fabric previews.',
-    techs: ['Three.js', 'Video API', 'Contentful', 'Vercel'],
+    desc: 'Digital lookbook and pre-order site for an independent fashion house. Auto-playing cinematic video hero, collection-filter with instant CSS masonry, and editorial type.',
+    techs: ['Astro', 'GSAP', 'Contentful', 'Cloudflare'],
     url: '#'
   },
   {
     id: 'interactive',
     title: 'Echoes',
-    tag: 'Interactive',
-    desc: 'Generative audio-visual experience commissioned for a Berlin gallery installation. Real-time FFT analysis drives particle systems and procedural geometry.',
+    tag: 'Creative Site',
+    desc: 'Generative audio-visual web experience for a Berlin gallery. WebAudio API drives real-time particle systems and GLSL shaders — entirely in the browser, no plugins.',
     techs: ['Web Audio API', 'Three.js', 'GLSL', 'Tone.js'],
     url: '#'
   },
@@ -349,24 +525,24 @@ const PROJECTS = [
     id: 'blog',
     title: 'The Long Read',
     tag: 'Editorial',
-    desc: 'Slow-journalism publication with a reading experience designed around focus. Custom reading-mode typography, audio versions, and annotation tools.',
+    desc: 'Slow-journalism publication focused on reading experience. Custom reading-mode typography with variable fonts, text-to-speech integration, and marginal annotations.',
     techs: ['SvelteKit', 'PocketBase', 'CSS Houdini', 'Netlify'],
     url: '#'
   },
   {
     id: 'booking',
     title: 'Soji Studios',
-    tag: 'Booking System',
-    desc: 'Appointment and class booking platform for a Kyoto wellness studio. Calendar sync, waitlists, instructor management, and WeChat Pay integration.',
-    techs: ['Vue 3', 'Pinia', 'tRPC', 'Prisma'],
+    tag: 'Booking Platform',
+    desc: 'Booking site for a Kyoto wellness studio. Live calendar with Google Calendar sync, waitlist management, and a mobile-first class schedule with smooth swipe navigation.',
+    techs: ['Vue 3', 'tRPC', 'Prisma', 'Railway'],
     url: '#'
   },
   {
     id: 'ai',
     title: 'Pencraft',
-    tag: 'AI Tool',
-    desc: 'Long-form writing assistant with a novelist\'s sensibility. Style-matching, continuity tracking across chapters, and a distraction-free editing environment.',
-    techs: ['Claude API', 'ProseMirror', 'FastAPI', 'Redis'],
+    tag: 'AI Product',
+    desc: 'Marketing and app site for a long-form writing assistant. Interactive style-matching demo powered by the Claude API, live word-count animations, and a waitlist flow.',
+    techs: ['Next.js', 'Claude API', 'ProseMirror', 'Vercel'],
     url: '#'
   }
 ];
@@ -379,288 +555,342 @@ const N = PROJECTS.length;
 function getMetrics() {
   const W = window.innerWidth, H = window.innerHeight;
   const minDim = Math.min(W, H);
-  if (W < 400) {
-    return { CW: 115, CH: 156, R: Math.min(185, minDim * 0.48) };
+  if (W < 380) {
+    // Small phones — ring slightly further, camera nudged back just enough
+    return { CW: 90, CH: 122, R: Math.min(155, minDim * 0.43), camZ: 60 };
+  } else if (W < 480) {
+    return { CW: 108, CH: 146, R: Math.min(175, minDim * 0.46), camZ: 55 };
   } else if (W < 600) {
-    return { CW: 145, CH: 196, R: Math.min(230, minDim * 0.52) };
+    return { CW: 135, CH: 184, R: Math.min(210, minDim * 0.50), camZ: 40 };
   } else {
-    return { CW: 220, CH: 300, R: 420 };
+    return { CW: 220, CH: 300, R: 420, camZ: 0 };
   }
 }
 
 /* ══════════════════════════════════════
-   CARD CANVAS DRAWING
+   CARD CANVAS DRAWING — website previews
 ══════════════════════════════════════ */
+const CARD_BG   = '#16120e';
+const CARD_MID  = '#1e1912';
+const CARD_ACC  = '#b8a07a';
+const CARD_TEXT = '#e8ddd0';
+const CARD_DIM  = '#7a6e60';
+
+function drawUnifiedBase(ctx, W, H) {
+  ctx.fillStyle = CARD_BG;
+  ctx.fillRect(0, 0, W, H);
+  // Grain
+  for (let i = 0; i < 280; i++) {
+    ctx.fillStyle = `rgba(255,240,210,${Math.random() * 0.022})`;
+    ctx.fillRect(Math.random() * W, Math.random() * H, 1, 1);
+  }
+  // Subtle top-left warmth
+  const grd = ctx.createRadialGradient(W * 0.15, H * 0.15, 0, W * 0.15, H * 0.15, W * 0.85);
+  grd.addColorStop(0, 'rgba(200,170,110,0.06)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// Shared browser chrome at top of card
+function drawBrowserChrome(ctx, W, topH) {
+  // Bar background
+  ctx.fillStyle = 'rgba(30,25,18,0.95)';
+  ctx.fillRect(0, 0, W, topH);
+  // Bottom border of bar
+  ctx.fillStyle = `rgba(184,160,122,0.12)`;
+  ctx.fillRect(0, topH - 0.5, W, 0.5);
+  // 3 dots
+  const r = topH * 0.18, y = topH * 0.5;
+  ['rgba(184,160,122,0.5)', 'rgba(184,160,122,0.3)', 'rgba(184,160,122,0.2)'].forEach((c, i) => {
+    ctx.fillStyle = c;
+    ctx.beginPath(); ctx.arc(W * 0.08 + i * (r * 2.8), y, r, 0, Math.PI * 2); ctx.fill();
+  });
+  // URL pill
+  const px = W * 0.22, pw = W * 0.58, ph = topH * 0.45, py = y - ph / 2;
+  ctx.fillStyle = 'rgba(184,160,122,0.08)';
+  ctx.beginPath();
+  ctx.roundRect ? ctx.roundRect(px, py, pw, ph, ph / 2) : ctx.rect(px, py, pw, ph);
+  ctx.fill();
+}
+
 const CARD_STYLES = {
   ecommerce(ctx, W, H, p) {
-    // Warm cream background with subtle grid
-    ctx.fillStyle = '#f7f0e6';
-    ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(180,160,130,0.2)';
-    ctx.lineWidth = 0.5;
-    for (let x = 0; x < W; x += 20) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-    for (let y = 0; y < H; y += 20) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-    // Botanical circle
-    ctx.strokeStyle = '#c8a96e';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.arc(W/2, H*0.4, H*0.18, 0, Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(W/2, H*0.4, H*0.12, 0, Math.PI*2); ctx.stroke();
-    // Petal marks
-    for (let i = 0; i < 8; i++) {
-      const a = (i/8)*Math.PI*2;
-      ctx.beginPath();
-      ctx.moveTo(W/2 + Math.cos(a)*H*0.13, H*0.4 + Math.sin(a)*H*0.13);
-      ctx.lineTo(W/2 + Math.cos(a)*H*0.17, H*0.4 + Math.sin(a)*H*0.17);
-      ctx.stroke();
+    drawUnifiedBase(ctx, W, H);
+    const bh = H * 0.52;
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Hero product image area
+    ctx.fillStyle = 'rgba(184,160,122,0.07)';
+    ctx.fillRect(W * 0.08, H * 0.13, W * 0.84, bh * 0.52);
+    // Horizontal product image grid
+    const cols = 3, gapX = W * 0.03, itemW = (W * 0.84 - gapX * (cols - 1)) / cols;
+    for (let c = 0; c < cols; c++) {
+      ctx.fillStyle = `rgba(184,160,122,${0.08 + c * 0.03})`;
+      const ix = W * 0.08 + c * (itemW + gapX);
+      ctx.fillRect(ix, H * 0.38, itemW, H * 0.22);
     }
-    drawCardText(ctx, W, H, p, '#3a2e1e', '#8a6a3a');
+    // Price tag lines
+    ctx.fillStyle = 'rgba(184,160,122,0.35)';
+    ctx.fillRect(W * 0.08, H * 0.63, W * 0.25, H * 0.025);
+    ctx.fillStyle = 'rgba(184,160,122,0.15)';
+    ctx.fillRect(W * 0.08, H * 0.665, W * 0.18, H * 0.02);
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   agency(ctx, W, H, p) {
-    ctx.fillStyle = '#0d0d0d';
-    ctx.fillRect(0, 0, W, H);
-    // Bold diagonal stripe
-    ctx.fillStyle = '#1a1a1a';
-    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(W*0.6,0); ctx.lineTo(W,H*0.5); ctx.lineTo(W,H); ctx.lineTo(W*0.4,H); ctx.lineTo(0,H*0.5); ctx.closePath(); ctx.fill();
-    // X mark
-    ctx.strokeStyle = '#e8d5a0';
-    ctx.lineWidth = 2;
-    const cx = W/2, cy = H*0.38, s = H*0.1;
-    ctx.beginPath(); ctx.moveTo(cx-s,cy-s); ctx.lineTo(cx+s,cy+s); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx+s,cy-s); ctx.lineTo(cx-s,cy+s); ctx.stroke();
-    ctx.strokeStyle = '#e8d5a0'; ctx.lineWidth = 1.5;
-    ctx.strokeRect(cx-s*1.5, cy-s*1.5, s*3, s*3);
-    drawCardText(ctx, W, H, p, '#f0e8d0', '#e8d5a0');
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Full-bleed hero
+    ctx.fillStyle = 'rgba(184,160,122,0.05)';
+    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.44);
+    // X on hero
+    ctx.strokeStyle = `rgba(184,160,122,0.3)`; ctx.lineWidth = 0.7;
+    const cx = W * 0.5, cy = H * 0.35, s = H * 0.1;
+    ctx.beginPath(); ctx.moveTo(cx - s, cy - s); ctx.lineTo(cx + s, cy + s); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx + s, cy - s); ctx.lineTo(cx - s, cy + s); ctx.stroke();
+    // Nav links
+    for (let i = 0; i < 4; i++) {
+      ctx.fillStyle = 'rgba(184,160,122,0.2)';
+      ctx.fillRect(W * (0.35 + i * 0.15), H * 0.05, W * 0.08, H * 0.018);
+    }
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   saas(ctx, W, H, p) {
-    ctx.fillStyle = '#f0f4ff';
-    ctx.fillRect(0, 0, W, H);
-    // Grid of dots
-    ctx.fillStyle = 'rgba(80,100,200,0.2)';
-    for (let x = W*0.1; x < W; x += 18) {
-      for (let y = H*0.15; y < H*0.7; y += 18) {
-        ctx.beginPath(); ctx.arc(x, y, 1.5, 0, Math.PI*2); ctx.fill();
-      }
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Sidebar
+    ctx.fillStyle = 'rgba(184,160,122,0.06)';
+    ctx.fillRect(W * 0.04, H * 0.13, W * 0.22, H * 0.56);
+    // Sidebar items
+    for (let i = 0; i < 5; i++) {
+      ctx.fillStyle = i === 1 ? 'rgba(184,160,122,0.28)' : 'rgba(184,160,122,0.1)';
+      ctx.fillRect(W * 0.07, H * (0.17 + i * 0.08), W * 0.15, H * 0.025);
     }
-    // Bar chart
-    const bars = [0.4,0.65,0.5,0.8,0.6,0.9];
-    const bw = W*0.09, gap = W*0.045;
-    const startX = W/2 - (bars.length*(bw+gap))/2;
+    // Main area — mini bar chart
+    const bars = [0.4, 0.7, 0.55, 0.85, 0.65, 0.9, 0.5];
+    const bw = W * 0.052, startX = W * 0.3;
     bars.forEach((v, i) => {
-      const bh = H*0.22*v;
-      const gradient = ctx.createLinearGradient(0, H*0.55-bh, 0, H*0.55);
-      gradient.addColorStop(0, '#5064dc');
-      gradient.addColorStop(1, '#a0aaff');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(startX + i*(bw+gap), H*0.55-bh, bw, bh);
+      const bh2 = H * 0.28 * v;
+      ctx.fillStyle = `rgba(184,160,122,${0.18 + v * 0.28})`;
+      ctx.fillRect(startX + i * (bw + W * 0.02), H * 0.57 - bh2, bw, bh2);
     });
-    drawCardText(ctx, W, H, p, '#1a2060', '#5064dc');
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   portfolio(ctx, W, H, p) {
-    ctx.fillStyle = '#1a1410';
-    ctx.fillRect(0, 0, W, H);
-    // Film grain simulation
-    for (let i = 0; i < 1200; i++) {
-      const gx = Math.random()*W, gy = Math.random()*H;
-      const a = Math.random()*0.15;
-      ctx.fillStyle = `rgba(255,245,220,${a})`;
-      ctx.fillRect(gx, gy, 1, 1);
-    }
-    // Photo placeholder
-    ctx.strokeStyle = '#8a7060';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(W*0.15, H*0.12, W*0.7, H*0.45);
-    ctx.beginPath();
-    ctx.moveTo(W*0.15, H*0.12); ctx.lineTo(W*0.85, H*0.57);
-    ctx.moveTo(W*0.85, H*0.12); ctx.lineTo(W*0.15, H*0.57);
-    ctx.strokeStyle = 'rgba(138,112,96,0.4)'; ctx.stroke();
-    drawCardText(ctx, W, H, p, '#f0e0c8', '#8a7060');
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Masonry-ish grid
+    const cells = [[0,0,0.42,0.32],[0.45,0,0.51,0.2],[0.45,0.22,0.51,0.1],[0,0.34,0.28,0.22],[0.3,0.34,0.18,0.22],[0.5,0.34,0.46,0.22]];
+    cells.forEach(([x,y,w,h], i) => {
+      ctx.fillStyle = `rgba(184,160,122,${0.06 + (i%3)*0.035})`;
+      ctx.fillRect(W*0.04 + x*W*0.92, H*0.13 + y*H*0.56, w*W*0.92, h*H*0.56);
+    });
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   brand(ctx, W, H, p) {
-    ctx.fillStyle = '#1c0f06';
-    ctx.fillRect(0, 0, W, H);
-    // Label shape
-    ctx.fillStyle = '#d4a55a';
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Hero with centered logo area
+    ctx.fillStyle = 'rgba(184,160,122,0.05)';
+    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.38);
+    // Logo mark (hexagon outline)
+    ctx.strokeStyle = 'rgba(184,160,122,0.4)'; ctx.lineWidth = 0.8;
+    const lx = W / 2, ly = H * 0.295, ls = H * 0.09;
     ctx.beginPath();
-    ctx.moveTo(W/2, H*0.1); ctx.lineTo(W*0.85, H*0.28); ctx.lineTo(W*0.85, H*0.55);
-    ctx.lineTo(W/2, H*0.65); ctx.lineTo(W*0.15, H*0.55); ctx.lineTo(W*0.15, H*0.28);
-    ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#1c0f06';
-    ctx.beginPath();
-    ctx.moveTo(W/2, H*0.16); ctx.lineTo(W*0.78, H*0.31); ctx.lineTo(W*0.78, H*0.52);
-    ctx.lineTo(W/2, H*0.6); ctx.lineTo(W*0.22, H*0.52); ctx.lineTo(W*0.22, H*0.31);
-    ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#d4a55a';
-    ctx.font = `bold ${W*0.1}px serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('M', W/2, H*0.38);
-    drawCardText(ctx, W, H, p, '#f0d8a0', '#d4a55a');
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 - Math.PI / 6;
+      i === 0 ? ctx.moveTo(lx + Math.cos(a) * ls, ly + Math.sin(a) * ls)
+              : ctx.lineTo(lx + Math.cos(a) * ls, ly + Math.sin(a) * ls);
+    }
+    ctx.closePath(); ctx.stroke();
+    // Product row
+    for (let i = 0; i < 3; i++) {
+      ctx.fillStyle = `rgba(184,160,122,${0.08 + i * 0.03})`;
+      ctx.fillRect(W * (0.08 + i * 0.31), H * 0.535, W * 0.26, H * 0.13);
+    }
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   dashboard(ctx, W, H, p) {
-    ctx.fillStyle = '#060e1a';
-    ctx.fillRect(0, 0, W, H);
-    // Line chart
-    const pts = [0.7,0.5,0.65,0.3,0.45,0.2,0.35,0.55,0.25,0.4];
-    const cx2 = W*0.1, cy2 = H*0.55, chartW = W*0.8, chartH = H*0.3;
-    ctx.beginPath();
-    pts.forEach((v, i) => {
-      const x = cx2 + (i/(pts.length-1))*chartW;
-      const y = cy2 - v*chartH;
-      i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-    });
-    ctx.strokeStyle = '#00d4ff'; ctx.lineWidth = 1.5; ctx.stroke();
-    // Fill under
-    ctx.lineTo(cx2+chartW, cy2); ctx.lineTo(cx2, cy2); ctx.closePath();
-    const grad = ctx.createLinearGradient(0,cy2-chartH,0,cy2);
-    grad.addColorStop(0,'rgba(0,212,255,0.3)'); grad.addColorStop(1,'rgba(0,212,255,0)');
-    ctx.fillStyle = grad; ctx.fill();
-    // Grid lines
-    ctx.strokeStyle = 'rgba(0,212,255,0.15)'; ctx.lineWidth = 0.5;
-    for (let i = 1; i < 4; i++) {
-      ctx.beginPath(); ctx.moveTo(cx2, cy2-i*chartH/4); ctx.lineTo(cx2+chartW, cy2-i*chartH/4); ctx.stroke();
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // KPI cards row
+    for (let i = 0; i < 3; i++) {
+      ctx.fillStyle = 'rgba(184,160,122,0.07)';
+      ctx.fillRect(W * (0.04 + i * 0.32), H * 0.14, W * 0.28, H * 0.1);
+      ctx.fillStyle = `rgba(184,160,122,${0.35 - i * 0.05})`;
+      ctx.fillRect(W * (0.06 + i * 0.32), H * 0.18, W * 0.12, H * 0.02);
     }
-    drawCardText(ctx, W, H, p, '#c0e8ff', '#00d4ff');
+    // Line chart
+    const pts2 = [0.7,0.5,0.65,0.3,0.45,0.2,0.35,0.55,0.25,0.4];
+    const cx2 = W * 0.06, cy2 = H * 0.6, chartW2 = W * 0.88, chartH2 = H * 0.25;
+    ctx.beginPath();
+    pts2.forEach((v, i) => {
+      const x = cx2 + (i / (pts2.length - 1)) * chartW2;
+      const y = cy2 - v * chartH2;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = CARD_ACC; ctx.lineWidth = 1; ctx.stroke();
+    const grad2 = ctx.createLinearGradient(0, cy2 - chartH2, 0, cy2);
+    grad2.addColorStop(0, 'rgba(184,160,122,0.18)'); grad2.addColorStop(1, 'rgba(184,160,122,0)');
+    ctx.lineTo(cx2 + chartW2, cy2); ctx.lineTo(cx2, cy2); ctx.closePath();
+    ctx.fillStyle = grad2; ctx.fill();
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   mobile(ctx, W, H, p) {
-    ctx.fillStyle = '#f8f5f0';
-    ctx.fillRect(0, 0, W, H);
-    // Phone outline
-    const ph = H*0.45, pw = ph*0.5, px = W/2-pw/2, py = H*0.1;
-    ctx.strokeStyle = '#2a2a2a'; ctx.lineWidth = 2;
-    roundRect(ctx, px, py, pw, ph, pw*0.12); ctx.stroke();
-    // Screen
-    ctx.fillStyle = '#e8e0d0';
-    roundRect(ctx, px+pw*0.07, py+ph*0.06, pw*0.86, ph*0.78, pw*0.06); ctx.fill();
-    // Map lines inside screen
-    ctx.strokeStyle = '#b0a898'; ctx.lineWidth = 0.5;
-    for (let y = py+ph*0.12; y < py+ph*0.82; y += ph*0.07) {
-      ctx.beginPath(); ctx.moveTo(px+pw*0.1,y); ctx.lineTo(px+pw*0.9,y); ctx.stroke();
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Hero with device mockup hint
+    ctx.fillStyle = 'rgba(184,160,122,0.05)';
+    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.28);
+    // Phone outline centered in hero
+    const ph = H * 0.22, pw = ph * 0.5, px2 = W / 2 - pw / 2, py2 = H * 0.145;
+    ctx.strokeStyle = 'rgba(184,160,122,0.35)'; ctx.lineWidth = 0.8;
+    ctx.strokeRect(px2, py2, pw, ph);
+    // Feature bullets
+    for (let i = 0; i < 3; i++) {
+      ctx.fillStyle = 'rgba(184,160,122,0.12)';
+      ctx.beginPath(); ctx.arc(W * 0.1, H * (0.46 + i * 0.07), H * 0.012, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(184,160,122,0.22)';
+      ctx.fillRect(W * 0.16, H * (0.454 + i * 0.07), W * (0.4 + i * 0.08), H * 0.02);
     }
-    // Pin
-    ctx.fillStyle = '#e04040';
-    ctx.beginPath(); ctx.arc(W/2, py+ph*0.42, pw*0.08, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(W/2-pw*0.08, py+ph*0.42); ctx.lineTo(W/2, py+ph*0.55); ctx.lineTo(W/2+pw*0.08, py+ph*0.42); ctx.fill();
-    drawCardText(ctx, W, H, p, '#1a1210', '#e04040');
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   fashion(ctx, W, H, p) {
-    ctx.fillStyle = '#f5ede2';
-    ctx.fillRect(0, 0, W, H);
-    // Silhouette abstract
-    ctx.fillStyle = '#1a0a00';
-    ctx.beginPath();
-    ctx.moveTo(W*0.35, H*0.1);
-    ctx.bezierCurveTo(W*0.3, H*0.15, W*0.25, H*0.25, W*0.28, H*0.35);
-    ctx.bezierCurveTo(W*0.22, H*0.35, W*0.2, H*0.45, W*0.25, H*0.55);
-    ctx.bezierCurveTo(W*0.2, H*0.6, W*0.18, H*0.7, W*0.22, H*0.8);
-    ctx.lineTo(W*0.4, H*0.8);
-    ctx.bezierCurveTo(W*0.38, H*0.6, W*0.42, H*0.45, W*0.4, H*0.35);
-    ctx.bezierCurveTo(W*0.45, H*0.3, W*0.48, H*0.25, W*0.45, H*0.15);
-    ctx.closePath(); ctx.fill();
-    // Fabric lines
-    ctx.strokeStyle = 'rgba(180,140,100,0.4)'; ctx.lineWidth = 0.5;
-    for (let i = 0; i < 5; i++) {
-      ctx.beginPath(); ctx.moveTo(W*0.55+i*W*0.06, H*0.2); ctx.lineTo(W*0.65+i*W*0.04, H*0.75); ctx.stroke();
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Full-width editorial image
+    ctx.fillStyle = 'rgba(184,160,122,0.06)';
+    ctx.fillRect(W * 0.0, H * 0.1, W, H * 0.38);
+    // Overlay text band
+    ctx.fillStyle = 'rgba(22,18,14,0.6)';
+    ctx.fillRect(0, H * 0.36, W, H * 0.12);
+    ctx.fillStyle = 'rgba(184,160,122,0.7)';
+    ctx.fillRect(W * 0.06, H * 0.405, W * 0.35, H * 0.028);
+    // Product thumbnails strip
+    for (let i = 0; i < 4; i++) {
+      ctx.fillStyle = `rgba(184,160,122,${0.06 + i * 0.02})`;
+      ctx.fillRect(W * (0.04 + i * 0.24), H * 0.51, W * 0.21, H * 0.16);
     }
-    drawCardText(ctx, W, H, p, '#1a0a00', '#8a6040');
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   interactive(ctx, W, H, p) {
-    ctx.fillStyle = '#08001a';
-    ctx.fillRect(0, 0, W, H);
-    // Particle system
-    const colors = ['#ff00aa','#00ffcc','#ffee00','#aa00ff'];
-    for (let i = 0; i < 80; i++) {
-      const angle = (i/80)*Math.PI*2;
-      const r = H*0.12 + H*0.08*Math.sin(i*0.8);
-      const x = W/2 + Math.cos(angle)*r + (Math.random()-0.5)*W*0.25;
-      const y = H*0.38 + Math.sin(angle)*r*0.6 + (Math.random()-0.5)*H*0.12;
-      ctx.fillStyle = colors[i%4];
-      ctx.globalAlpha = 0.6 + Math.random()*0.4;
-      ctx.beginPath(); ctx.arc(x,y,1+Math.random()*2,0,Math.PI*2); ctx.fill();
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Fullscreen creative canvas feel
+    ctx.fillStyle = 'rgba(8,0,20,0.6)';
+    ctx.fillRect(W * 0.04, H * 0.12, W * 0.92, H * 0.55);
+    // Concentric rings
+    [H*0.08, H*0.13, H*0.18].forEach((r, i) => {
+      ctx.strokeStyle = `rgba(184,160,122,${0.2 - i * 0.05})`;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath(); ctx.arc(W / 2, H * 0.38, r, 0, Math.PI * 2); ctx.stroke();
+    });
+    // 8 small sparks
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2, r3 = H * 0.13;
+      ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.45;
+      ctx.beginPath(); ctx.arc(W / 2 + Math.cos(a) * r3, H * 0.38 + Math.sin(a) * r3, 1.3, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
-    drawCardText(ctx, W, H, p, '#e0c0ff', '#ff00aa');
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   blog(ctx, W, H, p) {
-    ctx.fillStyle = '#fefaf4';
-    ctx.fillRect(0, 0, W, H);
-    // Text lines
-    const lineH = H*0.038, startY = H*0.12, lineX = W*0.1;
-    const lineW = [W*0.8, W*0.7, W*0.75, W*0.65, W*0.78, W*0.6, W*0.72, W*0.5];
-    lineW.forEach((lw, i) => {
-      ctx.fillStyle = i === 0 ? '#1a1410' : (i < 3 ? 'rgba(26,20,16,0.7)' : 'rgba(26,20,16,0.4)');
-      const h = i === 0 ? lineH*1.4 : lineH;
-      ctx.fillRect(lineX, startY + i*(lineH + H*0.02), lw, h);
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Header with nav
+    for (let i = 0; i < 3; i++) {
+      ctx.fillStyle = 'rgba(184,160,122,0.18)';
+      ctx.fillRect(W * (0.5 + i * 0.15), H * 0.05, W * 0.09, H * 0.018);
+    }
+    // Article headline
+    ctx.fillStyle = 'rgba(184,160,122,0.55)';
+    ctx.fillRect(W * 0.08, H * 0.17, W * 0.78, H * 0.04);
+    ctx.fillRect(W * 0.08, H * 0.225, W * 0.55, H * 0.04);
+    // Body text lines
+    const lineW2 = [0.82, 0.74, 0.79, 0.68, 0.76, 0.6];
+    lineW2.forEach((lw, i) => {
+      ctx.fillStyle = `rgba(184,160,122,${0.12 + (i === 0 ? 0.06 : 0)})`;
+      ctx.fillRect(W * 0.08, H * (0.29 + i * 0.055), W * lw, H * 0.022);
     });
-    // Pull quote line
-    ctx.fillStyle = '#c8a878';
-    ctx.fillRect(lineX, startY + 8*(lineH + H*0.02), W*0.04, lineH*5);
-    drawCardText(ctx, W, H, p, '#1a1410', '#a07840');
+    // Accent bar
+    ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.4;
+    ctx.fillRect(W * 0.08, H * 0.17, W * 0.025, H * 0.095);
+    ctx.globalAlpha = 1;
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   booking(ctx, W, H, p) {
-    ctx.fillStyle = '#e8f4f0';
-    ctx.fillRect(0, 0, W, H);
-    // Calendar grid
-    const days = 7, rows = 5;
-    const cx3 = W*0.1, cy3 = H*0.14, cellW = W*0.8/days, cellH = H*0.46/rows;
-    ctx.strokeStyle = 'rgba(0,100,80,0.2)'; ctx.lineWidth = 0.5;
-    for (let r = 0; r <= rows; r++) {
-      ctx.beginPath(); ctx.moveTo(cx3,cy3+r*cellH); ctx.lineTo(cx3+days*cellW,cy3+r*cellH); ctx.stroke();
-    }
-    for (let d = 0; d <= days; d++) {
-      ctx.beginPath(); ctx.moveTo(cx3+d*cellW,cy3); ctx.lineTo(cx3+d*cellW,cy3+rows*cellH); ctx.stroke();
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Calendar widget
+    const days3 = 7, rows3 = 4;
+    const cx3 = W * 0.06, cy3 = H * 0.17, cw3 = W * 0.88 / days3, ch3 = H * 0.36 / rows3;
+    // Header row
+    ctx.fillStyle = 'rgba(184,160,122,0.08)';
+    ctx.fillRect(cx3, cy3, W * 0.88, ch3 * 0.6);
+    ctx.strokeStyle = 'rgba(184,160,122,0.12)'; ctx.lineWidth = 0.5;
+    for (let r3 = 0; r3 <= rows3; r3++) {
+      ctx.beginPath(); ctx.moveTo(cx3, cy3 + ch3 * 0.6 + r3 * ch3); ctx.lineTo(cx3 + days3 * cw3, cy3 + ch3 * 0.6 + r3 * ch3); ctx.stroke();
     }
     // Booked dots
-    [[1,1],[3,2],[2,3],[4,1],[0,4],[5,2],[6,3]].forEach(([d,r]) => {
-      ctx.fillStyle = '#00a880';
-      ctx.beginPath();
-      ctx.arc(cx3+(d+0.5)*cellW, cy3+(r+0.5)*cellH, cellW*0.25, 0, Math.PI*2);
-      ctx.fill();
+    [[1,0],[3,1],[2,2],[5,0],[0,3],[4,2],[6,1]].forEach(([d, r3]) => {
+      ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.45;
+      ctx.beginPath(); ctx.arc(cx3 + (d + 0.5) * cw3, cy3 + ch3 * 0.6 + (r3 + 0.5) * ch3, cw3 * 0.2, 0, Math.PI * 2); ctx.fill();
     });
-    drawCardText(ctx, W, H, p, '#003828', '#00a880');
+    ctx.globalAlpha = 1;
+    // CTA button area
+    ctx.fillStyle = 'rgba(184,160,122,0.15)';
+    ctx.fillRect(W * 0.25, H * 0.58, W * 0.5, H * 0.065);
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   ai(ctx, W, H, p) {
-    ctx.fillStyle = '#0a0a0a';
-    ctx.fillRect(0, 0, W, H);
-    // Neural network
-    const layers = [[1],[3],[4],[3],[1]];
-    const layerX = layers.map((_,i) => W*0.15 + (i/(layers.length-1))*W*0.7);
-    const nodes = layers.map((l,li) => l[0] === 1 ? [{x:layerX[li],y:H*0.38}]
-      : Array.from({length:l[0]},(_,ni)=>({x:layerX[li],y:H*0.2+ni*(H*0.35/(l[0]-1))})));
-    // Connections
-    ctx.strokeStyle = 'rgba(160,240,180,0.2)'; ctx.lineWidth = 0.8;
-    for (let li = 0; li < layers.length-1; li++) {
-      nodes[li].forEach(a => nodes[li+1].forEach(b => {
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-      }));
-    }
-    // Nodes
-    nodes.forEach((layer,li) => layer.forEach(n => {
-      const grad = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,8);
-      grad.addColorStop(0,'#a0f0b4'); grad.addColorStop(1,'rgba(160,240,180,0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath(); ctx.arc(n.x,n.y,8,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#a0f0b4';
-      ctx.beginPath(); ctx.arc(n.x,n.y,2.5,0,Math.PI*2); ctx.fill();
-    }));
-    drawCardText(ctx, W, H, p, '#c0ffcc', '#a0f0b4');
+    drawUnifiedBase(ctx, W, H);
+    drawBrowserChrome(ctx, W, H * 0.1);
+    // Editor area
+    ctx.fillStyle = 'rgba(184,160,122,0.04)';
+    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.52);
+    // Cursor blinking line
+    ctx.fillStyle = 'rgba(184,160,122,0.5)';
+    ctx.fillRect(W * 0.08, H * 0.19, W * 0.42, H * 0.025);
+    ctx.fillRect(W * 0.08, H * 0.225, W * 0.58, H * 0.018);
+    ctx.fillRect(W * 0.08, H * 0.255, W * 0.35, H * 0.018);
+    // Cursor blip
+    ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.8;
+    ctx.fillRect(W * 0.08 + W * 0.35, H * 0.255, W * 0.008, H * 0.022);
+    ctx.globalAlpha = 1;
+    // AI suggestion ghost text
+    ctx.fillStyle = 'rgba(184,160,122,0.12)';
+    ctx.fillRect(W * 0.08, H * 0.3, W * 0.65, H * 0.018);
+    ctx.fillRect(W * 0.08, H * 0.33, W * 0.48, H * 0.018);
+    // Side panel (AI chat)
+    ctx.fillStyle = 'rgba(184,160,122,0.06)';
+    ctx.fillRect(W * 0.7, H * 0.13, W * 0.26, H * 0.52);
+    drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   }
 };
 
 function drawCardText(ctx, W, H, p, textColor, accentColor) {
+  // Subtle bottom gradient overlay to ensure text legibility
+  const legGrd = ctx.createLinearGradient(0, H*0.65, 0, H);
+  legGrd.addColorStop(0, 'rgba(22,18,14,0)');
+  legGrd.addColorStop(1, 'rgba(22,18,14,0.72)');
+  ctx.fillStyle = legGrd;
+  ctx.fillRect(0, H*0.65, W, H*0.35);
+
   // Tag
   ctx.fillStyle = accentColor;
   ctx.font = `${Math.max(7, W*0.038)}px "Courier New"`;
   ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-  ctx.globalAlpha = 0.9;
+  ctx.globalAlpha = 0.8;
   ctx.fillText(p.tag.toUpperCase(), W*0.1, H*0.82);
   ctx.globalAlpha = 1;
 
@@ -678,7 +908,7 @@ function drawCardText(ctx, W, H, p, textColor, accentColor) {
 
   // Bottom separator
   ctx.strokeStyle = accentColor;
-  ctx.lineWidth = 0.8; ctx.globalAlpha = 0.4;
+  ctx.lineWidth = 0.7; ctx.globalAlpha = 0.25;
   ctx.beginPath(); ctx.moveTo(W*0.1, H*0.76); ctx.lineTo(W*0.9, H*0.76); ctx.stroke();
   ctx.globalAlpha = 1;
 }
@@ -715,18 +945,55 @@ function makeCardTexture(project, CW, CH) {
 /* ══════════════════════════════════════
    SCENE SETUP
 ══════════════════════════════════════ */
-const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true, alpha: false });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setClearColor(0x0a0a0a);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: window.innerWidth > 480, alpha: false });
+// Cap pixel ratio lower on mobile for performance
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 480 ? 1.5 : 2));
+renderer.setClearColor(0x0a0907);  // very slightly warm black
 
 const scene = new THREE.Scene();
+// Very subtle warm fog — creates depth without being visible as "fog"
+scene.fog = new THREE.FogExp2(0x0a0907, 0.00055);
 const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 2000);
 
-// Ambient light
-scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-const dirLight = new THREE.DirectionalLight(0xfff0e0, 0.8);
-dirLight.position.set(0, 2, 1);
-scene.add(dirLight);
+// ── Lighting: soft, warm, barely there ──
+scene.add(new THREE.AmbientLight(0xfff5e8, 0.55));
+
+// Key light — warm, from slightly above-right
+const keyLight = new THREE.DirectionalLight(0xffd9a0, 0.35);
+keyLight.position.set(1.5, 2.5, 2);
+scene.add(keyLight);
+
+// Fill light — very cool and dim, from below-left (creates depth contrast)
+const fillLight = new THREE.DirectionalLight(0xc0d8ff, 0.08);
+fillLight.position.set(-2, -1, 1);
+scene.add(fillLight);
+
+// Faint point light in the center of the carousel — gives cards on the near side a glow
+const centerGlow = new THREE.PointLight(0xffeedd, 0.18, 1200);
+centerGlow.position.set(0, 60, 0);
+scene.add(centerGlow);
+
+/* ── Particles (very sparse, subtle) ── */
+(function buildParticles() {
+  const COUNT = 55;
+  const positions = new Float32Array(COUNT * 3);
+  for (let i = 0; i < COUNT; i++) {
+    positions[i*3+0] = (Math.random() - 0.5) * 1600;
+    positions[i*3+1] = (Math.random() - 0.5) * 900;
+    positions[i*3+2] = (Math.random() - 0.5) * 1200 - 300;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({
+    color: 0xc8b080,
+    size: 1.6,
+    transparent: true,
+    opacity: 0.22,
+    sizeAttenuation: true,
+    depthWrite: false,
+  });
+  scene.add(new THREE.Points(geo, mat));
+})();
 
 /* ══════════════════════════════════════
    BUILD CARDS
@@ -751,15 +1018,16 @@ function buildCards() {
     const mat = new THREE.MeshStandardMaterial({
       map: texture,
       side: THREE.FrontSide,
-      roughness: 0.8,
-      metalness: 0.05
+      roughness: 0.85,
+      metalness: 0.0,
+      envMapIntensity: 0.5,
     });
     const mesh = new THREE.Mesh(geo, mat);
     mesh.userData = { project: proj, index: i };
 
-    // Card back (dark panel)
+    // Card back (warm dark panel)
     const backGeo = new THREE.PlaneGeometry(cw, ch);
-    const backMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
+    const backMat = new THREE.MeshStandardMaterial({ color: 0x13100c, roughness: 0.95 });
     const back = new THREE.Mesh(backGeo, backMat);
     back.rotation.y = Math.PI;
     mesh.add(back);
@@ -823,6 +1091,18 @@ setTimeout(() => {
   setTimeout(() => { barFill.style.width = '100%'; }, 50);
 }, 1200);
 
+// After loading bar completes, rise the name upward and out
+setTimeout(() => {
+  nameEl.classList.add('rise');
+  roleEl.classList.add('rise');
+  barWrap.classList.add('rise');
+}, 2800);
+
+// Update hint for touch devices
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  hintEl.textContent = 'swipe to explore · tap to open';
+}
+
 /* ══════════════════════════════════════
    INTERACTION STATE
 ══════════════════════════════════════ */
@@ -850,12 +1130,14 @@ const popupDesc  = document.getElementById('popup-desc');
 const popupLink  = document.getElementById('popup-link');
 const popupTechs = document.getElementById('popup-techs');
 const popupClose = document.getElementById('popup-close');
+const popupUrlBar = document.getElementById('popup-url-bar');
 
 function openPopup(project) {
   popupTag.textContent   = project.tag;
   popupTitle.textContent = project.title;
   popupDesc.textContent  = project.desc;
   popupLink.href         = project.url;
+  popupUrlBar.textContent = project.url === '#' ? 'hatori.dev/' + project.id : project.url;
   popupTechs.innerHTML   = project.techs.map(t => `<span class="tech-tag">${t}</span>`).join('');
   popupOverlay.classList.add('open');
 }
@@ -916,23 +1198,51 @@ document.addEventListener('touchmove', e => {
   const x = e.touches[0].clientX;
   const dx = x - touchLastX;
   touchVX = dx;
-  carousel.targetAngle -= dx * 0.005;
+  // Slightly increased sensitivity on mobile
+  const sensitivity = window.innerWidth < 480 ? 0.007 : 0.005;
+  carousel.targetAngle -= dx * sensitivity;
   touchLastX = x;
   carousel.lastIdle = clock;
 }, { passive: true });
 
 document.addEventListener('touchend', e => {
   if (!introComplete) return;
-  carousel.targetAngle -= touchVX * 5 * 0.005;
+  // Momentum flick
+  const sensitivity = window.innerWidth < 480 ? 0.007 : 0.005;
+  carousel.targetAngle -= touchVX * 6 * sensitivity;
 });
 
 /* ══════════════════════════════════════
    CLICK / TAP
 ══════════════════════════════════════ */
+let tapStartX = 0, tapStartY = 0;
+document.addEventListener('touchstart', e => {
+  tapStartX = e.touches[0].clientX;
+  tapStartY = e.touches[0].clientY;
+}, { passive: true });
+
 document.addEventListener('click', e => {
   if (!introComplete) return;
   if (popupOverlay.classList.contains('open')) return;
-  if (hoveredCard) openPopup(hoveredCard.userData.project);
+
+  // On touch: check it wasn't a swipe (moved >12px)
+  if (e.isTrusted && e.detail === 0) {
+    // touch-generated click — skip swipe check
+  } else {
+    // mouse click: use raycaster hover
+    if (hoveredCard) openPopup(hoveredCard.userData.project);
+    return;
+  }
+
+  // Touch tap: raycast from tap position
+  const rect = renderer.domElement.getBoundingClientRect();
+  const tapX = ((e.clientX - rect.left) / rect.width)  *  2 - 1;
+  const tapY = ((e.clientY - rect.top)  / rect.height) * -2 + 1;
+  const tap2D = new THREE.Vector2(tapX, tapY);
+  const tapRay = new THREE.Raycaster();
+  tapRay.setFromCamera(tap2D, camera);
+  const hits = tapRay.intersectObjects(cardMeshes, false);
+  if (hits.length > 0) openPopup(hits[0].object.userData.project);
 });
 
 /* ══════════════════════════════════════
@@ -951,6 +1261,8 @@ function onResize() {
   camera.updateProjectionMatrix();
   metrics = getMetrics();
   ({ CW, CH, R } = metrics);
+  // Rebuild cards if size bucket changed
+  buildCards();
 }
 window.addEventListener('resize', onResize);
 onResize();
@@ -972,16 +1284,17 @@ function animate(now) {
   // ── Phase 0: Intro animation ──
   if (phase === 0) {
 
-    // Camera pull-back: starts at R*1.5, eases to 0 by INTRO_FADE
+    // Camera pull-back: starts at R*1.5, eases to camZ by INTRO_FADE
+    const mCamZ = getMetrics().camZ;
     if (clock < INTRO_FADE) {
       const t = Math.min(clock / INTRO_FADE, 1);
-      camera.position.z = Rcur * 1.5 * (1 - easeOutCubic(t));
+      camera.position.z = mCamZ + Rcur * 1.5 * (1 - easeOutCubic(t));
     } else {
-      camera.position.z = 0;
+      camera.position.z = mCamZ;
     }
     camera.position.x = 0;
     camera.position.y = 0;
-    camera.lookAt(0, 0, -1);
+    camera.lookAt(0, 0, camera.position.z - 1);
 
     // Position each card
     cardMeshes.forEach((mesh, i) => {
@@ -1048,9 +1361,10 @@ function animate(now) {
       mesh.rotation.set(0, ring.ry, 0);
     });
 
-    // Camera
-    camera.position.set(0, 0, 0);
-    camera.lookAt(0, 0, -1);
+    // Camera — pulled back on mobile for better overview
+    const targetCamZ = getMetrics().camZ;
+    camera.position.set(0, 0, targetCamZ);
+    camera.lookAt(0, 0, targetCamZ - 1);
 
     // Raycaster for hover
     mouse2D.set(mouseX, mouseY);
