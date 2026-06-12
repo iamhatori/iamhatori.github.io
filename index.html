@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0a0a">
-<title>hatori — creative developer</title>
+<title>hatori — ai integrations</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -555,7 +555,7 @@
 <div id="intro-fade"></div>
 <div id="intro">
   <div id="name">hatori</div>
-  <div id="role">creative developer &amp; designer</div>
+  <div id="role">ai integrations &amp; automation</div>
   <div id="bar-wrap"><div id="bar-fill"></div></div>
 </div>
 
@@ -563,7 +563,7 @@
 
 <!-- Floating contact -->
 <div id="float-contact">
-  <a href="mailto:hello@hatori.dev">
+  <a href="https://t.me/iamhatori" target="_blank" rel="noopener">
     <span class="dot"></span>
     hatori — available
   </a>
@@ -578,9 +578,9 @@
       <div id="profile-video-overlay"></div>
     </div>
     <div id="profile-info">
-      <div id="profile-role-tag">creative developer &amp; designer</div>
+      <div id="profile-role-tag">ai integrations &amp; automation</div>
       <div id="profile-name">hatori</div>
-      <div id="profile-bio">Crafting immersive digital experiences — from generative WebGL to lightning-fast storefronts. If you can imagine it, I can build it.</div>
+      <div id="profile-bio">Внедряю ИИ в бизнес: создаю AI-агентов, чат-ботов и автоматизации, которые экономят часы рутины каждый день. Если процесс можно автоматизировать — я это сделаю.</div>
       <button id="profile-order-btn" onclick="handleOrder()">&#x2192; Заказать проект</button>
     </div>
   </div>
@@ -599,20 +599,19 @@
       <div id="popup-divider"></div>
       <div id="popup-preview">
         <div id="popup-browser-bar">
-          <div class="browser-dot"></div>
-          <div class="browser-dot"></div>
-          <div class="browser-dot"></div>
+          <span class="status-dot"></span>
+          <span id="popup-status-label">automation · running</span>
           <div id="popup-url-bar"></div>
         </div>
         <div id="popup-preview-inner">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" color="#b8a07a"><rect x="3" y="3" width="18" height="14" rx="1"/><path d="M3 7h18M8 21h8M12 17v4"/></svg>
-          <span>live preview</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" color="#b8a07a"><rect x="2" y="9" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="16" y="15" width="6" height="6" rx="1"/><path d="M8 12h4m0 0V6h4m-4 6v6h4"/></svg>
+          <span>workflow active</span>
         </div>
       </div>
       <div id="popup-desc"></div>
-      <a id="popup-link" href="#" target="_blank" rel="noopener">
+      <a id="popup-link" href="https://t.me/iamhatori" target="_blank" rel="noopener">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 11L11 1M11 1H5M11 1V7"/></svg>
-        Visit Site
+        Хочу так же — написать в TG
       </a>
       <div id="popup-techs"></div>
     </div>
@@ -645,105 +644,105 @@ const PROJECTS = [
     id: 'profile',
     title: 'hatori',
     tag: 'Profile',
-    desc: 'Creative developer & designer. Crafting immersive web experiences.',
+    desc: 'AI integrations & automation. Внедряю ИИ, создаю AI-агентов и автоматизации для бизнеса.',
     techs: [],
     url: '#',
     isProfile: true
   },
   {
     id: 'ecommerce',
-    title: 'Bloom Market',
-    tag: 'E-Commerce',
-    desc: 'Artisanal florist boutique. Custom product configurator, real-time inventory synced to Shopify, and a checkout flow that cut drop-off by 60%. Scored 98 on PageSpeed.',
-    techs: ['Next.js', 'Shopify', 'Stripe', 'Framer Motion'],
+    title: 'ShopMind AI',
+    tag: 'AI для E-Commerce',
+    desc: 'AI-консультант для интернет-магазина. Отвечает на вопросы о товарах, подбирает рекомендации по описанию «что хочет» клиент и оформляет заказ прямо в чате. Конверсия в покупку выросла на 27%.',
+    techs: ['GPT-4o', 'RAG', 'Telegram Bot API', 'Python'],
     url: '#'
   },
   {
     id: 'agency',
-    title: 'Studio Okafor',
-    tag: 'Agency Website',
-    desc: 'Award-winning site for a Lagos architectural studio. Full-bleed WebGL transitions between projects, custom cursor trails, and a scroll-hijacked case study reader.',
-    techs: ['Three.js', 'GSAP', 'Nuxt', 'GLSL'],
+    title: 'LeadPilot',
+    tag: 'AI-агент продаж',
+    desc: 'Автономный агент для агентства недвижимости: квалифицирует входящие лиды, ведёт диалог в WhatsApp, отвечает на возражения и сам записывает клиента на показ в календарь менеджера.',
+    techs: ['Claude API', 'n8n', 'WhatsApp API', 'Google Calendar'],
     url: '#'
   },
   {
     id: 'saas',
-    title: 'Corelink',
-    tag: 'SaaS Website',
-    desc: 'Marketing site and onboarding flow for a B2B workflow tool. Interactive product demo embedded in the hero, pricing calculator, and animated feature breakdowns.',
-    techs: ['Next.js', 'Tailwind', 'Lottie', 'Sanity'],
+    title: 'OpsFlow',
+    tag: 'Автоматизация',
+    desc: 'Автоматизация бэк-офиса B2B-компании: входящие письма и счета парсятся LLM, данные попадают в CRM, а статусы — в Slack. Сэкономлено ~30 часов ручной работы в неделю.',
+    techs: ['n8n', 'OpenAI API', 'Zapier', 'amoCRM'],
     url: '#'
   },
   {
     id: 'portfolio',
-    title: 'Yuna Lee',
-    tag: 'Portfolio',
-    desc: 'Editorial portfolio for a Tokyo photographer. Brutalist grid layout, custom lightbox with pinch-to-zoom, and a film-grain canvas overlay that shifts with scroll.',
-    techs: ['Astro', 'Canvas API', 'CSS Grid', 'Cloudinary'],
+    title: 'DocBrain',
+    tag: 'RAG / База знаний',
+    desc: 'Корпоративный ассистент по внутренней документации. Сотрудники задают вопрос в чате — модель находит точный ответ в 5000+ страницах регламентов и инструкций со ссылкой на источник.',
+    techs: ['LangChain', 'Qdrant', 'OpenAI Embeddings', 'FastAPI'],
     url: '#'
   },
   {
     id: 'brand',
-    title: 'Mira Spirits',
-    tag: 'Brand Website',
-    desc: 'Brand identity and e-commerce for a craft gin distillery. 3D bottle viewer built in Three.js, age-gate animation, and editorial lookbook pages with parallax photography.',
-    techs: ['Three.js', 'Shopify', 'GSAP', 'Figma'],
+    title: 'ContentForge',
+    tag: 'AI-контент',
+    desc: 'Конвейер контента для бренда: ИИ генерирует посты, адаптирует их под Telegram, VK и Instagram, создаёт изображения и публикует по расписанию. Контент-план на месяц — за один вечер.',
+    techs: ['GPT-4o', 'Midjourney API', 'n8n', 'Telegram Bot API'],
     url: '#'
   },
   {
     id: 'dashboard',
-    title: 'Meridian NGO',
-    tag: 'Web App',
-    desc: 'Climate-data dashboard for a research NGO. Interactive globe built with D3, filterable SVG charts handling 10M+ points, and a public embed API for partner sites.',
-    techs: ['SvelteKit', 'D3.js', 'Web Workers', 'Mapbox'],
+    title: 'InsightDesk',
+    tag: 'AI-аналитика',
+    desc: 'Дашборд с ИИ-аналитиком: руководитель спрашивает на обычном языке «почему упали продажи в марте?» — система сама строит SQL-запросы, графики и объясняет тренды словами.',
+    techs: ['LLM + SQL', 'Metabase', 'Python', 'PostgreSQL'],
     url: '#'
   },
   {
     id: 'mobile',
-    title: 'Waypoint',
-    tag: 'Landing Page',
-    desc: 'Launch site for a travel companion app. Scroll-driven device mockup animation, App Store / Play Store deep links, and a live demo embedded in an iPhone frame.',
-    techs: ['Next.js', 'Framer Motion', 'Tailwind', 'Vercel'],
+    title: 'VoiceDesk',
+    tag: 'Голосовой AI',
+    desc: 'Голосовой ассистент для записи в клинику: принимает звонки, понимает речь, находит свободные окна и подтверждает запись по SMS. Закрывает 80% звонков без участия администратора.',
+    techs: ['Whisper', 'ElevenLabs', 'GPT-4o', 'Twilio'],
     url: '#'
   },
   {
     id: 'fashion',
-    title: 'Atelier Noon',
-    tag: 'Fashion',
-    desc: 'Digital lookbook and pre-order site for an independent fashion house. Auto-playing cinematic video hero, collection-filter with instant CSS masonry, and editorial type.',
-    techs: ['Astro', 'GSAP', 'Contentful', 'Cloudflare'],
+    title: 'StyleScan',
+    tag: 'Computer Vision',
+    desc: 'ИИ-каталогизация для шоурума одежды: по фото вещи модель определяет категорию, цвет, материал и генерирует продающее описание для маркетплейсов. 500 карточек товара в час вместо 20.',
+    techs: ['GPT-4 Vision', 'Python', 'Wildberries API', 'S3'],
     url: '#'
   },
   {
     id: 'interactive',
-    title: 'Echoes',
-    tag: 'Creative Site',
-    desc: 'Generative audio-visual web experience for a Berlin gallery. WebAudio API drives real-time particle systems and GLSL shaders — entirely in the browser, no plugins.',
-    techs: ['Web Audio API', 'Three.js', 'GLSL', 'Tone.js'],
+    title: 'AgentSwarm',
+    tag: 'Мульти-агенты',
+    desc: 'Команда из трёх AI-агентов для отдела маркетинга: один исследует конкурентов, второй пишет стратегию, третий проверяет факты. Работают по cron, отчёт приходит в Notion.',
+    techs: ['CrewAI', 'Claude API', 'Notion API', 'Docker'],
     url: '#'
   },
   {
     id: 'blog',
-    title: 'The Long Read',
-    tag: 'Editorial',
-    desc: 'Slow-journalism publication focused on reading experience. Custom reading-mode typography with variable fonts, text-to-speech integration, and marginal annotations.',
-    techs: ['SvelteKit', 'PocketBase', 'CSS Houdini', 'Netlify'],
+    title: 'NewsDigest',
+    tag: 'AI-автопостинг',
+    desc: 'Телеграм-канал на автопилоте: парсер собирает новости отрасли, LLM фильтрует мусор, пишет выжимку в фирменном стиле и публикует 3 раза в день. Ноль ручной работы.',
+    techs: ['GPT-4o-mini', 'RSS / Parsers', 'Telegram Bot API', 'Cron'],
     url: '#'
   },
   {
     id: 'booking',
-    title: 'Soji Studios',
-    tag: 'Booking Platform',
-    desc: 'Booking site for a Kyoto wellness studio. Live calendar with Google Calendar sync, waitlist management, and a mobile-first class schedule with smooth swipe navigation.',
-    techs: ['Vue 3', 'tRPC', 'Prisma', 'Railway'],
+    title: 'BookBot',
+    tag: 'AI-запись',
+    desc: 'Чат-бот записи для салона красоты: ведёт живой диалог, помнит постоянных клиентов, предлагает свободное время, напоминает о визите и собирает отзывы. −70% пропущенных записей.',
+    techs: ['GPT-4o', 'Telegram Bot API', 'YClients API', 'Redis'],
     url: '#'
   },
   {
     id: 'ai',
-    title: 'Pencraft',
-    tag: 'AI Product',
-    desc: 'Marketing and app site for a long-form writing assistant. Interactive style-matching demo powered by the Claude API, live word-count animations, and a waitlist flow.',
-    techs: ['Next.js', 'Claude API', 'ProseMirror', 'Vercel'],
+    title: 'SupportPilot',
+    tag: 'AI-поддержка',
+    desc: 'ИИ первой линии поддержки SaaS-сервиса: отвечает на 65% тикетов сам, остальные — суммаризирует и передаёт оператору с готовым черновиком ответа. Время ответа упало с 4 часов до 30 секунд.',
+    techs: ['Claude API', 'RAG', 'Intercom API', 'LangChain'],
     url: '#'
   }
 ];
@@ -793,26 +792,90 @@ function drawUnifiedBase(ctx, W, H) {
   ctx.fillRect(0, 0, W, H);
 }
 
-// Shared browser chrome at top of card
-function drawBrowserChrome(ctx, W, topH) {
-  // Bar background
+// Shared automation header at top of card
+function drawFlowHeader(ctx, W, topH, label) {
   ctx.fillStyle = 'rgba(30,25,18,0.95)';
   ctx.fillRect(0, 0, W, topH);
-  // Bottom border of bar
-  ctx.fillStyle = `rgba(184,160,122,0.12)`;
+  ctx.fillStyle = 'rgba(184,160,122,0.12)';
   ctx.fillRect(0, topH - 0.5, W, 0.5);
-  // 3 dots
-  const r = topH * 0.18, y = topH * 0.5;
-  ['rgba(184,160,122,0.5)', 'rgba(184,160,122,0.3)', 'rgba(184,160,122,0.2)'].forEach((c, i) => {
-    ctx.fillStyle = c;
-    ctx.beginPath(); ctx.arc(W * 0.08 + i * (r * 2.8), y, r, 0, Math.PI * 2); ctx.fill();
-  });
-  // URL pill
-  const px = W * 0.22, pw = W * 0.58, ph = topH * 0.45, py = y - ph / 2;
-  ctx.fillStyle = 'rgba(184,160,122,0.08)';
-  ctx.beginPath();
-  ctx.roundRect ? ctx.roundRect(px, py, pw, ph, ph / 2) : ctx.rect(px, py, pw, ph);
+  // Green "running" status dot
+  ctx.fillStyle = 'rgba(109,191,126,0.9)';
+  ctx.beginPath(); ctx.arc(W * 0.07, topH * 0.5, topH * 0.13, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = 'rgba(109,191,126,0.25)';
+  ctx.beginPath(); ctx.arc(W * 0.07, topH * 0.5, topH * 0.24, 0, Math.PI * 2); ctx.fill();
+  // Label
+  ctx.fillStyle = 'rgba(184,160,122,0.55)';
+  ctx.font = `${Math.max(5, W * 0.032)}px "Courier New"`;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText(label, W * 0.13, topH * 0.52);
+  // Gear-ish bars on the right
+  for (let i = 0; i < 3; i++) {
+    ctx.fillStyle = 'rgba(184,160,122,0.25)';
+    ctx.fillRect(W * (0.8 + i * 0.055), topH * 0.42, W * 0.032, topH * 0.16);
+  }
+  ctx.textBaseline = 'alphabetic';
+}
+
+// Workflow node — rounded rect with optional status dot and label
+function drawNode(ctx, x, y, w, h, opts = {}) {
+  const r = Math.min(w, h) * 0.22;
+  ctx.fillStyle = opts.fill || 'rgba(184,160,122,0.07)';
+  roundRect(ctx, x, y, w, h, r);
   ctx.fill();
+  ctx.strokeStyle = opts.stroke || 'rgba(184,160,122,0.38)';
+  ctx.lineWidth = 0.8;
+  roundRect(ctx, x, y, w, h, r);
+  ctx.stroke();
+  if (opts.dot) {
+    ctx.fillStyle = opts.dot;
+    ctx.beginPath(); ctx.arc(x + h * 0.42, y + h * 0.5, h * 0.13, 0, Math.PI * 2); ctx.fill();
+  }
+  if (opts.label) {
+    ctx.fillStyle = opts.labelColor || 'rgba(232,221,208,0.7)';
+    ctx.font = `${Math.max(4.5, h * 0.34)}px "Courier New"`;
+    ctx.textAlign = opts.dot ? 'left' : 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(opts.label, opts.dot ? x + h * 0.72 : x + w / 2, y + h / 2 + 0.5);
+    ctx.textBaseline = 'alphabetic';
+  }
+}
+
+function bezPt(p0, p1, p2, p3, t) {
+  const u = 1 - t;
+  return u*u*u*p0 + 3*u*u*t*p1 + 3*u*t*t*p2 + t*t*t*p3;
+}
+
+// Curved wire between two nodes with a "data packet" dot
+function drawWire(ctx, x1, y1, x2, y2, opts = {}) {
+  const mx = (x1 + x2) / 2;
+  ctx.strokeStyle = opts.stroke || 'rgba(184,160,122,0.3)';
+  ctx.lineWidth = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.bezierCurveTo(mx, y1, mx, y2, x2, y2);
+  ctx.stroke();
+  if (opts.packet !== false) {
+    const t = opts.t !== undefined ? opts.t : 0.5;
+    const bx = bezPt(x1, mx, mx, x2, t);
+    const by = bezPt(y1, y1, y2, y2, t);
+    ctx.fillStyle = 'rgba(200,180,140,0.85)';
+    ctx.beginPath(); ctx.arc(bx, by, 1.3, 0, Math.PI * 2); ctx.fill();
+  }
+}
+
+// Chat bubble (in = left/bot, out = right/user)
+function drawBubble(ctx, x, y, w, h, side, opts = {}) {
+  const r = h * 0.4;
+  ctx.fillStyle = side === 'in' ? 'rgba(184,160,122,0.14)' : 'rgba(184,160,122,0.05)';
+  roundRect(ctx, x, y, w, h, r);
+  ctx.fill();
+  if (opts.lines) {
+    ctx.fillStyle = 'rgba(232,221,208,0.4)';
+    const lh = h * 0.16;
+    for (let i = 0; i < opts.lines; i++) {
+      ctx.fillRect(x + w * 0.12, y + h * (0.28 + i * 0.3), w * (0.76 - i * 0.2), lh);
+    }
+  }
 }
 
 const CARD_STYLES = {
@@ -854,7 +917,7 @@ const CARD_STYLES = {
     // Role text
     ctx.fillStyle = 'rgba(184,160,122,0.65)';
     ctx.font = `${Math.max(6, W*0.032)}px "Courier New"`;
-    ctx.fillText('CREATIVE DEVELOPER', W*0.5, H*0.80);
+    ctx.fillText('AI INTEGRATIONS', W*0.5, H*0.80);
 
     // Order button
     const bw = W * 0.65, bh = H * 0.085, bx = W*0.5 - bw*0.5, by = H * 0.87;
@@ -867,265 +930,386 @@ const CARD_STYLES = {
     ctx.font = `${Math.max(6, W*0.03)}px "Courier New"`;
     ctx.fillText('ЗАКАЗАТЬ', W*0.5, by + bh*0.62);
   },
+
   ecommerce(ctx, W, H, p) {
+    // ShopMind AI — chat commerce dialog
     drawUnifiedBase(ctx, W, H);
-    const bh = H * 0.52;
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Hero product image area
-    ctx.fillStyle = 'rgba(184,160,122,0.07)';
-    ctx.fillRect(W * 0.08, H * 0.13, W * 0.84, bh * 0.52);
-    // Horizontal product image grid
-    const cols = 3, gapX = W * 0.03, itemW = (W * 0.84 - gapX * (cols - 1)) / cols;
-    for (let c = 0; c < cols; c++) {
-      ctx.fillStyle = `rgba(184,160,122,${0.08 + c * 0.03})`;
-      const ix = W * 0.08 + c * (itemW + gapX);
-      ctx.fillRect(ix, H * 0.38, itemW, H * 0.22);
-    }
-    // Price tag lines
+    drawFlowHeader(ctx, W, H * 0.1, 'BOT · ONLINE');
+    drawBubble(ctx, W * 0.08, H * 0.15, W * 0.5, H * 0.07, 'out', { lines: 1 });
+    drawBubble(ctx, W * 0.3, H * 0.25, W * 0.62, H * 0.1, 'in', { lines: 2 });
+    // Product card inside bot reply
+    const px = W * 0.3, py = H * 0.38, pw = W * 0.62, ph = H * 0.14;
+    drawNode(ctx, px, py, pw, ph, {});
+    ctx.fillStyle = 'rgba(184,160,122,0.18)';
+    ctx.fillRect(px + pw * 0.06, py + ph * 0.18, pw * 0.26, ph * 0.64);
+    ctx.fillStyle = 'rgba(232,221,208,0.5)';
+    ctx.fillRect(px + pw * 0.4, py + ph * 0.24, pw * 0.45, ph * 0.14);
     ctx.fillStyle = 'rgba(184,160,122,0.35)';
-    ctx.fillRect(W * 0.08, H * 0.63, W * 0.25, H * 0.025);
-    ctx.fillStyle = 'rgba(184,160,122,0.15)';
-    ctx.fillRect(W * 0.08, H * 0.665, W * 0.18, H * 0.02);
+    ctx.fillRect(px + pw * 0.4, py + ph * 0.48, pw * 0.3, ph * 0.12);
+    // Buy button
+    ctx.fillStyle = 'rgba(109,191,126,0.22)';
+    roundRect(ctx, px + pw * 0.4, py + ph * 0.66, pw * 0.34, ph * 0.2, ph * 0.08);
+    ctx.fill();
+    drawBubble(ctx, W * 0.08, H * 0.56, W * 0.42, H * 0.07, 'out', { lines: 1 });
+    // Typing dots
+    for (let i = 0; i < 3; i++) {
+      ctx.fillStyle = `rgba(184,160,122,${0.6 - i * 0.15})`;
+      ctx.beginPath(); ctx.arc(W * (0.34 + i * 0.045), H * 0.68, W * 0.012, 0, Math.PI * 2); ctx.fill();
+    }
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   agency(ctx, W, H, p) {
+    // LeadPilot — lead qualification flow
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Full-bleed hero
-    ctx.fillStyle = 'rgba(184,160,122,0.05)';
-    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.44);
-    // X on hero
-    ctx.strokeStyle = `rgba(184,160,122,0.3)`; ctx.lineWidth = 0.7;
-    const cx = W * 0.5, cy = H * 0.35, s = H * 0.1;
-    ctx.beginPath(); ctx.moveTo(cx - s, cy - s); ctx.lineTo(cx + s, cy + s); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx + s, cy - s); ctx.lineTo(cx - s, cy + s); ctx.stroke();
-    // Nav links
-    for (let i = 0; i < 4; i++) {
-      ctx.fillStyle = 'rgba(184,160,122,0.2)';
-      ctx.fillRect(W * (0.35 + i * 0.15), H * 0.05, W * 0.08, H * 0.018);
-    }
+    drawFlowHeader(ctx, W, H * 0.1, 'FLOW · ACTIVE');
+    const nw = W * 0.42, nh = H * 0.075;
+    const cxL = W * 0.08, cxR = W * 0.5;
+    drawNode(ctx, cxL, H * 0.16, nw, nh, { dot: 'rgba(109,191,126,0.8)', label: 'LEAD' });
+    drawWire(ctx, cxL + nw, H * 0.16 + nh/2, cxR + nw/2, H * 0.3, { t: 0.6 });
+    drawNode(ctx, cxR, H * 0.3, nw, nh, { dot: 'rgba(200,170,100,0.9)', label: 'AI CHAT', fill: 'rgba(184,160,122,0.13)' });
+    drawWire(ctx, cxR, H * 0.3 + nh/2, cxL + nw/2, H * 0.44, { t: 0.4 });
+    drawNode(ctx, cxL, H * 0.44, nw, nh, { dot: 'rgba(109,191,126,0.8)', label: 'QUALIFY' });
+    drawWire(ctx, cxL + nw, H * 0.44 + nh/2, cxR + nw/2, H * 0.58, { t: 0.7 });
+    drawNode(ctx, cxR, H * 0.58, nw, nh, { dot: 'rgba(109,191,126,0.8)', label: 'BOOKED' });
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   saas(ctx, W, H, p) {
+    // OpsFlow — n8n-style node graph
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Sidebar
-    ctx.fillStyle = 'rgba(184,160,122,0.06)';
-    ctx.fillRect(W * 0.04, H * 0.13, W * 0.22, H * 0.56);
-    // Sidebar items
-    for (let i = 0; i < 5; i++) {
-      ctx.fillStyle = i === 1 ? 'rgba(184,160,122,0.28)' : 'rgba(184,160,122,0.1)';
-      ctx.fillRect(W * 0.07, H * (0.17 + i * 0.08), W * 0.15, H * 0.025);
-    }
-    // Main area — mini bar chart
-    const bars = [0.4, 0.7, 0.55, 0.85, 0.65, 0.9, 0.5];
-    const bw = W * 0.052, startX = W * 0.3;
-    bars.forEach((v, i) => {
-      const bh2 = H * 0.28 * v;
-      ctx.fillStyle = `rgba(184,160,122,${0.18 + v * 0.28})`;
-      ctx.fillRect(startX + i * (bw + W * 0.02), H * 0.57 - bh2, bw, bh2);
-    });
+    drawFlowHeader(ctx, W, H * 0.1, 'WORKFLOW · 24/7');
+    const nw = W * 0.3, nh = H * 0.07;
+    drawNode(ctx, W * 0.06, H * 0.34, nw, nh, { label: 'EMAIL' });
+    drawNode(ctx, W * 0.37, H * 0.34, nw * 0.9, nh, { label: 'LLM', fill: 'rgba(184,160,122,0.15)', stroke: 'rgba(200,170,100,0.6)' });
+    drawNode(ctx, W * 0.68, H * 0.2, nw * 0.88, nh, { label: 'CRM' });
+    drawNode(ctx, W * 0.68, H * 0.48, nw * 0.88, nh, { label: 'SLACK' });
+    drawWire(ctx, W * 0.06 + nw, H * 0.34 + nh/2, W * 0.37, H * 0.34 + nh/2, { t: 0.5 });
+    drawWire(ctx, W * 0.37 + nw * 0.9, H * 0.34 + nh/2, W * 0.68, H * 0.2 + nh/2, { t: 0.6 });
+    drawWire(ctx, W * 0.37 + nw * 0.9, H * 0.34 + nh/2, W * 0.68, H * 0.48 + nh/2, { t: 0.4 });
+    // Execution log lines
+    ctx.fillStyle = 'rgba(109,191,126,0.5)';
+    ctx.font = `${Math.max(4.5, W * 0.028)}px "Courier New"`;
+    ctx.textAlign = 'left';
+    ctx.fillText('✓ run #482 — ok (1.2s)', W * 0.08, H * 0.62);
+    ctx.fillStyle = 'rgba(109,191,126,0.35)';
+    ctx.fillText('✓ run #481 — ok (0.9s)', W * 0.08, H * 0.66);
+    ctx.fillStyle = 'rgba(184,160,122,0.25)';
+    ctx.fillText('✓ run #480 — ok (1.4s)', W * 0.08, H * 0.7);
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   portfolio(ctx, W, H, p) {
+    // DocBrain — RAG: docs → vector search → answer
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Masonry-ish grid
-    const cells = [[0,0,0.42,0.32],[0.45,0,0.51,0.2],[0.45,0.22,0.51,0.1],[0,0.34,0.28,0.22],[0.3,0.34,0.18,0.22],[0.5,0.34,0.46,0.22]];
-    cells.forEach(([x,y,w,h], i) => {
-      ctx.fillStyle = `rgba(184,160,122,${0.06 + (i%3)*0.035})`;
-      ctx.fillRect(W*0.04 + x*W*0.92, H*0.13 + y*H*0.56, w*W*0.92, h*H*0.56);
-    });
+    drawFlowHeader(ctx, W, H * 0.1, 'RAG · INDEXED');
+    // Stack of documents
+    for (let i = 2; i >= 0; i--) {
+      ctx.fillStyle = `rgba(184,160,122,${0.06 + i * 0.03})`;
+      ctx.strokeStyle = 'rgba(184,160,122,0.3)';
+      ctx.lineWidth = 0.6;
+      const dx = W * 0.08 + i * W * 0.025, dy = H * 0.16 + i * H * 0.012;
+      ctx.fillRect(dx, dy, W * 0.26, H * 0.16);
+      ctx.strokeRect(dx, dy, W * 0.26, H * 0.16);
+    }
+    // Doc text lines
+    for (let i = 0; i < 4; i++) {
+      ctx.fillStyle = 'rgba(184,160,122,0.3)';
+      ctx.fillRect(W * 0.16, H * (0.21 + i * 0.025), W * 0.15 - i * W * 0.02, H * 0.008);
+    }
+    // Vector dots cluster
+    const vx = W * 0.68, vy = H * 0.26;
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2, rr = W * (0.05 + (i % 3) * 0.025);
+      ctx.fillStyle = i === 4 ? 'rgba(109,191,126,0.9)' : 'rgba(184,160,122,0.4)';
+      ctx.beginPath(); ctx.arc(vx + Math.cos(a) * rr, vy + Math.sin(a) * rr, i === 4 ? 1.8 : 1.1, 0, Math.PI * 2); ctx.fill();
+    }
+    drawWire(ctx, W * 0.36, H * 0.24, vx - W * 0.1, vy, { t: 0.5 });
+    // Answer bubble with citation
+    drawBubble(ctx, W * 0.08, H * 0.42, W * 0.84, H * 0.13, 'in', { lines: 2 });
+    ctx.fillStyle = 'rgba(109,191,126,0.6)';
+    ctx.font = `${Math.max(4.5, W * 0.028)}px "Courier New"`;
+    ctx.textAlign = 'left';
+    ctx.fillText('[источник: регламент §4.2]', W * 0.12, H * 0.6);
+    drawWire(ctx, vx, vy + W * 0.09, W * 0.5, H * 0.42, { t: 0.5 });
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   brand(ctx, W, H, p) {
+    // ContentForge — one source fans out to 3 channels
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Hero with centered logo area
-    ctx.fillStyle = 'rgba(184,160,122,0.05)';
-    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.38);
-    // Logo mark (hexagon outline)
-    ctx.strokeStyle = 'rgba(184,160,122,0.4)'; ctx.lineWidth = 0.8;
-    const lx = W / 2, ly = H * 0.295, ls = H * 0.09;
-    ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-      const a = (i / 6) * Math.PI * 2 - Math.PI / 6;
-      i === 0 ? ctx.moveTo(lx + Math.cos(a) * ls, ly + Math.sin(a) * ls)
-              : ctx.lineTo(lx + Math.cos(a) * ls, ly + Math.sin(a) * ls);
-    }
-    ctx.closePath(); ctx.stroke();
-    // Product row
-    for (let i = 0; i < 3; i++) {
-      ctx.fillStyle = `rgba(184,160,122,${0.08 + i * 0.03})`;
-      ctx.fillRect(W * (0.08 + i * 0.31), H * 0.535, W * 0.26, H * 0.13);
-    }
+    drawFlowHeader(ctx, W, H * 0.1, 'PIPELINE · CRON');
+    const nw = W * 0.34, nh = H * 0.07;
+    drawNode(ctx, W * 0.33, H * 0.16, nw, nh, { label: 'AI DRAFT', fill: 'rgba(184,160,122,0.15)', stroke: 'rgba(200,170,100,0.6)' });
+    const chs = ['TG', 'VK', 'IG'];
+    chs.forEach((c, i) => {
+      const cx = W * (0.08 + i * 0.31), cy = H * 0.38;
+      drawNode(ctx, cx, cy, W * 0.26, nh, { label: c, dot: 'rgba(109,191,126,0.8)' });
+      drawWire(ctx, W * 0.33 + nw / 2, H * 0.16 + nh, cx + W * 0.13, cy, { t: 0.4 + i * 0.15 });
+      // Scheduled post cards under each channel
+      ctx.fillStyle = 'rgba(184,160,122,0.08)';
+      ctx.fillRect(cx, cy + nh + H * 0.02, W * 0.26, H * 0.1);
+      ctx.fillStyle = 'rgba(184,160,122,0.25)';
+      ctx.fillRect(cx + W * 0.02, cy + nh + H * 0.04, W * 0.22, H * 0.012);
+      ctx.fillRect(cx + W * 0.02, cy + nh + H * 0.065, W * 0.16, H * 0.012);
+    });
+    // Clock = schedule
+    ctx.strokeStyle = 'rgba(184,160,122,0.5)'; ctx.lineWidth = 0.8;
+    const ccx = W * 0.16, ccy = H * 0.195, cr = H * 0.028;
+    ctx.beginPath(); ctx.arc(ccx, ccy, cr, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ccx, ccy); ctx.lineTo(ccx, ccy - cr * 0.6); ctx.moveTo(ccx, ccy); ctx.lineTo(ccx + cr * 0.45, ccy); ctx.stroke();
+    drawWire(ctx, ccx + cr, ccy, W * 0.33, H * 0.16 + nh / 2, { t: 0.5 });
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   dashboard(ctx, W, H, p) {
+    // InsightDesk — NL question → SQL → chart
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // KPI cards row
-    for (let i = 0; i < 3; i++) {
-      ctx.fillStyle = 'rgba(184,160,122,0.07)';
-      ctx.fillRect(W * (0.04 + i * 0.32), H * 0.14, W * 0.28, H * 0.1);
-      ctx.fillStyle = `rgba(184,160,122,${0.35 - i * 0.05})`;
-      ctx.fillRect(W * (0.06 + i * 0.32), H * 0.18, W * 0.12, H * 0.02);
-    }
-    // Line chart
-    const pts2 = [0.7,0.5,0.65,0.3,0.45,0.2,0.35,0.55,0.25,0.4];
-    const cx2 = W * 0.06, cy2 = H * 0.6, chartW2 = W * 0.88, chartH2 = H * 0.25;
-    ctx.beginPath();
-    pts2.forEach((v, i) => {
-      const x = cx2 + (i / (pts2.length - 1)) * chartW2;
-      const y = cy2 - v * chartH2;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    drawFlowHeader(ctx, W, H * 0.1, 'AI ANALYST');
+    drawBubble(ctx, W * 0.08, H * 0.15, W * 0.6, H * 0.07, 'out', { lines: 1 });
+    // SQL code line
+    ctx.fillStyle = 'rgba(109,191,126,0.55)';
+    ctx.font = `${Math.max(4.5, W * 0.03)}px "Courier New"`;
+    ctx.textAlign = 'left';
+    ctx.fillText('> SELECT … GROUP BY month', W * 0.08, H * 0.29);
+    // Bar chart answer
+    const bars = [0.45, 0.7, 0.5, 0.85, 0.35, 0.6, 0.9];
+    const bw = W * 0.085, startX = W * 0.09, baseY = H * 0.62, maxH = H * 0.25;
+    bars.forEach((v, i) => {
+      ctx.fillStyle = i === 4 ? 'rgba(191,109,109,0.6)' : `rgba(184,160,122,${0.2 + v * 0.3})`;
+      ctx.fillRect(startX + i * (bw + W * 0.025), baseY - v * maxH, bw, v * maxH);
     });
-    ctx.strokeStyle = CARD_ACC; ctx.lineWidth = 1; ctx.stroke();
-    const grad2 = ctx.createLinearGradient(0, cy2 - chartH2, 0, cy2);
-    grad2.addColorStop(0, 'rgba(184,160,122,0.18)'); grad2.addColorStop(1, 'rgba(184,160,122,0)');
-    ctx.lineTo(cx2 + chartW2, cy2); ctx.lineTo(cx2, cy2); ctx.closePath();
-    ctx.fillStyle = grad2; ctx.fill();
+    ctx.strokeStyle = 'rgba(184,160,122,0.25)'; ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(W * 0.08, baseY); ctx.lineTo(W * 0.92, baseY); ctx.stroke();
+    // Anomaly callout
+    ctx.strokeStyle = 'rgba(191,109,109,0.7)';
+    ctx.beginPath(); ctx.arc(startX + 4 * (bw + W * 0.025) + bw / 2, baseY - 0.35 * maxH / 2, bw, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = 'rgba(232,221,208,0.45)';
+    ctx.fillRect(W * 0.08, H * 0.66, W * 0.7, H * 0.014);
+    ctx.fillRect(W * 0.08, H * 0.69, W * 0.5, H * 0.014);
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   mobile(ctx, W, H, p) {
+    // VoiceDesk — call waveform → transcript → booking
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Hero with device mockup hint
-    ctx.fillStyle = 'rgba(184,160,122,0.05)';
-    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.28);
-    // Phone outline centered in hero
-    const ph = H * 0.22, pw = ph * 0.5, px2 = W / 2 - pw / 2, py2 = H * 0.145;
-    ctx.strokeStyle = 'rgba(184,160,122,0.35)'; ctx.lineWidth = 0.8;
-    ctx.strokeRect(px2, py2, pw, ph);
-    // Feature bullets
-    for (let i = 0; i < 3; i++) {
-      ctx.fillStyle = 'rgba(184,160,122,0.12)';
-      ctx.beginPath(); ctx.arc(W * 0.1, H * (0.46 + i * 0.07), H * 0.012, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = 'rgba(184,160,122,0.22)';
-      ctx.fillRect(W * 0.16, H * (0.454 + i * 0.07), W * (0.4 + i * 0.08), H * 0.02);
+    drawFlowHeader(ctx, W, H * 0.1, 'VOICE · LIVE');
+    // Waveform
+    const wcx = W * 0.5, wy = H * 0.22;
+    for (let i = 0; i < 24; i++) {
+      const t = i / 23;
+      const amp = Math.sin(t * Math.PI) * (0.4 + 0.6 * Math.abs(Math.sin(i * 2.7)));
+      const bh2 = H * 0.07 * amp + H * 0.008;
+      ctx.fillStyle = `rgba(184,160,122,${0.25 + amp * 0.5})`;
+      ctx.fillRect(W * 0.08 + t * W * 0.84, wy - bh2 / 2, W * 0.018, bh2);
     }
+    // Mic dot
+    ctx.fillStyle = 'rgba(191,109,109,0.9)';
+    ctx.beginPath(); ctx.arc(W * 0.5, H * 0.33, W * 0.014, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(191,109,109,0.3)';
+    ctx.beginPath(); ctx.arc(W * 0.5, H * 0.33, W * 0.028, 0, Math.PI * 2); ctx.stroke();
+    // Transcript lines
+    ctx.fillStyle = 'rgba(184,160,122,0.45)';
+    ctx.font = `${Math.max(4.5, W * 0.028)}px "Courier New"`;
+    ctx.textAlign = 'left';
+    ctx.fillText('— Хочу записаться на приём…', W * 0.08, H * 0.42);
+    ctx.fillStyle = 'rgba(109,191,126,0.55)';
+    ctx.fillText('— Есть окно завтра в 14:30', W * 0.08, H * 0.47);
+    // Confirmation node
+    drawNode(ctx, W * 0.2, H * 0.54, W * 0.6, H * 0.08, { dot: 'rgba(109,191,126,0.9)', label: 'SMS SENT' });
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   fashion(ctx, W, H, p) {
+    // StyleScan — photo scan → tags
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Full-width editorial image
-    ctx.fillStyle = 'rgba(184,160,122,0.06)';
-    ctx.fillRect(W * 0.0, H * 0.1, W, H * 0.38);
-    // Overlay text band
-    ctx.fillStyle = 'rgba(22,18,14,0.6)';
-    ctx.fillRect(0, H * 0.36, W, H * 0.12);
-    ctx.fillStyle = 'rgba(184,160,122,0.7)';
-    ctx.fillRect(W * 0.06, H * 0.405, W * 0.35, H * 0.028);
-    // Product thumbnails strip
-    for (let i = 0; i < 4; i++) {
-      ctx.fillStyle = `rgba(184,160,122,${0.06 + i * 0.02})`;
-      ctx.fillRect(W * (0.04 + i * 0.24), H * 0.51, W * 0.21, H * 0.16);
-    }
+    drawFlowHeader(ctx, W, H * 0.1, 'VISION · SCAN');
+    // Photo frame
+    const fx = W * 0.08, fy = H * 0.15, fw = W * 0.4, fh = H * 0.32;
+    ctx.fillStyle = 'rgba(184,160,122,0.08)';
+    ctx.fillRect(fx, fy, fw, fh);
+    ctx.strokeStyle = 'rgba(184,160,122,0.35)'; ctx.lineWidth = 0.7;
+    ctx.strokeRect(fx, fy, fw, fh);
+    // Corner brackets (scanner)
+    ctx.strokeStyle = 'rgba(109,191,126,0.8)'; ctx.lineWidth = 1;
+    const bl = W * 0.04;
+    [[fx,fy,1,1],[fx+fw,fy,-1,1],[fx,fy+fh,1,-1],[fx+fw,fy+fh,-1,-1]].forEach(([x,y,sx,sy]) => {
+      ctx.beginPath();
+      ctx.moveTo(x + sx * bl, y); ctx.lineTo(x, y); ctx.lineTo(x, y + sy * bl);
+      ctx.stroke();
+    });
+    // Scan line
+    ctx.fillStyle = 'rgba(109,191,126,0.35)';
+    ctx.fillRect(fx, fy + fh * 0.55, fw, 1);
+    // Garment silhouette
+    ctx.fillStyle = 'rgba(184,160,122,0.22)';
+    roundRect(ctx, fx + fw * 0.3, fy + fh * 0.2, fw * 0.4, fh * 0.6, fw * 0.08);
+    ctx.fill();
+    // Detected tag chips
+    const tags = ['ПЛАТЬЕ', 'ХЛОПОК', 'BEIGE', 'M'];
+    tags.forEach((t, i) => {
+      const tx = W * 0.54, ty = H * (0.16 + i * 0.075);
+      drawNode(ctx, tx, ty, W * 0.36, H * 0.055, { label: t, dot: 'rgba(109,191,126,0.7)' });
+      drawWire(ctx, fx + fw, fy + fh * (0.2 + i * 0.2), tx, ty + H * 0.0275, { t: 0.5 });
+    });
+    // Generated description lines
+    ctx.fillStyle = 'rgba(232,221,208,0.4)';
+    ctx.fillRect(W * 0.08, H * 0.53, W * 0.84, H * 0.014);
+    ctx.fillRect(W * 0.08, H * 0.565, W * 0.66, H * 0.014);
+    ctx.fillRect(W * 0.08, H * 0.6, W * 0.74, H * 0.014);
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   interactive(ctx, W, H, p) {
+    // AgentSwarm — hub with 3 agents
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Fullscreen creative canvas feel
-    ctx.fillStyle = 'rgba(8,0,20,0.6)';
-    ctx.fillRect(W * 0.04, H * 0.12, W * 0.92, H * 0.55);
-    // Concentric rings
-    [H*0.08, H*0.13, H*0.18].forEach((r, i) => {
-      ctx.strokeStyle = `rgba(184,160,122,${0.2 - i * 0.05})`;
-      ctx.lineWidth = 0.6;
-      ctx.beginPath(); ctx.arc(W / 2, H * 0.38, r, 0, Math.PI * 2); ctx.stroke();
+    drawFlowHeader(ctx, W, H * 0.1, 'AGENTS · 3 UP');
+    const hx = W * 0.5, hy = H * 0.38;
+    // Agents around hub
+    const agents = [
+      { label: 'SCOUT', a: -Math.PI / 2 },
+      { label: 'WRITER', a: Math.PI * 0.17 },
+      { label: 'CHECKER', a: Math.PI * 0.83 },
+    ];
+    const orbitR = W * 0.32;
+    agents.forEach(({ label, a }) => {
+      const ax = hx + Math.cos(a) * orbitR, ay = hy + Math.sin(a) * orbitR * 0.75;
+      drawWire(ctx, hx, hy, ax, ay, { t: 0.55 });
+      drawNode(ctx, ax - W * 0.14, ay - H * 0.032, W * 0.28, H * 0.064, { label, dot: 'rgba(109,191,126,0.8)' });
     });
-    // 8 small sparks
-    for (let i = 0; i < 8; i++) {
-      const a = (i / 8) * Math.PI * 2, r3 = H * 0.13;
-      ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.45;
-      ctx.beginPath(); ctx.arc(W / 2 + Math.cos(a) * r3, H * 0.38 + Math.sin(a) * r3, 1.3, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
+    // Hub node
+    ctx.fillStyle = 'rgba(184,160,122,0.16)';
+    ctx.beginPath(); ctx.arc(hx, hy, W * 0.07, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(200,170,100,0.7)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(hx, hy, W * 0.07, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(200,170,100,0.25)';
+    ctx.beginPath(); ctx.arc(hx, hy, W * 0.1, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = 'rgba(232,221,208,0.85)';
+    ctx.font = `${Math.max(5, W * 0.034)}px "Courier New"`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('CREW', hx, hy + 0.5);
+    ctx.textBaseline = 'alphabetic';
+    // Output to Notion
+    drawNode(ctx, W * 0.3, H * 0.6, W * 0.4, H * 0.06, { label: '→ NOTION' });
+    drawWire(ctx, hx, hy + W * 0.07, hx, H * 0.6, { t: 0.6 });
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   blog(ctx, W, H, p) {
+    // NewsDigest — sources → filter → posts
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Header with nav
+    drawFlowHeader(ctx, W, H * 0.1, 'AUTOPILOT');
+    // Source dots (RSS)
     for (let i = 0; i < 3; i++) {
-      ctx.fillStyle = 'rgba(184,160,122,0.18)';
-      ctx.fillRect(W * (0.5 + i * 0.15), H * 0.05, W * 0.09, H * 0.018);
+      const sy = H * (0.17 + i * 0.07);
+      ctx.fillStyle = 'rgba(184,160,122,0.5)';
+      ctx.beginPath(); ctx.arc(W * 0.1, sy, W * 0.016, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(184,160,122,0.2)';
+      ctx.fillRect(W * 0.14, sy - H * 0.007, W * 0.14, H * 0.014);
+      drawWire(ctx, W * 0.28, sy, W * 0.42, H * 0.265, { t: 0.5 });
     }
-    // Article headline
-    ctx.fillStyle = 'rgba(184,160,122,0.55)';
-    ctx.fillRect(W * 0.08, H * 0.17, W * 0.78, H * 0.04);
-    ctx.fillRect(W * 0.08, H * 0.225, W * 0.55, H * 0.04);
-    // Body text lines
-    const lineW2 = [0.82, 0.74, 0.79, 0.68, 0.76, 0.6];
-    lineW2.forEach((lw, i) => {
-      ctx.fillStyle = `rgba(184,160,122,${0.12 + (i === 0 ? 0.06 : 0)})`;
-      ctx.fillRect(W * 0.08, H * (0.29 + i * 0.055), W * lw, H * 0.022);
-    });
-    // Accent bar
-    ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.4;
-    ctx.fillRect(W * 0.08, H * 0.17, W * 0.025, H * 0.095);
-    ctx.globalAlpha = 1;
+    // Funnel / filter node
+    ctx.strokeStyle = 'rgba(200,170,100,0.6)'; ctx.lineWidth = 0.9;
+    ctx.fillStyle = 'rgba(184,160,122,0.12)';
+    ctx.beginPath();
+    ctx.moveTo(W * 0.42, H * 0.2);
+    ctx.lineTo(W * 0.62, H * 0.2);
+    ctx.lineTo(W * 0.56, H * 0.3);
+    ctx.lineTo(W * 0.48, H * 0.3);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(232,221,208,0.6)';
+    ctx.font = `${Math.max(4.5, W * 0.028)}px "Courier New"`;
+    ctx.textAlign = 'center';
+    ctx.fillText('LLM FILTER', W * 0.52, H * 0.345);
+    drawWire(ctx, W * 0.52, H * 0.36, W * 0.52, H * 0.42, { t: 0.5 });
+    // Published TG posts
+    for (let i = 0; i < 2; i++) {
+      const py = H * (0.43 + i * 0.115);
+      drawBubble(ctx, W * 0.14, py, W * 0.72, H * 0.09, 'in', { lines: 2 });
+      ctx.fillStyle = 'rgba(109,191,126,0.7)';
+      ctx.beginPath(); ctx.arc(W * 0.81, py + H * 0.07, W * 0.012, 0, Math.PI * 2); ctx.fill();
+    }
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   booking(ctx, W, H, p) {
+    // BookBot — chat + calendar slot picked
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Calendar widget
-    const days3 = 7, rows3 = 4;
-    const cx3 = W * 0.06, cy3 = H * 0.17, cw3 = W * 0.88 / days3, ch3 = H * 0.36 / rows3;
-    // Header row
-    ctx.fillStyle = 'rgba(184,160,122,0.08)';
-    ctx.fillRect(cx3, cy3, W * 0.88, ch3 * 0.6);
-    ctx.strokeStyle = 'rgba(184,160,122,0.12)'; ctx.lineWidth = 0.5;
+    drawFlowHeader(ctx, W, H * 0.1, 'BOT · 24/7');
+    drawBubble(ctx, W * 0.08, H * 0.15, W * 0.52, H * 0.065, 'out', { lines: 1 });
+    drawBubble(ctx, W * 0.26, H * 0.24, W * 0.66, H * 0.065, 'in', { lines: 1 });
+    // Mini calendar
+    const days3 = 5, rows3 = 3;
+    const cx3 = W * 0.14, cy3 = H * 0.35, cw3 = W * 0.72 / days3, ch3 = H * 0.2 / rows3;
+    ctx.strokeStyle = 'rgba(184,160,122,0.2)'; ctx.lineWidth = 0.5;
     for (let r3 = 0; r3 <= rows3; r3++) {
-      ctx.beginPath(); ctx.moveTo(cx3, cy3 + ch3 * 0.6 + r3 * ch3); ctx.lineTo(cx3 + days3 * cw3, cy3 + ch3 * 0.6 + r3 * ch3); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx3, cy3 + r3 * ch3); ctx.lineTo(cx3 + days3 * cw3, cy3 + r3 * ch3); ctx.stroke();
     }
-    // Booked dots
-    [[1,0],[3,1],[2,2],[5,0],[0,3],[4,2],[6,1]].forEach(([d, r3]) => {
-      ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.45;
-      ctx.beginPath(); ctx.arc(cx3 + (d + 0.5) * cw3, cy3 + ch3 * 0.6 + (r3 + 0.5) * ch3, cw3 * 0.2, 0, Math.PI * 2); ctx.fill();
+    for (let c3 = 0; c3 <= days3; c3++) {
+      ctx.beginPath(); ctx.moveTo(cx3 + c3 * cw3, cy3); ctx.lineTo(cx3 + c3 * cw3, cy3 + rows3 * ch3); ctx.stroke();
+    }
+    // Busy slots
+    [[0,0],[2,1],[4,0],[1,2]].forEach(([d, r3]) => {
+      ctx.fillStyle = 'rgba(184,160,122,0.15)';
+      ctx.fillRect(cx3 + d * cw3 + 1, cy3 + r3 * ch3 + 1, cw3 - 2, ch3 - 2);
     });
-    ctx.globalAlpha = 1;
-    // CTA button area
-    ctx.fillStyle = 'rgba(184,160,122,0.15)';
-    ctx.fillRect(W * 0.25, H * 0.58, W * 0.5, H * 0.065);
+    // Chosen slot — green with check
+    ctx.fillStyle = 'rgba(109,191,126,0.3)';
+    ctx.fillRect(cx3 + 3 * cw3 + 1, cy3 + 1 * ch3 + 1, cw3 - 2, ch3 - 2);
+    ctx.strokeStyle = 'rgba(109,191,126,0.95)'; ctx.lineWidth = 1.1;
+    const chx = cx3 + 3.5 * cw3, chy = cy3 + 1.5 * ch3;
+    ctx.beginPath();
+    ctx.moveTo(chx - cw3 * 0.18, chy);
+    ctx.lineTo(chx - cw3 * 0.04, chy + ch3 * 0.16);
+    ctx.lineTo(chx + cw3 * 0.2, chy - ch3 * 0.18);
+    ctx.stroke();
+    // Confirmation bubble
+    drawBubble(ctx, W * 0.26, H * 0.59, W * 0.66, H * 0.065, 'in', { lines: 1 });
+    ctx.fillStyle = 'rgba(109,191,126,0.7)';
+    ctx.beginPath(); ctx.arc(W * 0.87, H * 0.64, W * 0.013, 0, Math.PI * 2); ctx.fill();
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   },
 
   ai(ctx, W, H, p) {
+    // SupportPilot — ticket queue with AI statuses
     drawUnifiedBase(ctx, W, H);
-    drawBrowserChrome(ctx, W, H * 0.1);
-    // Editor area
-    ctx.fillStyle = 'rgba(184,160,122,0.04)';
-    ctx.fillRect(W * 0.04, H * 0.13, W * 0.92, H * 0.52);
-    // Cursor blinking line
+    drawFlowHeader(ctx, W, H * 0.1, 'INBOX · AI');
+    const rows = [
+      { c: 'rgba(109,191,126,0.85)', w: 0.5 },
+      { c: 'rgba(109,191,126,0.85)', w: 0.62 },
+      { c: 'rgba(200,170,100,0.85)', w: 0.44 },
+      { c: 'rgba(109,191,126,0.85)', w: 0.56 },
+      { c: 'rgba(109,191,126,0.85)', w: 0.38 },
+    ];
+    rows.forEach((rw, i) => {
+      const ry = H * (0.16 + i * 0.085);
+      ctx.fillStyle = 'rgba(184,160,122,0.06)';
+      roundRect(ctx, W * 0.06, ry, W * 0.88, H * 0.065, H * 0.012);
+      ctx.fill();
+      // Status dot
+      ctx.fillStyle = rw.c;
+      ctx.beginPath(); ctx.arc(W * 0.115, ry + H * 0.0325, W * 0.013, 0, Math.PI * 2); ctx.fill();
+      // Subject line
+      ctx.fillStyle = 'rgba(232,221,208,0.4)';
+      ctx.fillRect(W * 0.17, ry + H * 0.022, W * rw.w, H * 0.018);
+      // Resolved tag or human handoff
+      if (i === 2) {
+        ctx.fillStyle = 'rgba(200,170,100,0.7)';
+        ctx.font = `${Math.max(4, W * 0.024)}px "Courier New"`;
+        ctx.textAlign = 'right';
+        ctx.fillText('→ ОПЕРАТОР', W * 0.91, ry + H * 0.042);
+      } else {
+        ctx.fillStyle = 'rgba(109,191,126,0.65)';
+        ctx.font = `${Math.max(4, W * 0.024)}px "Courier New"`;
+        ctx.textAlign = 'right';
+        ctx.fillText('AI ✓ 30s', W * 0.91, ry + H * 0.042);
+      }
+    });
+    // Stats footer
     ctx.fillStyle = 'rgba(184,160,122,0.5)';
-    ctx.fillRect(W * 0.08, H * 0.19, W * 0.42, H * 0.025);
-    ctx.fillRect(W * 0.08, H * 0.225, W * 0.58, H * 0.018);
-    ctx.fillRect(W * 0.08, H * 0.255, W * 0.35, H * 0.018);
-    // Cursor blip
-    ctx.fillStyle = CARD_ACC; ctx.globalAlpha = 0.8;
-    ctx.fillRect(W * 0.08 + W * 0.35, H * 0.255, W * 0.008, H * 0.022);
-    ctx.globalAlpha = 1;
-    // AI suggestion ghost text
-    ctx.fillStyle = 'rgba(184,160,122,0.12)';
-    ctx.fillRect(W * 0.08, H * 0.3, W * 0.65, H * 0.018);
-    ctx.fillRect(W * 0.08, H * 0.33, W * 0.48, H * 0.018);
-    // Side panel (AI chat)
-    ctx.fillStyle = 'rgba(184,160,122,0.06)';
-    ctx.fillRect(W * 0.7, H * 0.13, W * 0.26, H * 0.52);
+    ctx.font = `${Math.max(4.5, W * 0.028)}px "Courier New"`;
+    ctx.textAlign = 'left';
+    ctx.fillText('65% auto-resolved · avg 30s', W * 0.06, H * 0.65);
     drawCardText(ctx, W, H, p, CARD_TEXT, CARD_ACC);
   }
 };
@@ -1678,10 +1862,8 @@ function openProfilePopup() {
 ══════════════════════════════════════ */
 function handleOrder() {
   closeProfilePopup();
-  // Open email client
-  const subject = encodeURIComponent('Хочу заказать проект');
-  const body = encodeURIComponent('Привет, hatori!\n\nЯ хотел бы обсудить проект...\n\nБюджет: \nСроки: \nОписание: ');
-  window.open(`mailto:hello@hatori.dev?subject=${subject}&body=${body}`, '_blank');
+  // Open Telegram
+  window.open('https://t.me/iamhatori', '_blank', 'noopener');
 }
 
 /* ══════════════════════════════════════
