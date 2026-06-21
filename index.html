@@ -1579,8 +1579,8 @@ function openPopup(project) {
   popupTag.textContent   = project.tag;
   popupTitle.textContent = project.title;
   popupDesc.textContent  = project.desc;
-  popupLink.href         = project.url;
-  popupUrlBar.textContent = project.url === '#' ? 'hatori.dev/' + project.id : project.url;
+  popupLink.href         = 'https://t.me/iamhatori';
+  popupUrlBar.textContent = 't.me/iamhatori';
   popupTechs.innerHTML   = project.techs.map(t => `<span class="tech-tag">${t}</span>`).join('');
   popupOverlay.classList.add('open');
 }
@@ -1811,19 +1811,25 @@ function animate(now) {
 
     // Auto-rotate
     const idleTime = clock - carousel.lastIdle;
-    if (idleTime > 3) {
+    if (idleTime > 3.5) {
       carousel.targetAngle += carousel.autoRotateSpeed * 60 * dt;
     }
 
-    // Snap-to-card: after 0.6s idle on mobile, gently snap to nearest card
-    const isMobileSnap = window.innerWidth < 480 && idleTime > 0.6;
-    if (isMobileSnap) {
-      const step = (Math.PI * 2) / N;
-      const nearest = Math.round(carousel.targetAngle / step) * step;
-      carousel.targetAngle += (nearest - carousel.targetAngle) * Math.min(dt * 3, 0.12);
+    // Hard snap-to-card — always land exactly on a card, never between
+    const step = (Math.PI * 2) / N;
+    const nearestIdx = Math.round(carousel.targetAngle / step);
+    const snapAngle = nearestIdx * step;
+    const snapDiff = snapAngle - carousel.targetAngle;
+
+    if (Math.abs(snapDiff) < step * 0.08) {
+      // Very close to a card — lock onto it
+      carousel.targetAngle = snapAngle;
+    } else {
+      // Pull toward nearest card
+      carousel.targetAngle += snapDiff * Math.min(dt * 4.5, 0.15);
     }
 
-    // Smooth angle
+    // Smooth angle — fast spring
     const angleDiff = carousel.targetAngle - carousel.angle;
     carousel.angle += angleDiff * Math.min(dt * 8, 0.95);
 
