@@ -756,12 +756,12 @@ function getMetrics() {
   const W = window.innerWidth, H = window.innerHeight;
   const minDim = Math.min(W, H);
   if (W < 380) {
-    // Small phones — ring slightly further, camera nudged back just enough
-    return { CW: 90, CH: 122, R: Math.min(155, minDim * 0.43), camZ: 60 };
+    // Small phones — bigger ring so cards don't overlap, camera well outside ring
+    return { CW: 95, CH: 130, R: Math.min(220, minDim * 0.62), camZ: 110 };
   } else if (W < 480) {
-    return { CW: 108, CH: 146, R: Math.min(175, minDim * 0.46), camZ: 55 };
+    return { CW: 112, CH: 152, R: Math.min(260, minDim * 0.68), camZ: 100 };
   } else if (W < 600) {
-    return { CW: 135, CH: 184, R: Math.min(210, minDim * 0.50), camZ: 40 };
+    return { CW: 140, CH: 190, R: Math.min(300, minDim * 0.72), camZ: 75 };
   } else {
     return { CW: 220, CH: 300, R: 420, camZ: 0 };
   }
@@ -1364,7 +1364,9 @@ function roundRect(ctx, x, y, w, h, r) {
 
 function makeCardTexture(project, CW, CH) {
   const canvas = document.createElement('canvas');
-  const scale = window.devicePixelRatio || 2;
+  // Use higher scale for small cards so text remains crisp on mobile
+  const baseScale = window.devicePixelRatio || 2;
+  const scale = CW < 150 ? Math.max(baseScale, 3) : baseScale;
   canvas.width = CW * scale;
   canvas.height = CH * scale;
   const ctx = canvas.getContext('2d');
@@ -1382,13 +1384,14 @@ function makeCardTexture(project, CW, CH) {
    SCENE SETUP
 ══════════════════════════════════════ */
 const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: window.innerWidth > 480, alpha: false });
-// Cap pixel ratio lower on mobile for performance
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 480 ? 1.5 : 2));
+// Cap pixel ratio lower on mobile for performance — allow up to 2x on modern phones
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setClearColor(0x0a0907);  // very slightly warm black
 
 const scene = new THREE.Scene();
-// Very subtle warm fog — creates depth without being visible as "fog"
-scene.fog = new THREE.FogExp2(0x0a0907, 0.00055);
+// Very subtle warm fog — less dense on mobile so distant cards remain visible
+const fogDensity = window.innerWidth < 480 ? 0.00028 : 0.00055;
+scene.fog = new THREE.FogExp2(0x0a0907, fogDensity);
 const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 2000);
 
 // ── Lighting: soft, warm, barely there ──
@@ -1659,8 +1662,8 @@ document.addEventListener('touchmove', e => {
   const x = e.touches[0].clientX;
   const dx = x - touchLastX;
   touchVX = dx;
-  // Slightly increased sensitivity on mobile
-  const sensitivity = window.innerWidth < 480 ? 0.007 : 0.005;
+  // Lower sensitivity on mobile — less jerky, more controlled
+  const sensitivity = window.innerWidth < 480 ? 0.004 : 0.005;
   carousel.targetAngle -= dx * sensitivity;
   touchLastX = x;
   carousel.lastIdle = clock;
@@ -1668,9 +1671,10 @@ document.addEventListener('touchmove', e => {
 
 document.addEventListener('touchend', e => {
   if (!introComplete) return;
-  // Momentum flick
-  const sensitivity = window.innerWidth < 480 ? 0.007 : 0.005;
-  carousel.targetAngle -= touchVX * 6 * sensitivity;
+  // Momentum flick — reduced multiplier on mobile to prevent wild spinning
+  const sensitivity = window.innerWidth < 480 ? 0.004 : 0.005;
+  const flickMult = window.innerWidth < 480 ? 3 : 6;
+  carousel.targetAngle -= touchVX * flickMult * sensitivity;
 });
 
 /* ══════════════════════════════════════
@@ -1755,7 +1759,7 @@ function animate(now) {
     }
     camera.position.x = 0;
     camera.position.y = 0;
-    camera.lookAt(0, 0, camera.position.z - 1);
+    camera.lookAt(0, 0, 0);
 
     // Position each card
     cardMeshes.forEach((mesh, i) => {
@@ -1811,6 +1815,14 @@ function animate(now) {
       carousel.targetAngle += carousel.autoRotateSpeed * 60 * dt;
     }
 
+    // Snap-to-card: after 0.6s idle on mobile, gently snap to nearest card
+    const isMobileSnap = window.innerWidth < 480 && idleTime > 0.6;
+    if (isMobileSnap) {
+      const step = (Math.PI * 2) / N;
+      const nearest = Math.round(carousel.targetAngle / step) * step;
+      carousel.targetAngle += (nearest - carousel.targetAngle) * Math.min(dt * 3, 0.12);
+    }
+
     // Smooth angle
     const angleDiff = carousel.targetAngle - carousel.angle;
     carousel.angle += angleDiff * Math.min(dt * 8, 0.95);
@@ -1822,10 +1834,10 @@ function animate(now) {
       mesh.rotation.set(0, ring.ry, 0);
     });
 
-    // Camera — pulled back on mobile for better overview
+    // Camera — on mobile, positioned outside the ring, looking at center
     const targetCamZ = getMetrics().camZ;
     camera.position.set(0, 0, targetCamZ);
-    camera.lookAt(0, 0, targetCamZ - 1);
+    camera.lookAt(0, 0, 0);
 
     // Raycaster for hover
     mouse2D.set(mouseX, mouseY);
