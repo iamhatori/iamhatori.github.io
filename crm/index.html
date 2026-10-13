@@ -3,292 +3,584 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mechanism AI CRM — ИИ-агент и воронка без долгого внедрения</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Mechanism AI CRM — ИИ-агент и CRM за 1 вечер своими руками</title>
+  
+  <!-- Premium Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              dark: '#090a0f',
+              surface: '#0f1117',
+              blue: '#2563eb',
+              lightBlue: '#3b82f6',
+              accent: '#6366f1'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #08090d;
+      background-color: #090a0f;
       color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
-    .mono { font-family: 'JetBrains Mono', monospace; }
-    .glow-bg {
-      background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.18) 0%, rgba(8, 9, 13, 0) 70%);
+
+    .bg-noise {
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 99;
     }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(16px);
+
+    .ease-spring {
+      transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .glass-card-hover {
-      transition: all 0.25s ease;
+    .ease-cinematic {
+      transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
     }
-    .glass-card-hover:hover {
-      border-color: rgba(59, 130, 246, 0.35);
-      transform: translateY(-2px);
+
+    .inner-glow {
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
     }
   </style>
 </head>
-<body class="min-h-screen relative overflow-x-hidden selection:bg-blue-600 selection:text-white">
+<body class="relative min-h-[100dvh]">
+  <div class="bg-noise"></div>
 
-  <!-- Glow effect -->
-  <div class="glow-bg absolute top-0 left-0 right-0 h-[650px] pointer-events-none"></div>
+  <!-- Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-b from-blue-600/15 via-indigo-600/10 to-transparent blur-[140px] rounded-full"></div>
+    <div class="absolute top-[45%] -left-[10%] w-[500px] h-[500px] bg-blue-500/10 blur-[130px] rounded-full"></div>
+    <div class="absolute top-[75%] -right-[10%] w-[600px] h-[600px] bg-indigo-500/10 blur-[140px] rounded-full"></div>
+  </div>
 
-  <!-- Header -->
-  <header class="w-full border-b border-white/[0.05] bg-[#08090d]/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-600/30">
-          M
-        </div>
-        <span class="font-bold tracking-tight text-lg text-white">Mechanism <span class="text-blue-500 font-normal">AI CRM</span></span>
-      </div>
+  <!-- HEADER -->
+  <header class="fixed top-5 inset-x-0 z-50 flex justify-center px-4">
+    <nav class="relative w-full max-w-5xl rounded-full bg-[#090a0f]/80 backdrop-blur-xl border border-white/10 p-2 shadow-2xl flex items-center justify-between transition-all duration-500 ease-cinematic">
       
-      <div class="flex items-center gap-3">
-        <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          Сервер онлайн
-        </span>
-        <a href="#demo" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold transition shadow-md shadow-blue-600/20">
-          14 дней бесплатно
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2.5 pl-3 pr-2 py-1 group">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform duration-300">
+          <i data-lucide="cpu" class="w-4 h-4 stroke-[1.8]"></i>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-bold tracking-tight text-white">Mechanism AI CRM</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden md:flex items-center gap-1 text-xs font-medium text-slate-300">
+        <a href="#demo" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">Демо</a>
+        <a href="#comparison" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">Сравнение</a>
+        <a href="#trial" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">Тарифы</a>
+      </div>
+
+      <!-- Right Action CTA -->
+      <div class="flex items-center gap-2">
+        <a href="#trial" class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-600/25 active:scale-[0.98] transition-all duration-300 ease-spring">
+          <span>Тест 14 дней бесплатно</span>
+          <span class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300">
+            <i data-lucide="arrow-up-right" class="w-3 h-3 stroke-[2.2]"></i>
+          </span>
         </a>
       </div>
-    </div>
+    </nav>
   </header>
 
-  <!-- Hero Section -->
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-20">
-    <div class="text-center max-w-3xl mx-auto mb-14">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-white/[0.04] border border-white/[0.08] text-slate-300 mb-6">
-        <i data-lucide="zap" class="w-3.5 h-3.5 text-blue-400"></i>
-        <span>Внедрение за 1 вечер вместо 2 месяцев в amoCRM</span>
+  <main class="relative z-10 pt-28 md:pt-36">
+
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 flex flex-col items-center text-center">
+      
+      <!-- Eyebrow Pill -->
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/10 inner-glow backdrop-blur-md mb-8">
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+        </span>
+        <span class="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-slate-300">
+          ⚡ Новое поколение CRM для малого бизнеса
+        </span>
       </div>
 
-      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15] mb-6">
-        ИИ-агент и CRM, которые не требуют армии интеграторов
+      <!-- Main Headline (H1) -->
+      <h1 class="max-w-4xl text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12] mb-6">
+        ИИ-агент и CRM, которые внедряются <br class="hidden sm:inline">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-200 to-indigo-300">
+          за один вечер,
+        </span>
+        <span class="text-slate-400 font-bold">а не за 2 месяца</span>
       </h1>
 
-      <p class="text-base sm:text-lg text-slate-400 font-normal leading-relaxed mb-8 max-w-2xl mx-auto">
-        Автономный ИИ-менеджер принимает заявки в Telegram и на сайте 24/7, квалифицирует клиентов и сам создаёт сделки в воронке. Без сложных ТЗ и переплат.
+      <!-- Subtitle -->
+      <p class="max-w-2xl text-base sm:text-lg text-slate-300 font-normal leading-relaxed mb-10">
+        Отвечает клиентам в Telegram и на сайте 24/7, квалифицирует лида и сам создаёт готовую сделку в CRM. Без интеграторов, сложного кода и оплаты за каждый чих.
       </p>
 
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-        <a href="#compare" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2">
-          <span>Смотреть сравнение с Amo</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      <!-- CTA Buttons Group -->
+      <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mb-16">
+        <!-- Primary Button -->
+        <a href="#trial" class="group w-full sm:w-auto inline-flex items-center justify-between sm:justify-start gap-3 px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-xl shadow-blue-600/30 active:scale-[0.98] transition-all duration-300 ease-spring">
+          <span>Запустить пилот бесплатно</span>
+          <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300">
+            <i data-lucide="arrow-right" class="w-4 h-4 stroke-[2]"></i>
+          </span>
         </a>
-        <a href="https://mechanism-ai-crm.ru/" target="_blank" class="w-full sm:w-auto px-7 py-3.5 rounded-xl glass-card hover:bg-white/[0.05] text-slate-300 text-sm font-medium transition flex items-center justify-center gap-2">
-          <i data-lucide="play" class="w-4 h-4 text-blue-400"></i>
-          <span>Открыть механизм</span>
+
+        <!-- Secondary Button -->
+        <a href="#demo" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 inner-glow backdrop-blur-md active:scale-[0.98] transition-all duration-300">
+          <i data-lucide="play-circle" class="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform"></i>
+          <span>Смотреть демо (2 мин)</span>
         </a>
       </div>
-    </div>
 
-    <!-- Live Demo Visual: Telegram Chat -> CRM Lead -->
-    <div class="glass-card rounded-2xl p-4 sm:p-8 max-w-4xl mx-auto mb-24 relative overflow-hidden">
-      <div class="flex flex-col md:flex-row gap-6 items-stretch">
-        
-        <!-- Left: TG Client Interaction -->
-        <div class="flex-1 bg-[#0b0d14] rounded-xl p-4 sm:p-5 border border-white/[0.06]">
-          <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.05]">
-            <div class="flex items-center gap-2">
-              <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
-              <span class="text-xs font-semibold text-slate-300">Telegram • Диалог с клиентом</span>
-            </div>
-            <span class="mono text-[10px] text-slate-500">23:42 (Ночь)</span>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <!-- Client -->
-            <div class="flex justify-start">
-              <div class="bg-white/[0.06] rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[85%] text-slate-200">
-                Привет! Подскажите, вы подключаете CRM для розничных магазинов одежды? Сколько по времени?
-              </div>
-            </div>
-            <!-- AI Agent (Instant) -->
-            <div class="flex justify-end">
-              <div class="bg-blue-600/90 rounded-2xl rounded-tr-sm px-3.5 py-2.5 max-w-[85%] text-white">
-                Здравствуйте! Да, Mechanism AI CRM настраивается под ключ за 1 вечер. Сколько у вас сейчас точек и откуда основной поток клиентов?
-                <div class="mt-1 flex items-center justify-between text-[10px] text-blue-200">
-                  <span>Ответ за 2 сек</span>
-                  <i data-lucide="check-check" class="w-3 h-3"></i>
-                </div>
-              </div>
-            </div>
-            <!-- Client -->
-            <div class="flex justify-start">
-              <div class="bg-white/[0.06] rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[85%] text-slate-200">
-                У нас 2 магазина + Telegram-канал. Хотим протестировать. Мой контакт: +7 (912) 840-22-11
-              </div>
-            </div>
-          </div>
+      <!-- Trust Badges -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl w-full text-center text-xs text-slate-400 border-t border-white/[0.06] pt-8 mb-16">
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
+          <span>Внедрение за 1 вечер</span>
         </div>
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="zap" class="w-4 h-4 text-blue-400"></i>
+          <span>Ответ клиенту за 3 сек</span>
+        </div>
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
+          <span>0 ₽ интеграторам</span>
+        </div>
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+          <span>Все каналы из коробки</span>
+        </div>
+      </div>
 
-        <!-- Right: Real-time CRM Deal -->
-        <div class="flex-1 bg-[#0b0d14] rounded-xl p-4 sm:p-5 border border-white/[0.06] flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.05]">
+      <!-- INTERACTIVE WIDGET: Живой диалог в Telegram справа -> Сделка в CRM -->
+      <div id="demo" class="w-full max-w-5xl text-left">
+        <div class="relative p-2 md:p-3 rounded-[2.2rem] bg-white/[0.03] border border-white/10 shadow-2xl backdrop-blur-xl">
+          <div class="relative rounded-[calc(2.2rem-0.6rem)] bg-[#0c0e14] border border-white/[0.06] inner-glow p-5 sm:p-7 md:p-9 overflow-hidden">
+            
+            <!-- Window Bar -->
+            <div class="flex items-center justify-between pb-5 mb-6 border-b border-white/[0.06]">
               <div class="flex items-center gap-2">
-                <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-emerald-400"></i>
-                <span class="text-xs font-semibold text-slate-300">Автоматическая карточка в CRM</span>
+                <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                <span class="ml-3 text-xs font-mono text-slate-400 hidden sm:inline">mechanism-agent // live lead qualification</span>
               </div>
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                Новая сделка
-              </span>
-            </div>
-
-            <div class="space-y-2.5 text-xs">
-              <div class="p-3 rounded-lg bg-white/[0.03] border border-white/[0.05]">
-                <div class="text-slate-400 text-[11px] mb-1">Клиент / Ниша</div>
-                <div class="font-semibold text-white">Розничный бренд одежды (2 точки + TG)</div>
-              </div>
-
-              <div class="p-3 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-between">
-                <div>
-                  <div class="text-slate-400 text-[11px] mb-0.5">Телефон</div>
-                  <div class="mono font-medium text-emerald-400">+7 (912) 840-22-11</div>
-                </div>
-                <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 text-[10px] font-semibold">Готов к тесту</span>
-              </div>
-
-              <div class="p-3 rounded-lg bg-white/[0.03] border border-white/[0.05]">
-                <div class="text-slate-400 text-[11px] mb-1">Статус ИИ-квалификации</div>
-                <div class="text-slate-300 flex items-center gap-1.5">
-                  <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
-                  <span>Лид полностью собран без участия менеджера</span>
-                </div>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Агент активен 24/7
+                </span>
               </div>
             </div>
-          </div>
 
-          <div class="mt-4 pt-3 border-t border-white/[0.05] flex items-center justify-between text-[11px] text-slate-500">
-            <span>Экономия: 40 мин работы менеджера</span>
-            <span class="text-slate-400">0 ₽ интеграторам</span>
+            <!-- Two-Column Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              
+              <!-- Left: Telegram Dialog Stream -->
+              <div class="lg:col-span-6 flex flex-col justify-between rounded-2xl bg-black/40 border border-white/[0.06] p-4 sm:p-5">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/5">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400">
+                      <i data-lucide="send" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                      <div class="text-xs font-bold text-white">Входящий лид в Telegram</div>
+                      <div class="text-[10px] text-slate-400 font-mono">@client_lead_bot</div>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-mono text-slate-500">23:42 (Ночь)</span>
+                </div>
+
+                <!-- Messages -->
+                <div class="space-y-3.5 mb-4 text-xs">
+                  <!-- User Bubble -->
+                  <div class="flex gap-2.5 items-end justify-end">
+                    <div class="max-w-[85%] rounded-2xl rounded-br-none bg-blue-600 text-white p-3 shadow-md">
+                      <p class="font-normal leading-relaxed">Сколько стоит внедрение?</p>
+                      <div class="text-[9px] text-blue-200 text-right mt-1 font-mono">23:42:04</div>
+                    </div>
+                  </div>
+
+                  <!-- AI Typing -->
+                  <div class="flex gap-2 items-center text-[11px] text-slate-400 font-mono pl-1">
+                    <i data-lucide="bot" class="w-3.5 h-3.5 text-blue-400"></i>
+                    <span>ИИ-агент отвечает за 3 секунды...</span>
+                  </div>
+
+                  <!-- AI Bubble -->
+                  <div class="flex gap-2.5 items-end">
+                    <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shrink-0 mb-1">
+                      <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <div class="max-w-[90%] rounded-2xl rounded-bl-none bg-white/[0.06] border border-white/10 text-slate-200 p-3.5 shadow-md">
+                      <p class="font-normal leading-relaxed text-slate-100">
+                        Здравствуйте! Настройка занимает <strong>1 вечер</strong>. Сколько мастеров у вас в штате?
+                      </p>
+                      <div class="text-[9px] text-slate-400 mt-1 font-mono">23:42:07 · Автоответ</div>
+                    </div>
+                  </div>
+
+                  <!-- User Reply -->
+                  <div class="flex gap-2.5 items-end justify-end">
+                    <div class="max-w-[85%] rounded-2xl rounded-br-none bg-blue-600 text-white p-3 shadow-md">
+                      <p class="font-normal leading-relaxed">У нас 8 мастеров, хотим запустить на этой неделе</p>
+                      <div class="text-[9px] text-blue-200 text-right mt-1 font-mono">23:42:48</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-2 text-[11px] text-emerald-400 flex items-center gap-1.5 font-mono">
+                  <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                  <span>Лид полностью квалифицирован</span>
+                </div>
+              </div>
+
+              <!-- Right: Result in Mechanism AI CRM -->
+              <div class="lg:col-span-6 flex flex-col justify-between rounded-2xl bg-black/40 border border-white/[0.06] p-4 sm:p-5">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/5">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400">
+                      <i data-lucide="kanban" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                      <div class="text-xs font-bold text-white">Воронка Mechanism AI CRM</div>
+                      <div class="text-[10px] text-slate-400 font-mono">Автоматическая фиксация сделки</div>
+                    </div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono border border-emerald-500/30">Сделка создана</span>
+                </div>
+
+                <!-- Deal Card Detail -->
+                <div class="rounded-xl bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/10 p-4 space-y-3.5">
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <div class="text-xs font-mono uppercase text-blue-400 tracking-wider">Сделка #5920</div>
+                      <div class="text-sm font-bold text-white mt-0.5">Салон красоты (8 мастеров)</div>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-600/30 text-blue-300 border border-blue-500/40">
+                      Квалифицирован
+                    </span>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2.5 rounded-lg bg-black/30 border border-white/5">
+                      <div class="text-[10px] text-slate-400">Сумма сделки</div>
+                      <div class="font-mono text-emerald-400 font-bold mt-0.5">45 000 ₽</div>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-black/30 border border-white/5">
+                      <div class="text-[10px] text-slate-400">Канал</div>
+                      <div class="font-mono text-slate-200 font-medium mt-0.5">Telegram Bot</div>
+                    </div>
+                  </div>
+
+                  <div class="p-2.5 rounded-lg bg-blue-950/30 border border-blue-500/20 text-xs">
+                    <div class="text-[10px] text-blue-300 font-mono font-semibold">Итог диалога:</div>
+                    <p class="text-slate-300 text-[11px] mt-1 leading-relaxed font-mono">
+                      «Сделка создана: Квалифицирован, сумма 45 000 ₽. Готовы оплачивать пилот и подключать мастеров.»
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Mini Stage Bar -->
+                <div class="mt-4 pt-3 border-t border-white/5">
+                  <div class="text-[10px] text-slate-400 font-mono mb-2 flex justify-between">
+                    <span>Этап воронки:</span>
+                    <span class="text-blue-400">Готов к закрытию</span>
+                  </div>
+                  <div class="grid grid-cols-4 gap-1.5 h-1.5">
+                    <div class="rounded-full bg-emerald-500"></div>
+                    <div class="rounded-full bg-emerald-500"></div>
+                    <div class="rounded-full bg-blue-500 animate-pulse"></div>
+                    <div class="rounded-full bg-white/10"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
         </div>
-
       </div>
-    </div>
 
-    <!-- Comparison Section -->
-    <div id="compare" class="max-w-4xl mx-auto mb-24">
-      <div class="text-center mb-10">
-        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-3">
-          Почему старые CRM проигрывают Mechanism
+    </section>
+
+    <!-- SECTION 2: KILL AMO & BITRIX24 -->
+    <section id="comparison" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-[11px] font-mono uppercase tracking-widest mb-4">
+          Честное сравнение «Лоб в лоб»
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          Зачем вам монстры из 2012 года, если нужен поток квалифицированных сделок?
         </h2>
-        <p class="text-slate-400 text-sm sm:text-base">
-          Сравнение в цифрах и фактах: что выбирает бизнес в 2026 году
+        <p class="mt-4 text-base sm:text-lg text-slate-300">
+          AmoCRM и Битрикс24 требуют интеграторов и абонплаты за сторонние виджеты. Mechanism AI CRM дает результат сразу из коробки.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-        <!-- Old Heavy CRMs -->
-        <div class="glass-card rounded-2xl p-6 sm:p-7 border-red-500/20 bg-gradient-to-b from-red-500/[0.02] to-transparent">
-          <div class="flex items-center gap-2.5 text-red-400 mb-6 font-semibold text-sm">
-            <i data-lucide="x-circle" class="w-5 h-5"></i>
-            <span>Тяжелые монстры (amoCRM / Bitrix24)</span>
-          </div>
-          <ul class="space-y-4 text-xs sm:text-sm text-slate-400">
-            <li class="flex items-start gap-3">
-              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
-              <span><strong>Внедрение 1–2 месяца:</strong> составление ТЗ, поиск интегратора, постоянные доработки.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
-              <span><strong>От 80 000 до 300 000 ₽</strong> только за настройку воронок и интеграцию каналов.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
-              <span><strong>Ночные лиды сливаются:</strong> клиент написал в 23:00, менеджер ответил в 10:00 — клиент уже ушел.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
-              <span><strong>Сотни ненужных вкладок</strong> и перегруженный интерфейс, в котором сотрудники путаются.</span>
-            </li>
-          </ul>
-        </div>
+      <!-- Comparison Container -->
+      <div class="p-2 md:p-3 rounded-[2.2rem] bg-white/[0.02] border border-white/10 shadow-2xl backdrop-blur-xl">
+        <div class="rounded-[calc(2.2rem-0.6rem)] bg-[#0b0d13] border border-white/[0.06] overflow-x-auto inner-glow">
+          
+          <table class="w-full text-left border-collapse min-w-[680px]">
+            <thead>
+              <tr class="border-b border-white/10 bg-white/[0.02]">
+                <th class="py-5 px-6 text-xs font-mono uppercase tracking-wider text-slate-400 w-1/3">Критерий</th>
+                <th class="py-5 px-6 text-xs font-bold text-slate-400 w-1/3 bg-rose-950/10">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                    <span>AmoCRM / Bitrix24</span>
+                  </div>
+                </th>
+                <th class="py-5 px-6 text-xs font-bold text-white w-1/3 bg-blue-950/20 border-l border-blue-500/20">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span class="text-blue-300 font-extrabold text-sm">Mechanism AI CRM</span>
+                    </div>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/30 text-blue-200">Выбор 2026</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/[0.06] text-sm">
+              
+              <!-- Row 1: Срок внедрения -->
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-5 px-6 font-semibold text-slate-200">Срок запуска</td>
+                <td class="py-5 px-6 text-slate-400 bg-rose-950/5">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="x" class="w-4 h-4 text-rose-500 shrink-0 mt-0.5"></i>
+                    <span><strong>1–2 месяца</strong> согласований, ТЗ и поиска интеграторов</span>
+                  </div>
+                </td>
+                <td class="py-5 px-6 text-white font-medium bg-blue-950/15 border-l border-blue-500/20">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span class="text-emerald-300 font-bold">Запуск за 1 вечер своими руками</span>
+                  </div>
+                </td>
+              </tr>
 
-        <!-- Mechanism AI CRM -->
-        <div class="glass-card rounded-2xl p-6 sm:p-7 border-blue-500/30 bg-gradient-to-b from-blue-500/[0.05] to-transparent relative">
-          <div class="absolute -top-3 right-6 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-600 text-white uppercase tracking-wider">
-            Выбор скорости
-          </div>
-          <div class="flex items-center gap-2.5 text-blue-400 mb-6 font-semibold text-sm">
-            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-            <span>Mechanism AI CRM</span>
-          </div>
-          <ul class="space-y-4 text-xs sm:text-sm text-slate-300">
-            <li class="flex items-start gap-3">
-              <i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>
-              <span><strong>Настройка за 1 вечер:</strong> подключаешь Telegram-бота и чат на сайт в 2 клика.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>
-              <span><strong>0 ₽ за внедрение:</strong> всё работает из коробки без сторонних специалистов.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>
-              <span><strong>Мгновенный ответ 24/7:</strong> ИИ квалифицирует клиента за 3 секунды в любое время суток.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>
-              <span><strong>Чистый минимализм:</strong> только воронка, диалоги и сделки. Ничего лишнего.</span>
-            </li>
-          </ul>
+              <!-- Row 2: Стоимость -->
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-5 px-6 font-semibold text-slate-200">Стоимость интеграторам</td>
+                <td class="py-5 px-6 text-slate-400 bg-rose-950/5">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="x" class="w-4 h-4 text-rose-500 shrink-0 mt-0.5"></i>
+                    <span>От <strong>100 000 ₽</strong> только за базовую настройку воронок</span>
+                  </div>
+                </td>
+                <td class="py-5 px-6 text-white font-medium bg-blue-950/15 border-l border-blue-500/20">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span class="text-emerald-300 font-bold">0 ₽ за настройку (всё готово из коробки)</span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 3: Ночные лиды -->
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-5 px-6 font-semibold text-slate-200">Ночные лиды</td>
+                <td class="py-5 px-6 text-slate-400 bg-rose-950/5">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="x" class="w-4 h-4 text-rose-500 shrink-0 mt-0.5"></i>
+                    <span>Заявка ждет утра, клиент остывает и уходит к конкурентам</span>
+                  </div>
+                </td>
+                <td class="py-5 px-6 text-white font-medium bg-blue-950/15 border-l border-blue-500/20">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span class="text-emerald-300 font-bold">ИИ отвечает за 3 секунды круглые сутки 24/7</span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 4: Интерфейс -->
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-5 px-6 font-semibold text-slate-200">Интерфейс</td>
+                <td class="py-5 px-6 text-slate-400 bg-rose-950/5">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="x" class="w-4 h-4 text-rose-500 shrink-0 mt-0.5"></i>
+                    <span>Сотни сложных вкладок, сотрудники путаются и саботируют</span>
+                  </div>
+                </td>
+                <td class="py-5 px-6 text-white font-medium bg-blue-950/15 border-l border-blue-500/20">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span class="text-emerald-300 font-bold">Чистый фокус на сделках и живых диалогах</span>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
         </div>
       </div>
-    </div>
 
-    <!-- 3 Simple Steps -->
-    <div class="max-w-4xl mx-auto mb-20">
-      <div class="text-center mb-10">
-        <h2 class="text-xl sm:text-3xl font-bold text-white tracking-tight mb-2">
-          Как запустить свою умную воронку сегодня
+    </section>
+
+    <!-- SECTION 3: 3 ПРОСТЫХ ШАГА ЗАПУСКА -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-[11px] font-mono uppercase tracking-widest mb-4">
+          Прозрачный старт
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+          3 простых шага — и ваш отдел продаж на автопилоте
         </h2>
+        <p class="mt-4 text-base sm:text-lg text-slate-300">
+          Справится любой предприниматель без программистов и технических знаний.
+        </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="glass-card glass-card-hover rounded-xl p-5">
-          <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-sm mb-4">1</div>
-          <h3 class="font-semibold text-white text-sm mb-1.5">Подключи канал</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Привяжи Telegram-бота или вставь виджет на сайт одной строчкой кода.</p>
+      <!-- Bento Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Step 1 -->
+        <div class="group relative p-2 rounded-[2rem] bg-white/[0.03] border border-white/10 hover:border-blue-500/40 transition-all duration-500 ease-cinematic">
+          <div class="h-full flex flex-col justify-between p-6 sm:p-7 rounded-[calc(2rem-0.5rem)] bg-[#0c0e14] border border-white/[0.05] inner-glow">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-blue-400">
+                  01
+                </span>
+                <span class="text-[11px] font-mono text-slate-500 uppercase">3 минуты</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Подключи бота</h3>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                Подключите Telegram-бота или виджет на сайт за 3 минуты. Вставьте токен в систему в 2 клика.
+              </p>
+            </div>
+            <div class="mt-8 pt-4 border-t border-white/5 flex items-center gap-2 text-xs text-blue-300 font-mono">
+              <i data-lucide="check-circle" class="w-4 h-4 text-blue-400"></i>
+              <span>Без серверов и вебхуков</span>
+            </div>
+          </div>
         </div>
 
-        <div class="glass-card glass-card-hover rounded-xl p-5">
-          <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-sm mb-4">2</div>
-          <h3 class="font-semibold text-white text-sm mb-1.5">Задай правила агенту</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Загрузи прайс и краткое описание услуг обычным текстом без сложного промптинга.</p>
+        <!-- Step 2 -->
+        <div class="group relative p-2 rounded-[2rem] bg-white/[0.03] border border-white/10 hover:border-indigo-500/40 transition-all duration-500 ease-cinematic">
+          <div class="h-full flex flex-col justify-between p-6 sm:p-7 rounded-[calc(2rem-0.5rem)] bg-[#0c0e14] border border-white/[0.05] inner-glow">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center font-mono font-bold text-indigo-400">
+                  02
+                </span>
+                <span class="text-[11px] font-mono text-slate-500 uppercase">Свободный формат</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Загрузи прайс</h3>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                Загрузите базу знаний или прайс в свободной форме (PDF, Excel, сайт или текст). ИИ мгновенно поймет ваши услуги.
+              </p>
+            </div>
+            <div class="mt-8 pt-4 border-t border-white/5 flex items-center gap-2 text-xs text-indigo-300 font-mono">
+              <i data-lucide="file-text" class="w-4 h-4 text-indigo-400"></i>
+              <span>Мгновенное обучение</span>
+            </div>
+          </div>
         </div>
 
-        <div class="glass-card glass-card-hover rounded-xl p-5">
-          <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-sm mb-4">3</div>
-          <h3 class="font-semibold text-white text-sm mb-1.5">Получай готовые сделки</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">ИИ сам ведет диалог, вытягивает номер телефона и ставит задачу менеджеру.</p>
+        <!-- Step 3 -->
+        <div class="group relative p-2 rounded-[2rem] bg-white/[0.03] border border-white/10 hover:border-emerald-500/40 transition-all duration-500 ease-cinematic">
+          <div class="h-full flex flex-col justify-between p-6 sm:p-7 rounded-[calc(2rem-0.5rem)] bg-[#0c0e14] border border-white/[0.05] inner-glow">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center font-mono font-bold text-emerald-400">
+                  03
+                </span>
+                <span class="text-[11px] font-mono text-emerald-400 uppercase">24/7 в бою</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Получай готовые заявки</h3>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                ИИ общается, квалифицирует бюджет и контакты, и передает вам в воронку готовые деньги.
+              </p>
+            </div>
+            <div class="mt-8 pt-4 border-t border-white/5 flex items-center gap-2 text-xs text-emerald-300 font-mono">
+              <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+              <span>Автопилот продаж</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SECTION 4: ЛИД-ФОРМА / ФИНАЛ -->
+    <section id="trial" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 mb-20 text-center">
+      <div class="relative p-2 rounded-[2.5rem] bg-gradient-to-b from-blue-500/20 via-white/[0.04] to-transparent border border-white/10 overflow-hidden shadow-2xl">
+        <div class="relative rounded-[calc(2.5rem-0.5rem)] bg-gradient-to-b from-[#0f111a] to-[#090a0f] p-8 sm:p-12 border border-white/[0.08] inner-glow">
+          
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+            Запустите пилот за 1 вечер бесплатно
+          </h2>
+          <p class="max-w-xl mx-auto text-sm sm:text-base text-slate-300 mb-8 leading-relaxed">
+            14 дней полного доступа. Введите ваш Telegram @username — мы моментально пришлем доступ к личному кабинету.
+          </p>
+
+          <!-- Lead Form -->
+          <form class="max-w-md mx-auto flex flex-col sm:flex-row items-center gap-3" onsubmit="event.preventDefault(); alert('Доступ отправлен в ваш Telegram!');">
+            <div class="relative w-full">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 text-sm font-mono">@</span>
+              <input type="text" placeholder="username" required class="w-full pl-8 pr-4 py-3.5 rounded-full bg-white/[0.05] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono">
+            </div>
+            <button type="submit" class="w-full sm:w-auto shrink-0 px-7 py-3.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-xl shadow-blue-600/30 active:scale-[0.98] transition-all">
+              Старт пилота
+            </button>
+          </form>
+
+          <div class="mt-6 text-xs text-slate-400 font-mono">
+            mechanism-ai-crm.ru · Без привязки карты · 14 дней бесплатно
+          </div>
+
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Final CTA -->
-    <div class="glass-card rounded-2xl p-8 sm:p-12 text-center max-w-3xl mx-auto border-blue-500/20 bg-gradient-to-b from-blue-600/[0.08] to-transparent">
-      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">
-        Хватит терять клиентов в чатах
-      </h2>
-      <p class="text-slate-400 text-sm max-w-lg mx-auto mb-6">
-        Протестируй Mechanism AI CRM прямо сейчас — 14 дней полного доступа без привязки банковской карты.
-      </p>
-      <a href="https://mechanism-ai-crm.ru/" target="_blank" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition shadow-lg shadow-blue-600/30">
-        <span>Открыть Mechanism CRM</span>
-        <i data-lucide="external-link" class="w-4 h-4"></i>
-      </a>
-    </div>
   </main>
 
-  <footer class="border-t border-white/[0.05] py-8 text-center text-xs text-slate-600">
-    Mechanism AI CRM &copy; 2026. Концепт посадочной страницы нового поколения.
+  <!-- FOOTER -->
+  <footer class="border-t border-white/[0.06] bg-black/60 py-8 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white">Mechanism AI CRM</span>
+        <span>© 2026. Автономная ИИ-CRM для малого бизнеса.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#comparison" class="hover:text-white transition-colors">Сравнение с Amo/Bitrix</a>
+        <a href="https://mechanism-ai-crm.ru" target="_blank" class="text-blue-400 hover:underline">mechanism-ai-crm.ru</a>
+      </div>
+    </div>
   </footer>
 
   <script>
