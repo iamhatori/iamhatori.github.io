@@ -22,11 +22,6 @@ img{max-width:100%}
 ::-webkit-scrollbar-track{background:#ffffff}
 ::-webkit-scrollbar-thumb{background:#d6d6d6;border-radius:9px;border:2px solid #ffffff}
 ::-webkit-scrollbar-thumb:hover{background:#bcbcbc}
-/* Custom cursor — 1:1 как на iamhatori.github.io */
-#cursor{pointer-events:none;position:fixed;width:18px;height:18px;border:1.5px solid #141414;border-radius:50%;transform:translate(-50%,-50%) scale(1);transition:transform .18s ease,border-color .18s ease,background .18s ease,opacity .18s ease;z-index:9999;mix-blend-mode:difference;opacity:1}
-#cursor.big{transform:translate(-50%,-50%) scale(2.6);border-color:#c8b89a;background:rgba(200,184,154,.10)}
-#cursor.hidden{opacity:0}
-@media (hover:none){#cursor{display:none !important}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .reveal,.detail,.faq-detail,.liftcard,.price-card,.pain-row,.contact-row,.cta,.underline,.navlink,.expand-icon,.faq-icon,#siteHeader{transition:none !important}
@@ -137,8 +132,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .step-card p{margin:0;font-size:14px;line-height:1.5;color:#666666}
 .tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#555555;border:1px solid #dcdcdc;border-radius:100px;padding:5px 11px}
 /* duel */
-.duel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:clamp(36px,6vh,56px);border:1px solid #e6e6e6;border-radius:20px;overflow:hidden;background:#fafafa;padding:clamp(16px,2vw,24px);position:relative}
-.duel-col{background:#ffffff;border:1px solid #e6e6e6;border-radius:16px;padding:clamp(18px,2vw,28px);display:flex;flex-direction:column;gap:16px}
+.duel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:clamp(36px,6vh,56px);position:relative}
+.duel-col{display:flex;flex-direction:column;gap:16px}
 .duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;margin-bottom:6px}
 .duel-head b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#141414}
 .duel-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
@@ -235,7 +230,6 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 </style>
 </head>
 <body>
-<div id="cursor" aria-hidden="true"></div>
 <script>const PRICE = 1500;</script>
 
 <header id="siteHeader">
@@ -550,17 +544,12 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
       <a href="https://t.me/founder15" target="_blank" rel="noopener" class="reveal contact-row" data-dir="left">
         <span class="contact-sweep"></span>
         <div class="contact-left"><span class="contact-idx">01</span><span class="contact-name">Записаться</span></div>
-        <div class="contact-right"><span class="contact-handle">@founder15 — Telegram</span><span class="contact-arrow">↗</span></div>
+        <div class="contact-right"><span class="contact-handle">@founder15 — основатель</span><span class="contact-arrow">↗</span></div>
       </a>
-      <a href="https://t.me/founder15" target="_blank" rel="noopener" class="reveal contact-row" data-dir="left">
+      <a href="https://t.me/levelupcommunity15" target="_blank" rel="noopener" class="reveal contact-row" data-dir="left">
         <span class="contact-sweep"></span>
         <div class="contact-left"><span class="contact-idx">02</span><span class="contact-name">Level Up Community</span></div>
-        <div class="contact-right"><span class="contact-handle">Закрытый чат</span><span class="contact-arrow">↗</span></div>
-      </a>
-      <a href="mailto:hello@levelup.community" class="reveal contact-row" data-dir="left">
-        <span class="contact-sweep"></span>
-        <div class="contact-left"><span class="contact-idx">03</span><span class="contact-name">Email</span></div>
-        <div class="contact-right"><span class="contact-handle">hello@levelup.community</span><span class="contact-arrow">↗</span></div>
+        <div class="contact-right"><span class="contact-handle">@levelupcommunity15 — канал</span><span class="contact-arrow">↗</span></div>
       </a>
     </div>
     <p style="margin:20px 0 0;font-size:11px;letter-spacing:.02em;color:#a6a6a6;max-width:520px;line-height:1.6">Отвечаем в течение дня · Без спама.</p>
@@ -631,33 +620,6 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
     if(!btn) return;
     btn.addEventListener('click',()=> item.classList.toggle('is-open'));
   });
-  // Custom cursor — как на iamhatori.github.io (кружок, увеличивается на ховере)
-  const cursorEl=document.getElementById('cursor');
-  if(cursorEl && matchMedia('(hover:hover)').matches){
-    let cx=0,cy=0,tx=0,ty=0,raf=0,shown=false;
-    const lerp=(a,b,t)=>a+(b-a)*t;
-    const tick=()=>{
-      cx=lerp(cx,tx,.18); cy=lerp(cy,ty,.18);
-      cursorEl.style.left=cx+'px'; cursorEl.style.top=cy+'px';
-      if(Math.abs(cx-tx)>.1||Math.abs(cy-ty)>.1) raf=requestAnimationFrame(tick); else raf=0;
-    };
-    document.addEventListener('mousemove',e=>{
-      tx=e.clientX; ty=e.clientY;
-      if(!shown){shown=true; cursorEl.classList.remove('hidden');}
-      if(!raf) raf=requestAnimationFrame(tick);
-    });
-    document.addEventListener('mouseleave',()=> cursorEl.classList.add('hidden'));
-    document.addEventListener('mouseenter',()=> cursorEl.classList.remove('hidden'));
-    const hoverSel='a,.cta,.price-cta,.contact-row,.faq-btn,.audience-card,.step-card,.price-card,.fact-card,.duel-col,.logo';
-    const onEnter=()=> cursorEl.classList.add('big');
-    const onLeave=()=> cursorEl.classList.remove('big');
-    document.querySelectorAll(hoverSel).forEach(el=>{
-      el.addEventListener('mouseenter',onEnter);
-      el.addEventListener('mouseleave',onLeave);
-    });
-  } else if(cursorEl){
-    cursorEl.style.display='none';
-  }
   // лёгкое 3D: tilt у карточек + parallax у hero-стека
   const tiltEls=qa('.tilt');
   tiltEls.forEach(el=>{
