@@ -142,13 +142,14 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;margin-bottom:6px}
 .duel-head b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#141414}
 .duel-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
-.duel-bubble{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55}
+.duel-bubble{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;word-break:break-word;overflow-wrap:break-word}
 .duel-bubble--opp{background:#fff1f1;border:1px solid #ffd0d0;color:#141414}
 .duel-bubble--opp b{color:#d62a2a;font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px}
 .duel-bubble--me{background:#f4f4f4;border:1px solid #e6e6e6;color:#666666}
 .duel-bubble--me b{color:#141414;font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px}
-.duel-bubble--ok{background:#f4f4f4;border:1px solid #e6e6e6}
-.duel-foot{margin-top:auto;padding-top:14px;border-top:1px solid #eeeeee;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
+.duel-bubble--ok{background:#f4f4f4;border:1px solid #e6e6e6;word-break:break-word}
+.duel-bubble--ok b{display:block;margin-bottom:6px}
+.duel-foot{margin-top:auto;padding-top:14px;border-top:1px solid #eeeeee;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a;flex-wrap:wrap}
 .about-grid{display:flex;gap:clamp(40px,7vw,110px);flex-wrap:wrap;align-items:flex-start}
 .about-text{flex:1.2;min-width:min(100%,340px)}
 .about-text p{margin:0 0 18px;max-width:560px;font-size:clamp(15px,1.15vw,17px);line-height:1.62;color:#555555}
@@ -304,9 +305,9 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
       </div>
       <div class="duel-col">
         <div class="duel-head"><b>Как это тренируется</b><span style="background:#141414;color:#fff;border-radius:100px;padding:5px 10px;font-size:10px;">Живая практика</span></div>
-        <div class="duel-bubble duel-bubble--ok"><b>Формат раунда</b>Говоришь вживую в Zoom — 3 минуты на защиту чека. Разбор сразу.</div>
+        <div class="duel-bubble duel-bubble--ok"><b>Формат раунда</b>Говоришь вживую в Zoom — 3&nbsp;минуты на защиту чека. Разбор сразу.</div>
         <div class="duel-bubble duel-bubble--ok"><b>Мгновенный разбор</b>Точный аудит: где просел по интонации, как вернуть инициативу.</div>
-        <div class="duel-bubble duel-bubble--ok" style="border-color:#141414; margin-top:4px"><b style="color:#141414">Результат</b>Твёрдый навык называть чек без стыда и страха.</div>
+        <div class="duel-bubble duel-bubble--ok" style="border-color:#141414; margin-top:8px"><b style="color:#141414">Результат</b>Твёрдый навык называть чек без стыда и&nbsp;страха.</div>
         <div class="duel-foot"><span>Сессионные залы · Пары · 1-на-1</span><span>Мини-группа до 10</span></div>
       </div>
     </div>
@@ -529,7 +530,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
       </div>
       <div class="reveal faq-item" data-dir="up">
         <button class="faq-btn" type="button"><span class="faq-q">Почему <span data-price>1 500</span> ₽?</span><span class="faq-icon">+</span></button>
-        <div class="faq-detail"><div class="faq-detail-clip"><p>Спеццена по себестоимости для первого состава. Дальше — дороже. Хочешь поменять — скажи, поменяю одну строку и перезалью.</p></div></div>
+        <div class="faq-detail"><div class="faq-detail-clip"><p>Спеццена по себестоимости для первого состава. Дальше — дороже.</p></div></div>
       </div>
       <div class="reveal faq-item" data-dir="up">
         <button class="faq-btn" type="button"><span class="faq-q">Как записаться?</span><span class="faq-icon">+</span></button>
