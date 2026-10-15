@@ -114,7 +114,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .audience-card .card-num{font-size:12px;letter-spacing:.08em;color:#9a9a9a}
 .audience-card h3{margin:0 0 10px;font-weight:500;font-size:clamp(20px,2.2vw,28px);letter-spacing:-.02em;color:#141414}
 .audience-card p{margin:0;font-size:14.5px;line-height:1.55;color:#666666}
-.audience-icon{width:42px;height:42px;border-radius:12px;background:#f7f7f7;border:1px solid #e6e6e6;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px;color:#141414}
+.audience-icon{width:42px;height:42px;border-radius:12px;background:#f7f7f7;border:1px solid #e6e6e6;display:inline-flex;align-items:center;justify-content:center;color:#141414;flex-shrink:0}
 .audience-icon svg{width:20px;height:20px;stroke-width:1.8}
 .pains-head{max-width:900px;margin-bottom:clamp(40px,7vh,72px)}
 .pains-head p{margin:24px 0 0;max-width:520px;font-size:14.5px;line-height:1.6;color:#777777}
@@ -133,7 +133,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#555555;border:1px solid #dcdcdc;border-radius:100px;padding:5px 11px}
 /* duel */
 .duel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:clamp(36px,6vh,56px);border:1px solid #e6e6e6;border-radius:20px;overflow:hidden;background:#fafafa;padding:clamp(16px,2vw,24px);position:relative}
-.duel-col{background:#ffffff;border:1px solid #e6e6e6;border-radius:16px;padding:clamp(18px,2vw,28px);display:flex;flex-direction:column;gap:14px}
+.duel-col{background:#ffffff;border:1px solid #e6e6e6;border-radius:16px;padding:clamp(18px,2vw,28px);display:flex;flex-direction:column;gap:16px}
 .duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;margin-bottom:6px}
 .duel-head b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#141414}
 .duel-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
@@ -301,7 +301,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         <div class="duel-head"><b>Как это тренируется</b><span style="background:#141414;color:#fff;border-radius:100px;padding:5px 10px;font-size:10px;">Живая практика</span></div>
         <div class="duel-bubble duel-bubble--ok"><b>Формат раунда</b>Говоришь вживую в Zoom — 3 минуты на защиту чека. Разбор сразу.</div>
         <div class="duel-bubble duel-bubble--ok"><b>Мгновенный разбор</b>Точный аудит: где просел по интонации, как вернуть инициативу.</div>
-        <div class="duel-bubble duel-bubble--ok" style="border-color:#141414"><b style="color:#141414">Результат</b>Твёрдый навык называть чек без стыда и страха.</div>
+        <div class="duel-bubble duel-bubble--ok" style="border-color:#141414; margin-top:4px"><b style="color:#141414">Результат</b>Твёрдый навык называть чек без стыда и страха.</div>
         <div class="duel-foot"><span>Сессионные залы · Пары · 1-на-1</span><span>Мини-группа до 10</span></div>
       </div>
     </div>
@@ -326,21 +326,21 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
     </div>
     <div class="audience-grid">
       <article class="reveal liftcard audience-card tilt" data-dir="up">
-        <div><div class="audience-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3L1 9l11 6 9-5-9 5-4-2.2"/><path d="M5 11.5v3.6L12 18l7-2.9v-3.6"/><path d="M12 12.5V21"/></svg></div><span class="card-num">01</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%"><div class="audience-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3L1 9l11 6 9-5-9 5-4-2.2"/><path d="M5 11.5v3.6L12 18l7-2.9v-3.6"/><path d="M12 12.5V21"/></svg></div></div>
         <div>
           <h3>Студенты и молодые специалисты</h3>
           <p>Чтобы уверенно защищать проекты, курсовые, дипломы и проходить собеседования без мандража.</p>
         </div>
       </article>
       <article class="reveal liftcard audience-card tilt" data-dir="up">
-        <div><div class="audience-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></div><span class="card-num">02</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%"><div class="audience-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></div></div>
         <div>
           <h3>Фрилансеры и эксперты</h3>
           <p>Чтобы перестать зажиматься на созвонах, аргументировать стоимость и закрывать сделки без скидок.</p>
         </div>
       </article>
       <article class="reveal liftcard audience-card tilt" data-dir="up">
-        <div><div class="audience-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg></div><span class="card-num">03</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%"><div class="audience-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg></div></div>
         <div>
           <h3>Все, кто хочет уверенности</h3>
           <p>Чтобы убрать зажимы, перестать бояться каверзных вопросов и чётко формулировать мысли.</p>
