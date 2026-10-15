@@ -7,9 +7,8 @@
 <meta name="description" content="Закрытый онлайн-клуб по подписке: 90% живой практики в Zoom, переговорные дуэли, техника речи. Камерный состав до 10 человек. 1 500 ₽/мес — первый состав.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ====== OUVRE-PROD replica — light, minimal ====== */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#ffffff;color:#141414;font-family:'Helvetica Neue',Helvetica,'Archivo',Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -27,14 +26,20 @@ img{max-width:100%}
 }
 .wrap{max-width:1500px;margin:0 auto;padding-left:clamp(20px,5vw,64px);padding-right:clamp(20px,5vw,64px)}
 section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112px)}
-#siteHeader{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:20px clamp(20px,5vw,64px);transition:background .4s ease,border-color .4s ease,backdrop-filter .4s ease;background:transparent;border-bottom:1px solid transparent}
-#siteHeader.is-scrolled{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:#eaeaea}
-.logo{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#141414;font-weight:600;cursor:pointer;white-space:nowrap}
+/* header */
+#siteHeader{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,64px);transition:background .4s ease,border-color .4s ease,backdrop-filter .4s ease;background:transparent;border-bottom:1px solid transparent}
+#siteHeader.is-scrolled{background:rgba(255,255,255,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:#eaeaea}
+.logo{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#141414;font-weight:700;white-space:nowrap}
+.logo-mark{width:28px;height:28px;border-radius:9px;background:#141414;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;letter-spacing:-.06em;line-height:1;box-shadow:0 6px 18px rgba(20,20,20,.18)}
+.logo-mark span{transform:translateY(-.5px)}
+.logo-text{line-height:1}
+.logo-text b{letter-spacing:.1em}
+.logo-text em{font-style:normal;font-weight:400;opacity:.55;letter-spacing:.1em}
 .nav{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:34px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8a8a8a}
 .navlink{transition:color .3s}
 .navlink:hover{color:#141414}
-.cta{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#ffffff;background:#141414;padding:10px 18px;border-radius:100px;transition:opacity .3s;white-space:nowrap}
-.cta:hover{opacity:.82}
+.cta{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#ffffff;background:#141414;padding:10px 18px;border-radius:100px;transition:opacity .3s,transform .3s;white-space:nowrap}
+.cta:hover{opacity:.82;transform:translateY(-1px)}
 .cta--lg{padding:14px 24px}
 .underline{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#141414;padding-bottom:6px;border-bottom:1px solid #141414;transition:opacity .3s}
 .underline:hover{opacity:.7}
@@ -53,30 +58,61 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .section-eyebrow .label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a8a}
 .section-title{margin:0;font-weight:500;font-size:clamp(32px,4.6vw,68px);line-height:1.04;letter-spacing:-.025em;color:#141414}
 .section-title-xl{margin:0;font-weight:600;font-size:clamp(40px,7.4vw,120px);line-height:.94;letter-spacing:-.035em;color:#141414;text-transform:uppercase}
-.section-head-note{margin:0;max-width:300px;font-size:14.5px;line-height:1.6;color:#777777}
-#me{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:140px;padding-bottom:60px}
-.hero-top{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:clamp(30px,5vh,54px)}
+.section-head-note{margin:0;max-width:320px;font-size:14.5px;line-height:1.6;color:#777777}
+/* hero */
+#me{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:140px;padding-bottom:60px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(38px);opacity:.14}
+.orb--1{width:680px;height:680px;background:radial-gradient(circle,#b6c0ff 0%,transparent 70%);right:-140px;top:-120px;animation:floatA 12s ease-in-out infinite}
+.orb--2{width:560px;height:560px;background:radial-gradient(circle,#ffd7a0 0%,transparent 70%);left:-100px;top:420px;opacity:.12;animation:floatB 14s ease-in-out infinite}
+.orb--3{width:420px;height:420px;background:radial-gradient(circle,#c9f0ff 0%,transparent 70%);right:28%;top:62%;opacity:.1}
+@keyframes floatA{0%,100%{transform:translate(0,0)}50%{transform:translate(-18px,14px)}}
+@keyframes floatB{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-16px)}}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:clamp(30px,5vh,54px);position:relative}
 .hero-eyebrow-left{display:flex;align-items:center;gap:14px}
 .hero-eyebrow-left .rule{width:34px;height:1px;background:#c8c8c8}
 .hero-eyebrow-left .label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a8a}
 .hero-eyebrow-right{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a}
-.hero-title{margin:0;font-weight:600;font-size:clamp(46px,10.2vw,180px);line-height:.9;letter-spacing:-.04em;color:#141414;text-transform:uppercase}
+.hero-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,56px);align-items:start;position:relative}
+.hero-title{margin:0;font-weight:700;font-size:clamp(44px,7.8vw,132px);line-height:.88;letter-spacing:-.04em;color:#141414;text-transform:uppercase}
 .hero-title span{display:block}
-.hero-sub{margin:clamp(26px,4.5vh,40px) 0 0;font-weight:500;font-size:clamp(22px,3vw,44px);line-height:1.08;letter-spacing:-.02em;color:#141414;max-width:20ch}
-.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:clamp(28px,5vw,72px);margin-top:clamp(30px,5vh,52px)}
-.hero-desc{margin:0;max-width:540px;font-size:clamp(15px,1.15vw,17px);line-height:1.62;color:#555555}
-.hero-desc strong{font-weight:inherit;color:#141414}
-.hero-actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
-.hero-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-top:clamp(44px,8vh,96px);padding-top:24px;border-top:1px solid #e6e6e6}
+.hero-sub{margin:clamp(22px,3.5vh,32px) 0 0;font-weight:500;font-size:clamp(20px,2.6vw,34px);line-height:1.08;letter-spacing:-.02em;color:#141414;max-width:18ch}
+.hero-sub em{font-style:normal;background:linear-gradient(90deg,#141414,#5a5a5a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:clamp(28px,5vw,72px);margin-top:clamp(30px,5vh,48px);position:relative}
+.hero-desc{margin:0;max-width:520px;font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.62;color:#555555}
+.hero-desc strong{font-weight:700;color:#141414}
+.hero-actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.hero-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-top:clamp(44px,8vh,96px);padding-top:24px;border-top:1px solid #e6e6e6;position:relative}
 .hero-footer .left{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#555555}
 .hero-footer .right{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8a8a8a}
-.liftcard{border:1px solid #e6e6e6;border-radius:20px;transition:translate .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s cubic-bezier(.22,.61,.36,1),border-color .45s cubic-bezier(.22,.61,.36,1)}
+.founder-line{margin-top:16px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9a9a9a;opacity:.62}
+/* 3D hero visual */
+.hero-visual{position:relative;perspective:1200px;min-height:420px;display:flex;align-items:center;justify-content:center}
+.hero-card-stack{position:relative;width:min(100%,380px);height:420px;transform-style:preserve-3d}
+.hc{position:absolute;inset:0;border-radius:22px;border:1px solid #e6e6e6;background:#ffffff;box-shadow:0 18px 50px rgba(20,20,20,.08);overflow:hidden;transition:transform .6s cubic-bezier(.22,.61,.36,1)}
+.hc--1{transform:rotateY(-14deg) rotateX(6deg) translateZ(-30px);opacity:.92}
+.hc--2{transform:rotateY(-14deg) rotateX(6deg) translateZ(0px) translate(10px,-10px)}
+.hc--3{transform:rotateY(-14deg) rotateX(6deg) translateZ(30px) translate(20px,-20px);background:#141414;color:#fff;border-color:#141414;box-shadow:0 22px 60px rgba(20,20,20,.22)}
+.hc-inner{padding:22px 24px;height:100%;display:flex;flex-direction:column}
+.hc-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:14px}
+.hc h4{margin:0 0 10px;font-size:18px;letter-spacing:-.02em;line-height:1.2}
+.hc p{margin:0;font-size:13.5px;line-height:1.55;opacity:.72}
+.hc-chip{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid currentColor;border-radius:100px;padding:7px 12px;align-self:flex-start;opacity:.9}
+.float-badge{position:absolute;z-index:2;display:inline-flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #e6e6e6;border-radius:100px;padding:9px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 30px rgba(20,20,20,.10);white-space:nowrap}
+.float-badge--a{top:14px;right:6px;transform:rotate(2deg)}
+.float-badge--b{bottom:62px;left:-6px;transform:rotate(-1.5deg)}
+.float-badge i{width:8px;height:8px;border-radius:50%;background:#141414;display:inline-block}
+.float-badge--live i{background:#ff3b30;box-shadow:0 0 0 6px rgba(255,59,48,.12);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 6px rgba(255,59,48,.12)}50%{box-shadow:0 0 0 10px rgba(255,59,48,0)}}
+.liftcard{border:1px solid #e6e6e6;border-radius:20px;transition:translate .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s cubic-bezier(.22,.61,.36,1),border-color .45s cubic-bezier(.22,.61,.36,1);background:#fff}
 .liftcard:hover{translate:0 -6px;box-shadow:0 22px 50px -30px rgba(20,20,20,.25);border-color:#c8c8c8}
+.tilt{transform-style:preserve-3d;will-change:transform}
 .audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(16px,1.6vw,24px)}
 .audience-card{display:flex;flex-direction:column;justify-content:space-between;gap:32px;min-height:clamp(200px,20vw,240px);padding:clamp(28px,2.4vw,40px)}
 .audience-card .card-num{font-size:12px;letter-spacing:.08em;color:#9a9a9a}
 .audience-card h3{margin:0 0 10px;font-weight:500;font-size:clamp(20px,2.2vw,28px);letter-spacing:-.02em;color:#141414}
 .audience-card p{margin:0;font-size:14.5px;line-height:1.55;color:#666666}
+.audience-icon{width:42px;height:42px;border-radius:12px;background:#f4f4f4;border:1px solid #e6e6e6;display:inline-flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:6px}
 .pains-head{max-width:900px;margin-bottom:clamp(40px,7vh,72px)}
 .pains-head p{margin:24px 0 0;max-width:520px;font-size:14.5px;line-height:1.6;color:#777777}
 .pains-list{border-top:1px solid #e6e6e6}
@@ -92,8 +128,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .step-card h3{margin:0 0 10px;font-weight:500;font-size:clamp(19px,2vw,24px);letter-spacing:-.02em;color:#141414}
 .step-card p{margin:0;font-size:14px;line-height:1.5;color:#666666}
 .tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#555555;border:1px solid #dcdcdc;border-radius:100px;padding:5px 11px}
-/* Duel demo */
-.duel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:clamp(36px,6vh,56px);border:1px solid #e6e6e6;border-radius:20px;overflow:hidden;background:#fafafa;padding:clamp(16px,2vw,24px)}
+/* duel */
+.duel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:clamp(36px,6vh,56px);border:1px solid #e6e6e6;border-radius:20px;overflow:hidden;background:#fafafa;padding:clamp(16px,2vw,24px);position:relative}
 .duel-col{background:#ffffff;border:1px solid #e6e6e6;border-radius:16px;padding:clamp(18px,2vw,28px);display:flex;flex-direction:column;gap:14px}
 .duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;margin-bottom:6px}
 .duel-head b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#141414}
@@ -118,11 +154,11 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .price-card{position:relative;display:flex;flex-direction:column;border-radius:20px;padding:clamp(28px,2.4vw,40px);transition:transform .55s cubic-bezier(.22,.61,.36,1),box-shadow .55s cubic-bezier(.22,.61,.36,1);background:#ffffff;border:1px solid #e6e6e6}
 .price-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px -28px rgba(20,20,20,.22)}
 .price-card--dark{background:#141414;border-color:#141414}
-.price-badge{position:absolute;top:-13px;right:clamp(24px,2vw,34px);display:inline-flex;align-items:center;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#141414;background:#ffffff;padding:7px 14px;border-radius:100px}
+.price-badge{position:absolute;top:-13px;right:clamp(24px,2vw,34px);display:inline-flex;align-items:center;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#141414;background:#ffffff;padding:7px 14px;border-radius:100px;box-shadow:0 8px 20px rgba(20,20,20,.08)}
 .price-name{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9a9a9a;margin-bottom:clamp(22px,3vh,34px)}
 .price-card--dark .price-name{color:#8a8a8a}
 .price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:16px}
-.price-amount{font-weight:600;font-size:clamp(36px,3.6vw,56px);line-height:1;letter-spacing:-.03em;color:#141414}
+.price-amount{font-weight:700;font-size:clamp(36px,3.6vw,56px);line-height:1;letter-spacing:-.03em;color:#141414}
 .price-card--dark .price-amount{color:#ffffff}
 .price-currency{font-size:14px;letter-spacing:.02em;color:#9a9a9a}
 .price-card--dark .price-currency{color:#8a8a8a}
@@ -169,7 +205,10 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .site-footer{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:28px;margin-top:clamp(66px,12vh,140px);padding:36px 0 44px;border-top:1px solid #e6e6e6}
 .footer-title{font-weight:600;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.02em;color:#141414;margin-bottom:8px;text-transform:uppercase}
 .footer-sub{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8a8a8a}
-.founder-line{margin-top:18px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a;opacity:.7}
+@media (max-width:980px){
+  .hero-layout{grid-template-columns:1fr}
+  .hero-visual{min-height:360px;margin-top:10px}
+}
 @media (max-width:860px){
   .nav{display:none !important}
   .hero-top{flex-direction:column !important;align-items:flex-start !important;gap:10px !important}
@@ -181,16 +220,20 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
   #siteHeader{padding:16px 20px !important}
   .cta{padding:9px 15px !important}
   .price-grid{grid-template-columns:1fr !important}
+  .hero-visual{min-height:340px}
+  .hero-card-stack{height:360px}
 }
 </style>
 </head>
 <body>
 
-<!-- ====== ПЕРЕМЕННЫЕ — МЕНЯЙ ТУТ ====== -->
-<script>const PRICE = 1500; // цена за 4 недели, подставится везде автоматически</script>
+<script>const PRICE = 1500;</script>
 
 <header id="siteHeader">
-  <a href="#top" class="logo" data-reload>LEVEL UP COMMUNITY</a>
+  <a href="#top" class="logo" data-reload>
+    <span class="logo-mark"><span>LU</span></span>
+    <span class="logo-text"><b>LEVEL UP</b> <em>COMMUNITY</em></span>
+  </a>
   <nav class="nav">
     <a href="#audience" class="navlink">Для кого</a>
     <a href="#program" class="navlink">Программа</a>
@@ -202,8 +245,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 
 <main id="top">
 
-  <!-- ===================== HERO ===================== -->
   <section id="me" class="wrap">
+    <div class="hero-bg" aria-hidden="true"><span class="orb orb--1"></span><span class="orb orb--2"></span><span class="orb orb--3"></span></div>
     <div class="hero-top">
       <div class="reveal hero-eyebrow-left" data-dir="left">
         <span class="rule"></span>
@@ -212,25 +255,38 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
       <div class="reveal hero-eyebrow-right" data-dir="right">(01) О клубе</div>
     </div>
 
-    <h1 class="hero-title">
-      <span class="reveal" data-dir="left">В голове всё</span>
-      <span class="reveal" data-dir="right">идеально —</span>
-      <span class="reveal" data-dir="left">на переговорах</span>
-      <span class="reveal" data-dir="left">язык заплетается?</span>
-    </h1>
+    <div class="hero-layout">
+      <div>
+        <h1 class="hero-title">
+          <span class="reveal" data-dir="left">В голове всё</span>
+          <span class="reveal" data-dir="right">идеально —</span>
+          <span class="reveal" data-dir="left">на переговорах</span>
+          <span class="reveal" data-dir="left">язык заплетается?</span>
+        </h1>
+        <p class="reveal hero-sub" data-dir="up"><em>90% живой практики в Zoom.</em> Без лекций.</p>
+        <div class="hero-bottom">
+          <p class="reveal hero-desc" data-dir="up">Закрытый онлайн-клуб по подписке для отработки выступлений, техники речи и сложных переговоров. Дуэли в безопасной среде · доведение целей до результата. <strong>До 10 человек — каждый получает практику.</strong></p>
+          <div class="reveal hero-actions" data-dir="up">
+            <a href="https://t.me/founder15" target="_blank" rel="noopener" class="cta cta--lg">Записаться — <span data-price>1 500</span> ₽</a>
+            <a href="#program" class="underline">Программа 4 недель <span class="arrow-down">↓</span></a>
+          </div>
+        </div>
+        <p class="reveal founder-line" data-dir="up">Основатель — Макар Александрович · Закрытый состав · Zoom + Telegram</p>
+      </div>
 
-    <p class="reveal hero-sub" data-dir="up">90% живой практики в Zoom. Без лекций.</p>
-
-    <div class="hero-bottom">
-      <p class="reveal hero-desc" data-dir="up">Закрытый онлайн-клуб по подписке для отработки публичных выступлений, техники речи и сложных переговоров. Переговорные дуэли в безопасной среде и доведение личных целей до результата. <strong>Камерный состав до 10 человек.</strong></p>
-      <div class="reveal hero-actions" data-dir="up">
-        <a href="https://t.me/founder15" target="_blank" rel="noopener" class="cta cta--lg">Записаться — <span data-price>1 500</span> ₽</a>
-        <a href="#program" class="underline">Программа 4 недель <span class="arrow-down">↓</span></a>
+      <!-- Лёгкое 3D — как просили в переписке: «какой-то фон поинтереснее / лёгкое 3д» -->
+      <div class="reveal hero-visual" data-dir="right" aria-hidden="true">
+        <div class="hero-card-stack" id="heroStack">
+          <div class="hc hc--1"><div class="hc-inner"><span class="hc-label">Неделя 1 · Воркшоп</span><h4>Снятие зажимов<br>и голос</h4><p>Дыхание · тон · паузы · разбор вживую</p><span class="hc-chip">60 мин · Zoom</span></div></div>
+          <div class="hc hc--2"><div class="hc-inner"><span class="hc-label">Неделя 2–3 · Дуэли</span><h4>Защита цены:<br>«Почему так дорого?»</h4><p>Сессионные залы · пары · 1-на-1 · прессинг скидки</p><span class="hc-chip">Поединок · 60 мин</span></div></div>
+          <div class="hc hc--3"><div class="hc-inner"><span class="hc-label" style="opacity:.6;color:#fff">Финал · Точка Б</span><h4 style="color:#fff">Финальная дуэль<br>+ оцифровка</h4><p style="color:#b4b4b8">Партнёрский кейс · прогресс каждого</p><span class="hc-chip" style="border-color:rgba(255,255,255,.28);color:#fff">До 10 чел · разбор</span></div></div>
+        </div>
+        <span class="float-badge float-badge--a"><i></i> LIVE в Zoom</span>
+        <span class="float-badge float-badge--b">До 10 чел · камерно</span>
       </div>
     </div>
-    <p class="reveal founder-line" data-dir="up">Основатель — Макар Александрович · Закрытый состав · Zoom + Telegram</p>
 
-    <!-- Duel demo — как в референсе projects/detail -->
+    <!-- Duel demo -->
     <div class="reveal duel-wrap" data-dir="up">
       <div class="duel-col">
         <div class="duel-head"><b>Кейс поединка // Давление на цену</b><span>Zoom · Раунд 2</span></div>
@@ -253,7 +309,6 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
     </div>
   </section>
 
-  <!-- ===================== FOR WHOM ===================== -->
   <section id="audience" class="wrap">
     <div class="section-head">
       <div>
@@ -264,34 +319,33 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         </div>
         <h2 class="reveal section-title" data-dir="left">Для кого этот клуб</h2>
       </div>
-      <p class="reveal section-head-note" data-dir="right">Три типа участников, которым клуб даёт самый быстрый результат. Камерный состав — каждый получает практику и разбор.</p>
+      <p class="reveal section-head-note" data-dir="right">Три типа участников, которым клуб даёт самый быстрый результат. Камерно — каждый получает практику и разбор.</p>
     </div>
     <div class="audience-grid">
-      <article class="reveal liftcard audience-card" data-dir="up">
-        <span class="card-num">01</span>
+      <article class="reveal liftcard audience-card tilt" data-dir="up">
+        <div><div class="audience-icon">🎓</div><span class="card-num">01</span></div>
         <div>
           <h3>Студенты и молодые специалисты</h3>
           <p>Чтобы уверенно защищать проекты, курсовые, дипломы и проходить собеседования без мандража.</p>
         </div>
       </article>
-      <article class="reveal liftcard audience-card" data-dir="up">
-        <span class="card-num">02</span>
+      <article class="reveal liftcard audience-card tilt" data-dir="up">
+        <div><div class="audience-icon">💼</div><span class="card-num">02</span></div>
         <div>
           <h3>Фрилансеры и эксперты</h3>
           <p>Чтобы перестать зажиматься на созвонах, аргументировать стоимость и закрывать сделки без скидок.</p>
         </div>
       </article>
-      <article class="reveal liftcard audience-card" data-dir="up">
-        <span class="card-num">03</span>
+      <article class="reveal liftcard audience-card tilt" data-dir="up">
+        <div><div class="audience-icon">🎯</div><span class="card-num">03</span></div>
         <div>
           <h3>Все, кто хочет уверенности</h3>
-          <p>Чтобы убрать зажимы, перестать бояться каверзных вопросов и чётко формулировать мысли в любой ситуации.</p>
+          <p>Чтобы убрать зажимы, перестать бояться каверзных вопросов и чётко формулировать мысли.</p>
         </div>
       </article>
     </div>
   </section>
 
-  <!-- ===================== PAINS ===================== -->
   <section id="pains" class="wrap">
     <div class="pains-head">
       <div class="reveal section-eyebrow" data-dir="left">
@@ -303,14 +357,13 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
       <p class="reveal" data-dir="up">Если хотя бы один пункт про вас — это решается практикой, а не книгами.</p>
     </div>
     <div class="pains-list">
-      <div class="reveal pain-row" data-dir="left"><span class="num">01</span><p>В голове всё идеально, а на созвоне — ком в горле и сбивчивая речь.</p></div>
+      <div class="reveal pain-row" data-dir="left"><span class="num">01</span><p>В голове всё идеально, а на созвоне — ком в горле.</p></div>
       <div class="reveal pain-row" data-dir="left"><span class="num">02</span><p>Клиент давит: «Почему так дорого? Дайте скидку» — и вы прогибаетесь.</p></div>
-      <div class="reveal pain-row" data-dir="left"><span class="num">03</span><p>Боитесь каверзных вопросов, теряетесь и не можете вернуть инициативу.</p></div>
+      <div class="reveal pain-row" data-dir="left"><span class="num">03</span><p>Боитесь каверзных вопросов и теряете инициативу.</p></div>
       <div class="reveal pain-row" data-dir="left"><span class="num">04</span><p>Смотрели лекции, но на реальных переговорах навык не включается.</p></div>
     </div>
   </section>
 
-  <!-- ===================== PROGRAM ===================== -->
   <section id="program" class="wrap">
     <div class="section-head">
       <div>
@@ -321,41 +374,40 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         </div>
         <h2 class="reveal section-title" data-dir="left">4 недели плотной<br>работы в Zoom</h2>
       </div>
-      <p class="reveal section-head-note" data-dir="right">Пошаговый план, как убрать зажимы и прокачать переговорную хватку. Никаких записанных лекций.</p>
+      <p class="reveal section-head-note" data-dir="right">Пошаговый план, как убрать зажимы и прокачать хватку. Без записанных лекций.</p>
     </div>
     <div class="process-grid">
-      <article class="reveal liftcard step-card" data-dir="up">
+      <article class="reveal liftcard step-card tilt" data-dir="up">
         <div class="step-top"><span class="step-num">01</span><span class="tag">Воркшоп</span></div>
         <div>
           <h3>Снятие зажимов и голос</h3>
-          <p>Воркшоп с тренером по речи. Дыхание, тон, паузы, разбор в прямом эфире. Убираем дрожь в голосе.</p>
+          <p>Воркшоп с тренером по речи. Дыхание, тон, паузы, разбор вживую.</p>
         </div>
       </article>
-      <article class="reveal liftcard step-card" data-dir="up">
+      <article class="reveal liftcard step-card tilt" data-dir="up">
         <div class="step-top"><span class="step-num">02</span><span class="tag">Дуэли в парах</span></div>
         <div>
           <h3>Личные границы и дедлайны</h3>
-          <p>Поединки в сессионных залах Zoom. «Срочные правки», «Защита дедлайнов». Учимся говорить «нет».</p>
+          <p>Сессионные залы Zoom. «Срочные правки», «Защита дедлайнов». Учимся говорить «нет».</p>
         </div>
       </article>
-      <article class="reveal liftcard step-card" data-dir="up">
+      <article class="reveal liftcard step-card tilt" data-dir="up">
         <div class="step-top"><span class="step-num">03</span><span class="tag">Дуэли 1-на-1</span></div>
         <div>
           <h3>Защита цены</h3>
-          <p>«Почему так дорого?», «Дайте скидку». Отрабатываем прессинг и аргументацию стоимости без оправданий.</p>
+          <p>«Почему так дорого?», «Дайте скидку». Аргументация без оправданий.</p>
         </div>
       </article>
-      <article class="reveal liftcard step-card" data-dir="up">
+      <article class="reveal liftcard step-card tilt" data-dir="up">
         <div class="step-top"><span class="step-num">04</span><span class="tag">Финал + разбор</span></div>
         <div>
           <h3>Финальная дуэль и оцифровка</h3>
-          <p>Партнёрский кейс, турнир по реальным кейсам участников. Оцифровка прогресса — точка Б.</p>
+          <p>Партнёрский кейс, турнир по реальным кейсам. Точка Б.</p>
         </div>
       </article>
     </div>
   </section>
 
-  <!-- ===================== EXTRAS / WHY IT WORKS ===================== -->
   <section id="extras" class="wrap">
     <div class="reveal section-eyebrow" data-dir="left">
       <span class="num">05</span>
@@ -365,21 +417,20 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
     <h2 class="reveal section-title-xl" data-dir="left" style="margin-bottom:clamp(40px,7vh,72px);font-size:clamp(32px,5vw,72px)">Дополнительно · Почему работает</h2>
     <div class="about-grid">
       <div class="about-text">
-        <p class="reveal" data-dir="up">Всё, что входит в подписку без доплат — и три принципа, на которых построен клуб.</p>
-        <p class="reveal" data-dir="up"><strong>Минимум теории, максимум практики.</strong> Никаких длинных записанных лекций — навыки отрабатываются сразу на созвонах.</p>
-        <p class="reveal" data-dir="up"><strong>Безопасная среда.</strong> Ошибаетесь в тренировочных поединках, а не на реальных переговорах с клиентом.</p>
-        <p class="reveal" data-dir="up"><strong>Сильное окружение.</strong> Амбициозное комьюнити молодых ребят, нацеленных на рост, доход и саморазвитие.</p>
+        <p class="reveal" data-dir="up">Всё входит в подписку без доплат — и три принципа клуба.</p>
+        <p class="reveal" data-dir="up"><strong>Минимум теории, максимум практики.</strong> Навыки — сразу на созвонах.</p>
+        <p class="reveal" data-dir="up"><strong>Безопасная среда.</strong> Ошибаетесь в дуэлях, а не у реального клиента.</p>
+        <p class="reveal" data-dir="up"><strong>Сильное окружение.</strong> Амбициозные ребята, рост · доход · развитие.</p>
       </div>
       <div class="about-facts">
         <div class="reveal liftcard fact-card" data-dir="up"><span class="fact-value">Мастермайнды</span><span class="fact-key">Еженедельно · цели и трекинг</span></div>
         <div class="reveal liftcard fact-card" data-dir="up"><span class="fact-value">Чат</span><span class="fact-key">Закрытое комьюнити · нетворкинг</span></div>
-        <div class="reveal liftcard fact-card" data-dir="up"><span class="fact-value">60 мин / нед</span><span class="fact-key">1 встреча в Zoom + работа в чате</span></div>
+        <div class="reveal liftcard fact-card" data-dir="up"><span class="fact-value">60 мин / нед</span><span class="fact-key">1 встреча в Zoom + чат</span></div>
         <div class="reveal liftcard fact-card" data-dir="up"><span class="fact-value">До 10 чел</span><span class="fact-key">Каждый получает практику</span></div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== PRICING ===================== -->
   <section id="pricing" class="wrap">
     <div class="section-head">
       <div>
@@ -390,36 +441,36 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         </div>
         <h2 class="reveal section-title-xl" data-dir="left">Участие</h2>
       </div>
-      <p class="reveal section-head-note" data-dir="right">Фикс за 4 недели — без скрытых доплат. 1 встреча в неделю + чат + мастермайнды.</p>
+      <p class="reveal section-head-note" data-dir="right">Фикс за 4 недели — без доплат. 1 встреча в неделю + чат + мастермайнды.</p>
     </div>
 
     <div class="price-grid">
-      <article class="reveal price-card" data-dir="up">
+      <article class="reveal price-card tilt" data-dir="up">
         <div class="price-name">Что входит</div>
         <div class="price-row"><span class="price-amount" style="font-size:clamp(28px,3vw,38px)">4 недели</span><span class="price-currency">практики</span></div>
-        <p class="price-desc">Формат: онлайн Zoom + закрытый Telegram-чат. Длительность потока — 1 месяц.</p>
+        <p class="price-desc">Онлайн Zoom + закрытый Telegram-чат. Поток — 1 месяц.</p>
         <ul class="price-features">
-          <li><span class="arrow">→</span>4 воркшопа / поединка в Zoom по 60 мин</li>
-          <li><span class="arrow">→</span>Сессионные залы · дуэли в парах и 1-на-1</li>
-          <li><span class="arrow">→</span>Еженедельные мастермайнды по целям</li>
-          <li><span class="arrow">→</span>Поддерживающий чат и нетворкинг</li>
+          <li><span class="arrow">→</span>4 поединка в Zoom по 60 мин</li>
+          <li><span class="arrow">→</span>Сессионные залы · пары и 1-на-1</li>
+          <li><span class="arrow">→</span>Еженедельные мастермайнды</li>
+          <li><span class="arrow">→</span>Чат и нетворкинг</li>
           <li><span class="arrow">→</span>Разборы и оцифровка прогресса</li>
         </ul>
         <a href="https://t.me/founder15" target="_blank" rel="noopener" class="price-cta">Задать вопрос</a>
       </article>
 
-      <article class="reveal price-card price-card--dark" data-dir="up">
+      <article class="reveal price-card price-card--dark tilt" data-dir="up">
         <span class="price-badge">Первый состав · 10 мест</span>
         <div class="price-name">Спеццена по себестоимости</div>
         <div class="price-row">
           <span class="price-amount"><span data-count="1500" data-price>1 500</span></span>
           <span class="price-currency">₽ / 4 недели</span>
         </div>
-        <p class="price-desc">Цена установлена по себестоимости для первого закрытого состава, чтобы собрать кейсы. Дальше — выше.</p>
+        <p class="price-desc">Первый закрытый состав — собираем кейсы. Дальше дороже.</p>
         <ul class="price-features">
           <li><span class="arrow">→</span>Всё из тарифа «4 недели»</li>
-          <li><span class="arrow">→</span>Камерная группа до 10 человек</li>
-          <li><span class="arrow">→</span>Личная практика и обратная связь каждую неделю</li>
+          <li><span class="arrow">→</span>Группа до 10 — личная практика</li>
+          <li><span class="arrow">→</span>Обратная связь каждую неделю</li>
           <li><span class="arrow">→</span>Закрытый чат — без доплат</li>
           <li><span class="arrow">→</span>Осталось 3 места по этой цене</li>
         </ul>
@@ -427,23 +478,22 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         <p style="margin:14px 0 0;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a8a8a;text-align:center;opacity:.8">Основатель — Макар Александрович</p>
       </article>
 
-      <article class="reveal price-card" data-dir="up">
+      <article class="reveal price-card tilt" data-dir="up">
         <div class="price-name">Как попасть</div>
         <div class="price-row"><span class="price-amount" style="font-size:clamp(28px,3vw,38px)">Zoom</span><span class="price-currency">+ Telegram</span></div>
-        <p class="price-desc">Стартуем потоком. Места заканчиваются — набор камерный.</p>
+        <p class="price-desc">Стартуем потоком. Набор камерный.</p>
         <ul class="price-features">
-          <li><span class="arrow">→</span>Напиши «Хочу в клуб» в Telegram</li>
-          <li><span class="arrow">→</span>Подскажем ближайший старт и формат</li>
-          <li><span class="arrow">→</span>Добавим в закрытый чат после оплаты</li>
+          <li><span class="arrow">→</span>Напиши «Хочу в клуб»</li>
+          <li><span class="arrow">→</span>Подскажем старт и формат</li>
+          <li><span class="arrow">→</span>Добавим в чат после оплаты</li>
           <li><span class="arrow">→</span>Отвечаем в течение дня</li>
-          <li><span class="arrow">→</span>Без навязывания и спама</li>
+          <li><span class="arrow">→</span>Без спама</li>
         </ul>
         <a href="https://t.me/founder15" target="_blank" rel="noopener" class="price-cta">Написать основателю</a>
       </article>
     </div>
   </section>
 
-  <!-- ===================== FAQ ===================== -->
   <section id="faq" class="wrap">
     <div class="section-head">
       <div>
@@ -454,33 +504,32 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         </div>
         <h2 class="reveal section-title" data-dir="left">Частые вопросы</h2>
       </div>
-      <p class="reveal section-head-note" data-dir="right">Коротко о формате, группе и оплате. Остальное — в Telegram.</p>
+      <p class="reveal section-head-note" data-dir="right">Коротко о формате, группе и оплате.</p>
     </div>
     <div class="faq-list">
       <div class="reveal faq-item" data-dir="up">
         <button class="faq-btn" type="button"><span class="faq-q">Это лекции или практика?</span><span class="faq-icon">+</span></button>
-        <div class="faq-detail"><div class="faq-detail-clip"><p>90% практики. Никаких длинных записанных лекций — всё отрабатывается вживую в Zoom: дуэли, разборы, обратная связь.</p></div></div>
+        <div class="faq-detail"><div class="faq-detail-clip"><p>90% практики. Всё вживую в Zoom: дуэли, разборы, обратная связь.</p></div></div>
       </div>
       <div class="reveal faq-item" data-dir="up">
         <button class="faq-btn" type="button"><span class="faq-q">Сколько человек в группе?</span><span class="faq-icon">+</span></button>
-        <div class="faq-detail"><div class="faq-detail-clip"><p>Камерный состав до 10 человек. Каждый гарантированно получает личную практику и разбор каждую неделю.</p></div></div>
+        <div class="faq-detail"><div class="faq-detail-clip"><p>До 10 человек. Каждый получает личную практику и разбор каждую неделю.</p></div></div>
       </div>
       <div class="reveal faq-item" data-dir="up">
-        <button class="faq-btn" type="button"><span class="faq-q">Какой формат и сколько времени?</span><span class="faq-icon">+</span></button>
-        <div class="faq-detail"><div class="faq-detail-clip"><p>1 месяц, 1 живая встреча в Zoom в неделю по 60 минут + работа в закрытом Telegram-чате и еженедельные мастермайнды по целям.</p></div></div>
+        <button class="faq-btn" type="button"><span class="faq-q">Формат и время?</span><span class="faq-icon">+</span></button>
+        <div class="faq-detail"><div class="faq-detail-clip"><p>1 месяц, 1 встреча в Zoom в неделю по 60 мин + закрытый чат и мастермайнды.</p></div></div>
       </div>
       <div class="reveal faq-item" data-dir="up">
-        <button class="faq-btn" type="button"><span class="faq-q">Почему так дёшево — <span data-price>1 500</span> ₽?</span><span class="faq-icon">+</span></button>
-        <div class="faq-detail"><div class="faq-detail-clip"><p>Это спеццена по себестоимости для первого состава, чтобы набрать сильные кейсы. Следующие потоки будут дороже.</p></div></div>
+        <button class="faq-btn" type="button"><span class="faq-q">Почему <span data-price>1 500</span> ₽?</span><span class="faq-icon">+</span></button>
+        <div class="faq-detail"><div class="faq-detail-clip"><p>Спеццена по себестоимости для первого состава. Дальше — дороже. Хочешь поменять — скажи, поменяю одну строку и перезалью.</p></div></div>
       </div>
       <div class="reveal faq-item" data-dir="up">
         <button class="faq-btn" type="button"><span class="faq-q">Как записаться?</span><span class="faq-icon">+</span></button>
-        <div class="faq-detail"><div class="faq-detail-clip"><p>Нажми «Записаться» — напишешь основателю в Telegram (@founder15). Подскажем старт потока и добавим в чат.</p></div></div>
+        <div class="faq-detail"><div class="faq-detail-clip"><p>Кнопка «Записаться» → Telegram @founder15. Подскажем старт и добавим в чат.</p></div></div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== CONTACTS ===================== -->
   <section id="contacts" class="wrap">
     <div class="reveal section-eyebrow contacts-eyebrow" data-dir="left">
       <span class="num">08</span>
@@ -497,7 +546,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
       <a href="https://t.me/founder15" target="_blank" rel="noopener" class="reveal contact-row" data-dir="left">
         <span class="contact-sweep"></span>
         <div class="contact-left"><span class="contact-idx">02</span><span class="contact-name">Level Up Community</span></div>
-        <div class="contact-right"><span class="contact-handle">Закрытый Telegram-чат</span><span class="contact-arrow">↗</span></div>
+        <div class="contact-right"><span class="contact-handle">Закрытый чат</span><span class="contact-arrow">↗</span></div>
       </a>
       <a href="mailto:hello@levelup.community" class="reveal contact-row" data-dir="left">
         <span class="contact-sweep"></span>
@@ -505,7 +554,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         <div class="contact-right"><span class="contact-handle">hello@levelup.community</span><span class="contact-arrow">↗</span></div>
       </a>
     </div>
-    <p style="margin:20px 0 0;font-size:11px;letter-spacing:.02em;color:#a6a6a6;max-width:520px;line-height:1.6">Нажми «Записаться» — откроется чат с основателем. Отвечаем в течение дня.</p>
+    <p style="margin:20px 0 0;font-size:11px;letter-spacing:.02em;color:#a6a6a6;max-width:520px;line-height:1.6">Отвечаем в течение дня · Без спама.</p>
     <footer class="site-footer">
       <div>
         <div class="footer-title">Level Up Community</div>
@@ -518,14 +567,12 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 </main>
 
 <script>
-// Цена в одном месте — меняется везде (и анимация с нуля как на референсе)
 (() => {
   const fmt = n => Math.round(n).toLocaleString('ru-RU');
   document.querySelectorAll('[data-price]').forEach(el=>{
     if(el.hasAttribute('data-count')) return;
     el.textContent = fmt(PRICE);
   });
-  // проставляем data-count для анимации
   document.querySelectorAll('[data-count]').forEach(el=> el.setAttribute('data-count', String(PRICE)));
 })();
 (() => {
@@ -572,6 +619,39 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
     if(!btn) return;
     btn.addEventListener('click',()=> item.classList.toggle('is-open'));
   });
+  // лёгкое 3D: tilt у карточек + parallax у hero-стека
+  const tiltEls=qa('.tilt');
+  tiltEls.forEach(el=>{
+    el.addEventListener('mousemove',e=>{
+      const r=el.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      el.style.transform=`perspective(900px) rotateY(${x*7}deg) rotateX(${-y*7}deg) translateZ(0)`;
+    });
+    el.addEventListener('mouseleave',()=> el.style.transform='perspective(900px) rotateY(0) rotateX(0)');
+  });
+  const stack=q('#heroStack');
+  if(stack){
+    let raf=0, mx=0, my=0;
+    stack.addEventListener('mousemove',e=>{
+      const r=stack.getBoundingClientRect();
+      mx=(e.clientX-r.left)/r.width-.5; my=(e.clientY-r.top)/r.height-.5;
+      if(raf) return; raf=requestAnimationFrame(()=>{
+        raf=0;
+        stack.querySelectorAll('.hc').forEach((c,i)=>{
+          const z=[-30,0,30][i]||0;
+          const tx=[0,10,20][i]||0; const ty=[0,-10,-20][i]||0;
+          c.style.transform=`rotateY(${-14+mx*10}deg) rotateX(${6+my*6}deg) translateZ(${z}px) translate(${tx}px,${ty}px)`;
+        });
+      });
+    });
+    stack.addEventListener('mouseleave',()=>{
+      stack.querySelectorAll('.hc').forEach((c,i)=>{
+        const z=[-30,0,30][i]; const tx=[0,10,20][i]; const ty=[0,-10,-20][i];
+        c.style.transform=`rotateY(-14deg) rotateX(6deg) translateZ(${z}px) translate(${tx}px,${ty}px)`;
+      });
+    });
+  }
 })();
 </script>
 </body>
