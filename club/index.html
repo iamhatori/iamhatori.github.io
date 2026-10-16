@@ -76,8 +76,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .hero-eyebrow-left .label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a8a}
 .hero-eyebrow-right{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a}
 .hero-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,56px);align-items:start;position:relative}
-.hero-title{margin:0;font-weight:700;font-size:clamp(44px,7.8vw,132px);line-height:.88;letter-spacing:-.04em;color:#141414;text-transform:uppercase}
-.hero-title span{display:block}
+.hero-title{margin:0;font-weight:700;font-size:clamp(44px,7.8vw,132px);line-height:1.04;letter-spacing:-.03em;color:#141414;text-transform:uppercase}
+.hero-title span{display:block;margin-bottom:0.04em}
 .hero-sub{margin:clamp(22px,3.5vh,32px) 0 0;font-weight:500;font-size:clamp(20px,2.6vw,34px);line-height:1.08;letter-spacing:-.02em;color:#141414;max-width:18ch}
 .hero-sub em{font-style:normal;background:linear-gradient(90deg,#141414,#5a5a5a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:clamp(28px,5vw,72px);margin-top:clamp(30px,5vh,48px);position:relative}
@@ -137,13 +137,17 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;margin-bottom:6px}
 .duel-head b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#141414}
 .duel-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
-.duel-bubble{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;word-break:break-word;overflow-wrap:break-word}
-.duel-bubble--opp{background:#fff1f1;border:1px solid #ffd0d0;color:#141414}
-.duel-bubble--opp b{color:#d62a2a;font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px}
-.duel-bubble--me{background:#f4f4f4;border:1px solid #e6e6e6;color:#666666}
-.duel-bubble--me b{color:#141414;font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px}
-.duel-bubble--ok{background:#f4f4f4;border:1px solid #e6e6e6;word-break:break-word}
-.duel-bubble--ok b{display:block;margin-bottom:6px}
+.duel-bubble{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;word-break:break-word;overflow-wrap:break-word;border:1px solid #141414}
+.duel-bubble b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px}
+.duel-bubble--opp{background:#fff1f1;color:#141414}
+.duel-bubble--opp b{color:#d62a2a}
+.duel-bubble--me{background:#f4f4f4;color:#666666}
+.duel-bubble--me b{color:#141414}
+.duel-bubble--club{background:#fef08a;color:#141414}
+.duel-bubble--club b{color:#141414}
+.duel-bubble--ok{background:#f4f4f4;color:#141414}
+.duel-bubble--ok b{color:#141414}
+.duel-bubble--highlight b{color:#d62a2a}
 .duel-foot{margin-top:auto;padding-top:14px;border-top:1px solid #eeeeee;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a;flex-wrap:wrap}
 .about-grid{display:flex;gap:clamp(40px,7vw,110px);flex-wrap:wrap;align-items:flex-start}
 .about-text{flex:1.2;min-width:min(100%,340px)}
@@ -282,7 +286,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         <div class="hero-card-stack" id="heroStack">
           <div class="hc hc--1"><div class="hc-inner"><span class="hc-label">Неделя 1 · Воркшоп</span><h4>Снятие зажимов<br>и голос</h4><p>Дыхание · тон · паузы · разбор вживую</p><span class="hc-chip">60 мин · Zoom</span></div></div>
           <div class="hc hc--2"><div class="hc-inner"><span class="hc-label">Неделя 2–3 · Дуэли</span><h4>Защита цены:<br>«Почему так дорого?»</h4><p>Сессионные залы · группы по 5 · прессинг скидки</p><span class="hc-chip">Поединок · 60 мин</span></div></div>
-          <div class="hc hc--3"><div class="hc-inner"><span class="hc-label" style="opacity:.6;color:#fff">Финал · Точка Б</span><h4 style="color:#fff">Финальная дуэль<br>+ оцифровка</h4><p style="color:#b4b4b8;font-size:13px;line-height:1.5">Закрепляем навыки в реальных жёстких переговорах, анализируем ошибки, фиксируем личный прогресс и замеряем рост уверенности.</p><span class="hc-chip" style="border-color:rgba(255,255,255,.28);color:#fff">Группы по 5 · разбор</span></div></div>
+          <div class="hc hc--3"><div class="hc-inner"><span class="hc-label" style="opacity:.6;color:#fff">Финал · Точка Б</span><h4 style="color:#fff">Финальная дуэль<br>+ оцифровка</h4><p style="color:#b4b4b8;font-size:13.5px;line-height:1.55">Закрепляем навыки в реальных жёстких переговорах, анализируем ошибки, фиксируем личный прогресс и замеряем рост уверенности.</p></div></div>
         </div>
 
       </div>
@@ -294,14 +298,14 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         <div class="duel-head"><b>Кейс поединка // Давление на цену</b><span>Zoom · Раунд 2</span></div>
         <div class="duel-bubble duel-bubble--opp"><b>Реплика оппонента:</b>«Нам назвали цену в два раза ниже. Скидывайте 40%, или уходим к конкурентам. Что скажете?»</div>
         <div class="duel-bubble duel-bubble--me"><b>Без тренировки:</b>Мандраж, оправдания, ступор или мгновенный прогиб по цене.</div>
-        <div class="duel-bubble" style="background:#141414;color:#fff;border:1px solid #141414"><b style="color:#c8b89a">С тренировкой в клубе:</b>Спокойный перехват инициативы, аргументация ценности и защита полного чека без чувства вины.</div>
+        <div class="duel-bubble duel-bubble--club"><b>С тренировкой в клубе:</b>Спокойный перехват инициативы, аргументация ценности и защита полного чека без чувства вины.</div>
         <div class="duel-foot"><span>Каждую неделю — новая ситуация</span><span>3 мин на защиту чека</span></div>
       </div>
       <div class="duel-col">
         <div class="duel-head"><b>Как это тренируется</b><span style="background:#141414;color:#fff;border-radius:100px;padding:5px 10px;font-size:10px;">Живая практика</span></div>
-        <div class="duel-bubble duel-bubble--ok"><b>Формат раунда</b>Говоришь вживую в Zoom — 3&nbsp;минуты на защиту чека. Разбор сразу.</div>
-        <div class="duel-bubble duel-bubble--ok"><b>Мгновенный разбор</b>Точный аудит: где просел по интонации, как вернуть инициативу.</div>
-        <div class="duel-bubble duel-bubble--ok" style="border-color:#141414; margin-top:8px"><b style="color:#141414">Результат</b>Твёрдый навык называть чек без стыда и&nbsp;страха.</div>
+        <div class="duel-bubble duel-bubble--ok duel-bubble--highlight"><b>Формат раунда:</b>Говоришь вживую в Zoom — 3&nbsp;минуты на защиту чека. Разбор сразу.</div>
+        <div class="duel-bubble duel-bubble--ok"><b>Мгновенный разбор:</b>Точный аудит: где просел по интонации, как вернуть инициативу.</div>
+        <div class="duel-bubble duel-bubble--ok"><b>Результат:</b>Твёрдый навык называть чек без стыда и&nbsp;страха.</div>
         <div class="duel-foot"><span>Сессионные залы · Группы по 5</span><span>50 чел на созвоне</span></div>
       </div>
     </div>
