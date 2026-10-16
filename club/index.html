@@ -93,9 +93,9 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .hero-card-stack{position:relative;width:100%;max-width:360px;height:380px;transform-style:preserve-3d}
 .hc{position:absolute;inset:0;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:#141414;color:#fff;box-shadow:0 18px 50px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.06) inset;overflow:hidden;transition:transform .5s cubic-bezier(.22,.61,.36,1),box-shadow .5s ease}
 .hc:hover{box-shadow:0 24px 60px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.08) inset}
-.hc--1{transform:rotateY(-10deg) rotateX(4deg) translateZ(-18px) translate(0px,0px);opacity:.94}
-.hc--2{transform:rotateY(-10deg) rotateX(4deg) translateZ(14px) translate(18px,-20px)}
-.hc--3{transform:rotateY(-10deg) rotateX(4deg) translateZ(36px) translate(36px,-38px)}
+.hc--1{transform:rotateY(-10deg) rotateX(4deg) translateZ(-22px) translate(0px,0px);opacity:.88}
+.hc--2{transform:rotateY(-10deg) rotateX(4deg) translateZ(18px) translate(28px,-28px)}
+.hc--3{transform:rotateY(-10deg) rotateX(4deg) translateZ(44px) translate(54px,-54px)}
 .hc-inner{padding:20px 22px;height:100%;display:flex;flex-direction:column;gap:10px}
 .hc-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:2px;color:#9a9a9a}
 .hc h4{margin:0;font-size:17px;letter-spacing:-.02em;line-height:1.25;color:#fff}
@@ -598,14 +598,14 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
       if(raf) return; raf=requestAnimationFrame(()=>{
         raf=0;
         stack.querySelectorAll('.hc').forEach((c,i)=>{
-          const base=[[-18,0,0],[14,18,-20],[36,36,-38]][i]||[0,0,0];
+          const base=[[-22,0,0],[18,28,-28],[44,54,-54]][i]||[0,0,0];
           const z=base[0], tx=base[1], ty=base[2];
           c.style.transform=`rotateY(${-10+mx*8}deg) rotateX(${4+my*5}deg) translateZ(${z}px) translate(${tx}px,${ty}px)`;
         });
       });
     });
     stack.addEventListener('mouseleave',()=>{
-      const resets=[[-18,0,0],[14,18,-20],[36,36,-38]];
+      const resets=[[-22,0,0],[18,28,-28],[44,54,-54]];
       stack.querySelectorAll('.hc').forEach((c,i)=>{
         const [z,tx,ty]=resets[i]||[0,0,0];
         c.style.transform=`rotateY(-10deg) rotateX(4deg) translateZ(${z}px) translate(${tx}px,${ty}px)`;
