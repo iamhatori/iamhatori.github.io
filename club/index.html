@@ -132,9 +132,11 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .step-card h3{margin:0 0 10px;font-weight:500;font-size:clamp(19px,2vw,24px);letter-spacing:-.02em;color:#141414}
 .step-card p{margin:0;font-size:14px;line-height:1.5;color:#666666}
 .tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#555555;border:1px solid #dcdcdc;border-radius:100px;padding:5px 11px}
-/* duel */
+/* duel — колонки всегда одинаковой высоты */
 .duel-wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,24px);margin-top:clamp(36px,6vh,56px);position:relative;align-items:stretch}
-.duel-col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.duel-col{display:flex;flex-direction:column;gap:12px;min-width:0;height:100%}
+.duel-col .duel-bubble{flex:0 0 auto}
+.duel-col .duel-bubble--ok:last-of-type{flex:1}
 .duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;margin-bottom:6px}
 .duel-head b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#141414}
 .duel-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
@@ -301,7 +303,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         <div class="duel-head"><b>Как это тренируется</b><span style="background:#141414;color:#fff;border-radius:100px;padding:5px 10px;font-size:10px;">Живая практика</span></div>
         <div class="duel-bubble duel-bubble--ok"><b>Формат раунда</b>Говоришь вживую в Zoom — 3&nbsp;минуты на защиту чека. Разбор сразу.</div>
         <div class="duel-bubble duel-bubble--ok"><b>Мгновенный разбор</b>Точный аудит: где просел по интонации, как вернуть инициативу.</div>
-        <div class="duel-bubble duel-bubble--ok" style="border-color:#141414; margin-top:8px"><b style="color:#141414">Результат</b>Твёрдый навык называть чек без стыда и&nbsp;страха.</div>
+        <div class="duel-bubble duel-bubble--ok" style="border-color:#141414"><b style="color:#141414">Результат</b>Твёрдый навык называть чек без стыда и&nbsp;страха.</div>
         <div class="duel-foot"><span>Сессионные залы · Группы по 5</span><span>50 чел на созвоне</span></div>
       </div>
     </div>
