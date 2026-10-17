@@ -123,10 +123,10 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .step-card h3{margin:0 0 10px;font-weight:500;font-size:clamp(19px,2vw,24px);letter-spacing:-.02em;color:#141414}
 .step-card p{margin:0;font-size:14px;line-height:1.5;color:#666666}
 .tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#555555;border:1px solid #dcdcdc;border-radius:100px;padding:5px 11px}
-/* duel — колонки и строки идеально выровнены */
-.duel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:clamp(36px,6vh,56px);position:relative;align-items:stretch}
-.duel-col{display:flex;flex-direction:column;gap:14px;min-width:0;height:100%}
-.duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;min-height:36px;box-sizing:border-box}
+/* duel — колонки и строки идеально выровнены через subgrid */
+.duel-wrap{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto auto auto;column-gap:clamp(16px,2vw,24px);row-gap:14px;margin-top:clamp(36px,6vh,56px);position:relative}
+.duel-col{display:grid;grid-row:span 5;grid-template-rows:subgrid;min-width:0}
+.duel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #eeeeee;box-sizing:border-box}
 .duel-head b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#141414}
 .duel-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
 .duel-bubble{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;word-break:break-word;overflow-wrap:break-word;border:1px solid #141414;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}
@@ -139,11 +139,7 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .duel-bubble--club b{color:#141414}
 .duel-bubble--ok{background:#f4f4f4;color:#141414}
 .duel-bubble--ok b{color:#141414}
-.duel-bubble--highlight b{color:#d62a2a}
-.duel-row-1{min-height:92px}
-.duel-row-2{min-height:76px}
-.duel-row-3{min-height:92px}
-.duel-foot{margin-top:auto;padding-top:14px;border-top:1px solid #eeeeee;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a;flex-wrap:wrap;min-height:36px;box-sizing:border-box}
+.duel-foot{padding-top:14px;border-top:1px solid #eeeeee;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a;flex-wrap:wrap;box-sizing:border-box}
 .about-grid{display:flex;gap:clamp(40px,7vw,110px);flex-wrap:wrap;align-items:flex-start}
 .about-text{flex:1.2;min-width:min(100%,340px)}
 .about-text p{margin:0 0 18px;max-width:560px;font-size:clamp(15px,1.15vw,17px);line-height:1.62;color:#555555}
@@ -218,8 +214,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
   .hero-top{flex-direction:column !important;align-items:flex-start !important;gap:10px !important}
   .hero-bottom{flex-direction:column !important;align-items:flex-start !important;gap:26px !important}
   .contact-handle{display:none !important}
-  .duel-wrap{grid-template-columns:1fr !important}
-  .duel-row-1,.duel-row-2,.duel-row-3{min-height:auto !important}
+  .duel-wrap{grid-template-columns:1fr !important;grid-template-rows:auto !important;row-gap:28px !important}
+  .duel-col{display:flex !important;flex-direction:column !important;gap:14px !important;grid-row:auto !important}
 }
 @media (max-width:520px){
   #siteHeader{padding:16px 20px !important}
