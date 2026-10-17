@@ -76,8 +76,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .hero-eyebrow-left .label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a8a}
 .hero-eyebrow-right{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a}
 .hero-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,56px);align-items:start;position:relative}
-.hero-title{margin:0;font-weight:700;font-size:clamp(44px,7.8vw,132px);line-height:1.04;letter-spacing:-.03em;color:#141414;text-transform:uppercase}
-.hero-title span{display:block;margin-bottom:0.04em}
+.hero-title{margin:0;font-weight:700;font-size:clamp(44px,7.8vw,132px);line-height:1.05;letter-spacing:-.03em;color:#141414;text-transform:uppercase}
+.hero-title span{display:block;margin-bottom:0.05em}
 .hero-sub{margin:clamp(22px,3.5vh,32px) 0 0;font-weight:500;font-size:clamp(20px,2.6vw,34px);line-height:1.08;letter-spacing:-.02em;color:#141414;max-width:18ch}
 .hero-sub em{font-style:normal;background:linear-gradient(90deg,#141414,#5a5a5a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:clamp(28px,5vw,72px);margin-top:clamp(30px,5vh,48px);position:relative}
@@ -88,25 +88,16 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .hero-footer .left{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#555555}
 .hero-footer .right{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8a8a8a}
 .founder-line{margin-top:16px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9a9a9a;opacity:.62}
-/* 3D hero visual — 3 чёрные карточки каскадом */
-.hero-visual{position:relative;perspective:1100px;min-height:420px;display:flex;align-items:center;justify-content:center}
-.hero-card-stack{position:relative;width:min(100%,380px);height:400px;transform-style:preserve-3d}
-.hc{position:absolute;inset:0;border-radius:20px;border:1px solid rgba(255,255,255,.14);background:#141414;color:#fff;box-shadow:0 18px 50px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.06) inset;overflow:hidden;transition:transform .5s cubic-bezier(.22,.61,.36,1),box-shadow .5s ease}
-.hc:hover{box-shadow:0 24px 60px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.08) inset}
-.hc--1{transform:rotateY(-10deg) rotateX(4deg) translateZ(-22px) translate(0px,0px);opacity:.88}
-.hc--2{transform:rotateY(-10deg) rotateX(4deg) translateZ(18px) translate(28px,-28px)}
-.hc--3{transform:rotateY(-10deg) rotateX(4deg) translateZ(44px) translate(54px,-54px)}
-.hc-inner{padding:22px 24px;height:100%;display:flex;flex-direction:column;gap:10px}
-.hc-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:2px;color:#9a9a9a}
-.hc h4{margin:0;font-size:17px;letter-spacing:-.02em;line-height:1.25;color:#fff}
-.hc p{margin:0;font-size:13.5px;line-height:1.55;opacity:.72;color:#b4b4b8}
-.hc-chip{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,.18);border-radius:100px;padding:7px 12px;align-self:flex-start;background:rgba(255,255,255,.08);color:#fff}
-.float-badge{position:absolute;z-index:2;display:inline-flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #e6e6e6;border-radius:100px;padding:9px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 30px rgba(20,20,20,.10);white-space:nowrap}
-.float-badge--a{top:14px;right:6px;transform:rotate(2deg)}
-.float-badge--b{bottom:62px;left:-6px;transform:rotate(-1.5deg)}
-.float-badge i{width:8px;height:8px;border-radius:50%;background:#141414;display:inline-block}
-.float-badge--live i{background:#ff3b30;box-shadow:0 0 0 6px rgba(255,59,48,.12);animation:pulse 1.6s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 6px rgba(255,59,48,.12)}50%{box-shadow:0 0 0 10px rgba(255,59,48,0)}}
+/* Hero black card — единая чёрная рамка с 3 этапами программы */
+.hero-visual{position:relative;perspective:1000px;display:flex;align-items:center;justify-content:center}
+.hero-black-card{width:min(100%,440px);background:#141414;color:#ffffff;border-radius:24px;border:1px solid rgba(255,255,255,.14);padding:clamp(22px,2.4vw,28px);box-shadow:0 24px 60px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.06) inset;display:flex;flex-direction:column;gap:18px;transform:rotateY(-8deg) rotateX(3deg);transition:transform .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s ease;will-change:transform}
+.hero-black-card:hover{box-shadow:0 30px 70px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.09) inset}
+.h-stage{display:flex;flex-direction:column;gap:8px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.h-stage--last{padding-bottom:0;border-bottom:none}
+.h-stage-label{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8a8a8a}
+.h-stage-title{margin:0;font-size:clamp(17px,1.35vw,20px);font-weight:600;line-height:1.24;letter-spacing:-.02em;color:#ffffff}
+.h-stage-desc{margin:0;font-size:13.5px;line-height:1.55;color:#b4b4b8}
+.h-stage-chip{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 12px;margin-top:2px;background:rgba(255,255,255,.06);color:#ffffff}
 .liftcard{border:1px solid #e6e6e6;border-radius:20px;transition:translate .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s cubic-bezier(.22,.61,.36,1),border-color .45s cubic-bezier(.22,.61,.36,1);background:#fff}
 .liftcard:hover{translate:0 -6px;box-shadow:0 22px 50px -30px rgba(20,20,20,.25);border-color:#c8c8c8}
 .tilt{transform-style:preserve-3d;will-change:transform}
@@ -219,7 +210,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
 .footer-sub{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8a8a8a}
 @media (max-width:980px){
   .hero-layout{grid-template-columns:1fr}
-  .hero-visual{min-height:360px;margin-top:10px}
+  .hero-visual{min-height:auto;margin-top:16px}
+  .hero-black-card{transform:none !important;width:100%;max-width:520px;margin:0 auto}
 }
 @media (max-width:860px){
   .nav{display:none !important}
@@ -233,8 +225,8 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
   #siteHeader{padding:16px 20px !important}
   .cta{padding:9px 15px !important}
   .price-grid{grid-template-columns:1fr !important}
-  .hero-visual{min-height:340px}
-  .hero-card-stack{height:360px}
+  .hero-visual{min-height:auto}
+  .hero-black-card{padding:20px 18px;border-radius:18px}
 }
 </style>
 </head>
@@ -286,14 +278,28 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
         <p class="reveal founder-line" data-dir="up">Основатель — Макар Александрович · Закрытый состав · Zoom + Telegram</p>
       </div>
 
-      <!-- Лёгкое 3D — как просили в переписке: «какой-то фон поинтереснее / лёгкое 3д» -->
-      <div class="reveal hero-visual" data-dir="right" aria-hidden="true">
-        <div class="hero-card-stack" id="heroStack">
-          <div class="hc hc--1"><div class="hc-inner"><span class="hc-label">Неделя 1 · Воркшоп</span><h4>Снятие зажимов<br>и голос</h4><p>Дыхание · тон · паузы · разбор вживую</p><span class="hc-chip">60 мин · Zoom</span></div></div>
-          <div class="hc hc--2"><div class="hc-inner"><span class="hc-label">Неделя 2–3 · Дуэли</span><h4>Защита цены:<br>«Почему так дорого?»</h4><p>Сессионные залы · группы по 5 · прессинг скидки</p><span class="hc-chip">Поединок · 60 мин</span></div></div>
-          <div class="hc hc--3"><div class="hc-inner"><span class="hc-label">Финал · Точка Б</span><h4>Финальная дуэль<br>+ оцифровка</h4><p>Закрепляем навыки в реальных жёстких переговорах, анализируем ошибки, фиксируем личный прогресс и замеряем рост уверенности.</p></div></div>
+      <!-- Единая чёрная рамка с 3 этапами программы -->
+      <div class="reveal hero-visual" data-dir="right">
+        <div class="hero-black-card" id="heroCard">
+          <div class="h-stage">
+            <span class="h-stage-label">Неделя 1 · Воркшоп</span>
+            <h4 class="h-stage-title">Снятие зажимов и голос</h4>
+            <p class="h-stage-desc">Дыхание · тон · паузы · разбор вживую</p>
+            <span class="h-stage-chip">60 мин · Zoom</span>
+          </div>
+          <div class="h-stage">
+            <span class="h-stage-label">Неделя 2–3 · Дуэли</span>
+            <h4 class="h-stage-title">Защита цены: «Почему так дорого?»</h4>
+            <p class="h-stage-desc">Сессионные залы · группы по 5 · прессинг скидки</p>
+            <span class="h-stage-chip">Поединок · 60 мин</span>
+          </div>
+          <div class="h-stage h-stage--last">
+            <span class="h-stage-label">Финал · Точка Б</span>
+            <h4 class="h-stage-title">Финальная дуэль + оцифровка</h4>
+            <p class="h-stage-desc">Закрепляем навыки в реальных жёстких переговорах, анализируем ошибки, фиксируем личный прогресс и замеряем рост уверенности.</p>
+            <span class="h-stage-chip">Группы по 5 · разбор</span>
+          </div>
         </div>
-
       </div>
     </div>
 
@@ -596,27 +602,25 @@ section[id]{padding-top:clamp(60px,9vh,112px);padding-bottom:clamp(60px,9vh,112p
     });
     el.addEventListener('mouseleave',()=> el.style.transform='perspective(900px) rotateY(0) rotateX(0)');
   });
-  const stack=q('#heroStack');
-  if(stack){
+  const heroCard=q('#heroCard');
+  if(heroCard){
     let raf=0,mx=0,my=0;
-    stack.addEventListener('mousemove',e=>{
-      const r=stack.getBoundingClientRect();
-      mx=(e.clientX-r.left)/r.width-.5; my=(e.clientY-r.top)/r.height-.5;
+    heroCard.addEventListener('mousemove',e=>{
+      if(window.innerWidth<=980) return;
+      const r=heroCard.getBoundingClientRect();
+      mx=(e.clientX-r.left)/r.width-.5;
+      my=(e.clientY-r.top)/r.height-.5;
       if(raf) return; raf=requestAnimationFrame(()=>{
         raf=0;
-        stack.querySelectorAll('.hc').forEach((c,i)=>{
-          const base=[[-22,0,0],[18,28,-28],[44,54,-54]][i]||[0,0,0];
-          const z=base[0], tx=base[1], ty=base[2];
-          c.style.transform=`rotateY(${-10+mx*8}deg) rotateX(${4+my*5}deg) translateZ(${z}px) translate(${tx}px,${ty}px)`;
-        });
+        heroCard.style.transform=`rotateY(${-8+mx*10}deg) rotateX(${3-my*8}deg)`;
       });
     });
-    stack.addEventListener('mouseleave',()=>{
-      const resets=[[-22,0,0],[18,28,-28],[44,54,-54]];
-      stack.querySelectorAll('.hc').forEach((c,i)=>{
-        const [z,tx,ty]=resets[i]||[0,0,0];
-        c.style.transform=`rotateY(-10deg) rotateX(4deg) translateZ(${z}px) translate(${tx}px,${ty}px)`;
-      });
+    heroCard.addEventListener('mouseleave',()=>{
+      if(window.innerWidth<=980){
+        heroCard.style.transform='none';
+      } else {
+        heroCard.style.transform='rotateY(-8deg) rotateX(3deg)';
+      }
     });
   }
 })();
